@@ -8,5 +8,8 @@ public class TestDummyDesign {
     }
 
     @Test
+    public void testIntegrante3() { Assert.assertEquals(DummyDesign.integrante3(),3); }
+
+    @Test
     public void testIntegrante4() { Assert.assertEquals(DummyDesign.integrante4(),4); }
 }

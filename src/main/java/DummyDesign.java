@@ -3,5 +3,7 @@ public class DummyDesign {
         return 2;
     }
 
+    public static int integrante3() { return 3; }
+
     public static int integrante4() { return 4; }
 }
