@@ -3,10 +3,6 @@ import org.passay.dictionary.Dictionary;
 import org.passay.dictionary.DictionaryBuilder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
 public class Usuario {
 
     String nombreUsuario;
