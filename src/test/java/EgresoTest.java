@@ -1,3 +1,7 @@
+import mediosDePago.Efectivo;
+import mediosDePago.IdentificadorNullException;
+import mediosDePago.MedioDePago;
+import mediosDePago.TarjetaCredito;
 import org.junit.Assert;
 import org.junit.Test;
 import java.util.ArrayList;
@@ -26,5 +30,15 @@ public class EgresoTest
     {
         DocComercial docComercial = new DocComercial(153460, TipoDocComercial.factura);
         Assert.assertEquals(docComercial.tipoDC, TipoDocComercial.factura);
+    }
+
+    @Test
+    public void crearMedioDePagoCorrecto() {
+        MedioDePago visa = new TarjetaCredito("visa", Long.valueOf("1234567890987654"));
+    }
+
+    @Test (expected = IdentificadorNullException.class)
+    public void elIdentificadorDelMedioPagoNoPuedeSerNull(){
+        MedioDePago pagoFacil = new Efectivo("pagoFacil",null);
     }
 }
