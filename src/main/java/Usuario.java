@@ -1,12 +1,19 @@
+import entidadOrganizativa.Entidad;
+import entidadOrganizativa.EntidadBase;
+import entidadOrganizativa.EntidadJuridica;
 import org.passay.*;
 import org.passay.dictionary.Dictionary;
 import org.passay.dictionary.DictionaryBuilder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario {
 
     String nombreUsuario;
     String contraseniaHasheada;
+    List<Entidad> entidades = new ArrayList<>();
+
 
     public Usuario(String nombreUsuario, String contrasenia) {
         validarContrasenia(nombreUsuario,contrasenia);
@@ -79,5 +86,12 @@ public class Usuario {
                 contraseniaEsCorrecta(contrasenia);
     }
 
+    public void agregarEntidadJuridica(EntidadJuridica entidad ){
+        this.entidades.add(entidad);
+    }
 
+    public void agregarEntidadBase(String nombreFicticio,String razonSocial,EntidadJuridica entidadJ) {
+       EntidadBase entidadB= entidadJ.agregarEntidadBase(nombreFicticio,razonSocial);
+        this.entidades.add(entidadB);
+    }
 }
