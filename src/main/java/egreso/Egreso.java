@@ -1,3 +1,5 @@
+package egreso;
+
 import java.util.Date;
 import java.util.ArrayList;
 import mediosDePago.MedioDePago;

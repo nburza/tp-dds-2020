@@ -1,7 +1,9 @@
+package egreso;
+
 public class DocComercial
 {
     int numero;
-    TipoDocComercial tipoDC;
+    public TipoDocComercial tipoDC;
 
     public DocComercial(int unNumero, TipoDocComercial unTipoDC)
     {

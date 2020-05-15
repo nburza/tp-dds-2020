@@ -1,3 +1,7 @@
+import egreso.DocComercial;
+import egreso.Egreso;
+import egreso.Item;
+import egreso.TipoDocComercial;
 import mediosDePago.Efectivo;
 import mediosDePago.IdentificadorNullException;
 import mediosDePago.MedioDePago;

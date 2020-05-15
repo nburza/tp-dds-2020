@@ -1,3 +1,4 @@
+import egreso.Egreso;
 import entidadOrganizativa.Entidad;
 import entidadOrganizativa.EntidadBase;
 import entidadOrganizativa.EntidadJuridica;
@@ -90,8 +91,8 @@ public class Usuario {
         this.entidades.add(entidad);
     }
 
-    public void agregarEntidadBase(String nombreFicticio,String razonSocial,EntidadJuridica entidadJ) {
-       EntidadBase entidadB= entidadJ.agregarEntidadBase(nombreFicticio,razonSocial);
+    public void agregarEntidadBase(String nombreFicticio, String razonSocial, EntidadJuridica entidadJ, List<Egreso> egresos) {
+       EntidadBase entidadB= entidadJ.agregarEntidadBase(nombreFicticio,razonSocial, egresos);
         this.entidades.add(entidadB);
     }
 }
