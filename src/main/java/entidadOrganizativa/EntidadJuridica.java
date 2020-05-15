@@ -8,13 +8,13 @@ public abstract class EntidadJuridica implements Entidad {
     String razonSocial;
     String nombreFicticio;
     int cuit;
-    int direccionPostal;
+    String direccionPostal;
     Integer codigoIncripcionIGJ;
     List<Egreso> egresos;
 
     private List<EntidadBase> listaEntidades = new ArrayList<>();
 
-    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, int direccionPostal, List<Egreso> egresos) {
+    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, String direccionPostal, List<Egreso> egresos) {
         this.razonSocial = razonSocial;
         this.nombreFicticio = nombreFicticio;
         this.cuit = cuit;
@@ -23,7 +23,7 @@ public abstract class EntidadJuridica implements Entidad {
         this.egresos = egresos;
     }
 
-    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, int direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
+    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, String direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
         this.razonSocial = razonSocial;
         this.nombreFicticio = nombreFicticio;
         this.cuit = cuit;
