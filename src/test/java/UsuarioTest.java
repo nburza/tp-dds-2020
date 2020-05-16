@@ -9,35 +9,35 @@ public class UsuarioTest {
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
-    public void AutenticoUsuarioCorrecto() {
+    public void autenticoUsuarioCorrecto() {
 
         Usuario usuario = new Usuario("nombre","queremos la copa");
         Assert.assertTrue(usuario.autenticar("nombre","queremos la copa"));
     }
 
     @Test
-    public void AutenticoAdminIncorrecto() {
+    public void autenticoAdminIncorrecto() {
 
         Administrador admin = new Administrador("nombre","queremos la copa");
         Assert.assertFalse(admin.autenticar("nombre","queremos la copita"));
     }
 
     @Test
-    public void ContraseniaFacilArrojaExcepcion() {
+    public void contraseniaFacilArrojaExcepcion() {
         exceptionRule.expect(ContraseniaDebilException.class);
         exceptionRule.expectMessage("La contraseña ingresada es muy facil");
         new Usuario("nombre","football");
     }
 
     @Test
-    public void ContraseniaCortaArrojaExcepcion() {
+    public void contraseniaCortaArrojaExcepcion() {
         exceptionRule.expect(ContraseniaDebilException.class);
         exceptionRule.expectMessage("La contraseña debe tener al menos 8 caracteres");
         new Usuario("nombre", "clave");
     }
 
     @Test
-    public void ContraseniaLargaArrojaExcepcion() {
+    public void contraseniaLargaArrojaExcepcion() {
         exceptionRule.expect(ContraseniaDebilException.class);
         exceptionRule.expectMessage("La contraseña puede tener 64 caracteres como maximo");
         new Usuario("nombre", "Esta clave es muy larga por el hecho de que " +
@@ -47,28 +47,28 @@ public class UsuarioTest {
     }
 
     @Test
-    public void ContraseniaConNombreDeUsuarioArrojaExcepcion() {
+    public void contraseniaConNombreDeUsuarioArrojaExcepcion() {
         exceptionRule.expect(ContraseniaDebilException.class);
         exceptionRule.expectMessage("La contraseña debe ser distinta al nombre de usuario");
         new Usuario("nombre de usuario", "nombre de usuario");
     }
 
     @Test
-    public void ContraseniaConSecuenciaAlfabeticaArrojaExcepcion() {
+    public void contraseniaConSecuenciaAlfabeticaArrojaExcepcion() {
         exceptionRule.expect(ContraseniaDebilException.class);
         exceptionRule.expectMessage("La contraseña no puede contener secuencias alfabeticas");
         new Usuario("nombre", "abcdefghijk");
     }
 
     @Test
-    public void ContraseniaConSecuenciaNumericaArrojaExcepcion() {
+    public void contraseniaConSecuenciaNumericaArrojaExcepcion() {
         exceptionRule.expect(ContraseniaDebilException.class);
         exceptionRule.expectMessage("La contraseña no puede contener secuencias numericas");
         new Usuario("nombre", "hola12345");
     }
 
     @Test
-    public void ContraseniaConRepeticionDeCaracteresArrojaExcepcion() {
+    public void contraseniaConRepeticionDeCaracteresArrojaExcepcion() {
         exceptionRule.expect(ContraseniaDebilException.class);
         exceptionRule.expectMessage("La contraseña contiene una repetición de caracteres");
         new Usuario("nombre", "holaaaaaaa");

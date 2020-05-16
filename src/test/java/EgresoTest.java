@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class EgresoTest
 {
     @Test
-    public void AutenticoEgresoCorrecto()
+    public void autenticoEgresoCorrecto()
     {
         Item item = new Item(null,100,1);
         ArrayList<Item> items= new ArrayList<Item>();
@@ -23,14 +23,14 @@ public class EgresoTest
     }
 
     @Test
-    public void AutenticoItemCorrecto()
+    public void autenticoItemCorrecto()
     {
         Item item = new Item("lavandina", 150, 2);
         Assert.assertEquals(item.precioTotal(), (float)300, 0.0001);
     }
 
     @Test
-    public void AutenticoDocComercialCorrecto()
+    public void autenticoDocComercialCorrecto()
     {
         DocComercial docComercial = new DocComercial(153460, TipoDocComercial.factura);
         Assert.assertEquals(docComercial.tipoDC, TipoDocComercial.factura);
