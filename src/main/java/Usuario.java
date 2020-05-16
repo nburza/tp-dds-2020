@@ -7,6 +7,7 @@ import org.passay.dictionary.Dictionary;
 import org.passay.dictionary.DictionaryBuilder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class Usuario {
@@ -37,24 +38,19 @@ public class Usuario {
 
     private String definirMensajeDelError(RuleResult validate) {
         RuleResultDetail ruleResultDetail = validate.getDetails().get(0);
-        String mensajeDeError = null;
-        switch(ruleResultDetail.getErrorCode()) {
-            case "ILLEGAL_WORD": mensajeDeError = "La contraseña ingresada es muy facil";
-                break;
-            case "TOO_SHORT": mensajeDeError = "La contraseña debe tener al menos 8 caracteres";
-                break;
-            case "TOO_LONG": mensajeDeError = "La contraseña puede tener 64 caracteres como maximo";
-                break;
-            case "ILLEGAL_USERNAME": mensajeDeError = "La contraseña debe ser distinta al nombre de usuario";
-                break;
-            case "ILLEGAL_ALPHABETICAL_SEQUENCE": mensajeDeError = "La contraseña no puede contener secuencias alfabeticas";
-                break;
-            case "ILLEGAL_NUMERICAL_SEQUENCE": mensajeDeError = "La contraseña no puede contener secuencias numericas";
-                break;
-            case "ILLEGAL_REPEATED_CHARS": mensajeDeError = "La contraseña contiene una repetición de caracteres";
-                break;
-        }
-        return mensajeDeError;
+        return String.valueOf(getDiccionarioDeErrores().get(ruleResultDetail.getErrorCode()));
+    }
+
+    private Hashtable<String, String> getDiccionarioDeErrores() {
+        Hashtable<String, String> DiccionarioDeErrores = new Hashtable<>();
+        DiccionarioDeErrores.put("ILLEGAL_WORD","La contraseña ingresada es muy facil");
+        DiccionarioDeErrores.put("TOO_SHORT","La contraseña debe tener al menos 8 caracteres");
+        DiccionarioDeErrores.put("TOO_LONG","La contraseña puede tener 64 caracteres como maximo");
+        DiccionarioDeErrores.put("ILLEGAL_USERNAME","La contraseña debe ser distinta al nombre de usuario");
+        DiccionarioDeErrores.put("ILLEGAL_ALPHABETICAL_SEQUENCE","La contraseña no puede contener secuencias alfabeticas");
+        DiccionarioDeErrores.put("ILLEGAL_NUMERICAL_SEQUENCE","La contraseña no puede contener secuencias numericas");
+        DiccionarioDeErrores.put("ILLEGAL_REPEATED_CHARS","La contraseña contiene una repetición de caracteres");
+        return DiccionarioDeErrores;
     }
 
     private PasswordValidator getPasswordValidator() {
