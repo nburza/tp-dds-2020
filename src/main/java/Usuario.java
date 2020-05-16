@@ -1,27 +1,24 @@
-import egreso.Egreso;
-import entidadOrganizativa.Entidad;
-import entidadOrganizativa.EntidadBase;
-import entidadOrganizativa.EntidadJuridica;
 import org.passay.*;
 import org.passay.dictionary.Dictionary;
 import org.passay.dictionary.DictionaryBuilder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import java.util.ArrayList;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Hashtable;
-import java.util.List;
 
 public class Usuario {
 
     String nombreUsuario;
     String contraseniaHasheada;
 
-    public Usuario(String nombreUsuario, String contrasenia) {
+    public Usuario(String nombreUsuario, String contrasenia) throws ClassNotFoundException {
         validarContrasenia(nombreUsuario,contrasenia);
         this.nombreUsuario = nombreUsuario;
         this.contraseniaHasheada = hashearContrasenia(contrasenia);
     }
     
-    private void validarContrasenia(String nombreUsuario, String contrasenia) {
+    private void validarContrasenia(String nombreUsuario, String contrasenia) throws ClassNotFoundException {
         PasswordData passwordData = new PasswordData();
         passwordData.setUsername(nombreUsuario);
         passwordData.setPassword(contrasenia);
@@ -51,7 +48,7 @@ public class Usuario {
         return DiccionarioDeErrores;
     }
 
-    private PasswordValidator getPasswordValidator() {
+    private PasswordValidator getPasswordValidator() throws ClassNotFoundException {
         return new PasswordValidator(
                     reglaConClavesBaneadas(),
                     new LengthRule(8,64),
@@ -62,9 +59,12 @@ public class Usuario {
             );
     }
 
-    private DictionaryRule reglaConClavesBaneadas() {
+    private DictionaryRule reglaConClavesBaneadas() throws ClassNotFoundException {
+        Class cls = Class.forName("Usuario");
+        ClassLoader cLoader = cls.getClassLoader();
+        InputStream inputStream = cLoader.getResourceAsStream("10k-most-common.txt");
         DictionaryBuilder dictionaryBuilder = new DictionaryBuilder();
-        Dictionary diccionarioContraseniasFaciles = dictionaryBuilder.addFile("src/main/resources/10k-most-common.txt").build();
+        Dictionary diccionarioContraseniasFaciles = dictionaryBuilder.addReader(new InputStreamReader(inputStream)).build();
         return new DictionaryRule(diccionarioContraseniasFaciles);
     }
 
