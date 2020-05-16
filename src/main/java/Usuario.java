@@ -14,8 +14,6 @@ public class Usuario {
 
     String nombreUsuario;
     String contraseniaHasheada;
-    List<Entidad> entidades = new ArrayList<>();
-
 
     public Usuario(String nombreUsuario, String contrasenia) {
         validarContrasenia(nombreUsuario,contrasenia);
@@ -81,14 +79,5 @@ public class Usuario {
     public boolean autenticar(String nombreUsuario, String contrasenia) {
         return this.nombreUsuario.equals(nombreUsuario) &&
                 contraseniaEsCorrecta(contrasenia);
-    }
-
-    public void agregarEntidadJuridica(EntidadJuridica entidad ){
-        this.entidades.add(entidad);
-    }
-
-    public void agregarEntidadBase(String nombreFicticio, String razonSocial, EntidadJuridica entidadJ, List<Egreso> egresos) {
-       EntidadBase entidadB= entidadJ.agregarEntidadBase(nombreFicticio,razonSocial, egresos);
-        this.entidades.add(entidadB);
     }
 }
