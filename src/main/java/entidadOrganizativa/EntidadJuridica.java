@@ -5,12 +5,12 @@ import java.util.List;
 
 
 public abstract class EntidadJuridica implements Entidad {
-    String razonSocial;
-    String nombreFicticio;
-    int cuit;
-    String direccionPostal;
-    Integer codigoIncripcionIGJ;
-    List<Egreso> egresos;
+    private String razonSocial;
+    private String nombreFicticio;
+    private int cuit;
+    private String direccionPostal;
+    private Integer codigoIncripcionIGJ;
+    private List<Egreso> egresos;
 
     private List<EntidadBase> listaEntidades = new ArrayList<>();
 

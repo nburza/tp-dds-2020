@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Empresa extends EntidadJuridica {
 
-    CategoriaEmpresa categoria;
+    private CategoriaEmpresa categoria;
 
     public Empresa(String razonSocial, String nombreFicticio, int cuit, String direccionPostal,CategoriaEmpresa categoria, List<Egreso> egresos) {
         super(razonSocial, nombreFicticio, cuit, direccionPostal, egresos);

@@ -7,7 +7,7 @@ import egreso.Egreso;
 public class EntidadBase implements Entidad {
     private String nombreFicticio;
     private String razonSocial;
-    List<Egreso> egresos;
+    private List<Egreso> egresos;
 
     public EntidadBase(String nombreFicticio, String razonSocial, List<Egreso> egresos) {
         this.nombreFicticio = nombreFicticio;

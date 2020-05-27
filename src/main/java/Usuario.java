@@ -9,8 +9,8 @@ import java.util.Hashtable;
 
 public class Usuario {
 
-    String nombreUsuario;
-    String contraseniaHasheada;
+    private String nombreUsuario;
+    private String contraseniaHasheada;
 
     public Usuario(String nombreUsuario, String contrasenia) throws ClassNotFoundException {
         validarContrasenia(nombreUsuario,contrasenia);

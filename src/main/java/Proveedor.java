@@ -1,8 +1,8 @@
 public class Proveedor {
 
-    String nombre;
-    String documento;
-    String direccionPostal;
+    private String nombre;
+    private String documento;
+    private String direccionPostal;
 
     public Proveedor(String nombre, String documento, String direccionPostal){
 
