@@ -1,27 +1,28 @@
 package egreso;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.ArrayList;
 import mediosDePago.MedioDePago;
 
 public class Egreso
 {
-    ArrayList<DocComercial> documentosComerciales;
-    MedioDePago medioDePago;
-    String idProveedor;
-    static ArrayList<Item> items;
-    Date fecha;
+    private ArrayList<DocComercial> documentosComerciales;
+    private MedioDePago medioDePago;
+    private String idProveedor;
+    private ArrayList<Item> items;
+    private Date fecha;
 
-    public static float totalEgreso()
+    public BigDecimal totalEgreso()
     {
-        float total = 0;
+        BigDecimal total = new BigDecimal("0");
 
         for( int i=0; i < items.size(); i++)
         {
-            total += items.get(i).precioTotal();
-        };
+            total=total.add(items.get(i).precioTotal());
+        }
         return total;
-    };
+    }
 
     public Egreso(ArrayList<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, ArrayList<Item> unosItems, Date unaFecha)
     {
@@ -30,5 +31,5 @@ public class Egreso
         this.idProveedor = unIdProveedor;
         this.items = unosItems;
         this.fecha = unaFecha;
-    };
-};
+    }
+}

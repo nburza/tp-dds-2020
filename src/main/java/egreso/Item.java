@@ -1,20 +1,22 @@
 package egreso;
 
+import java.math.BigDecimal;
+
 public class Item
 {
-    String descripcion;
-    float precioUnitario;
-    int cantidad;
+    private String descripcion;
+    private BigDecimal precioUnitario;
+    private int cantidad;
 
-    public float precioTotal()
+    public BigDecimal precioTotal()
     {
-        return precioUnitario * cantidad;
-    };
+        return precioUnitario.multiply(BigDecimal.valueOf(cantidad)) ;
+    }
 
-    public Item(String unaDescripcion, float unPrecioUnitario, int unaCantidad)
+    public Item(String unaDescripcion, BigDecimal unPrecioUnitario, int unaCantidad)
     {
         this.descripcion = unaDescripcion;
         this.precioUnitario = unPrecioUnitario;
         this.cantidad = unaCantidad;
-    };
-};
+    }
+}

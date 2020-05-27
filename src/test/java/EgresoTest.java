@@ -8,32 +8,30 @@ import mediosDePago.MedioDePago;
 import mediosDePago.TarjetaCredito;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class EgresoTest
-{
+public class EgresoTest {
     @Test
-    public void autenticoEgresoCorrecto()
-    {
-        Item item = new Item(null,100,1);
-        ArrayList<Item> items= new ArrayList<Item>();
+    public void autenticoEgresoCorrecto() {
+        Item item = new Item(null, new BigDecimal("100"), 1);
+        ArrayList<Item> items = new ArrayList<Item>();
         items.add(item);
-        Egreso egreso = new Egreso(null,null,null, items, null);
-        Assert.assertEquals(egreso.totalEgreso(), (float)100, 0.0001);
+        Egreso egreso = new Egreso(null, null, null, items, null);
+        Assert.assertEquals(egreso.totalEgreso(), BigDecimal.valueOf(100));
     }
 
     @Test
-    public void autenticoItemCorrecto()
-    {
-        Item item = new Item("lavandina", 150, 2);
-        Assert.assertEquals(item.precioTotal(), (float)300, 0.0001);
+    public void autenticoItemCorrecto() {
+        Item item = new Item("lavandina", new BigDecimal("150"), 2);
+        Assert.assertEquals(item.precioTotal(), BigDecimal.valueOf(300));
     }
 
     @Test
-    public void autenticoDocComercialCorrecto()
-    {
+    public void autenticoDocComercialCorrecto() {
         DocComercial docComercial = new DocComercial(153460, TipoDocComercial.factura);
-        Assert.assertEquals(docComercial.tipoDC, TipoDocComercial.factura);
+        Assert.assertEquals(docComercial.getTipoDC(), TipoDocComercial.factura);
     }
 
     @Test
@@ -41,8 +39,8 @@ public class EgresoTest
         MedioDePago visa = new TarjetaCredito("visa", Long.valueOf("1234567890987654"));
     }
 
-    @Test (expected = IdentificadorNullException.class)
-    public void elIdentificadorDelMedioPagoNoPuedeSerNull(){
-        MedioDePago pagoFacil = new Efectivo("pagoFacil",null);
+    @Test(expected = IdentificadorNullException.class)
+    public void elIdentificadorDelMedioPagoNoPuedeSerNull() {
+        MedioDePago pagoFacil = new Efectivo("pagoFacil", null);
     }
 }
