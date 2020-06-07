@@ -22,6 +22,26 @@ public class UsuarioTest {
         Assert.assertFalse(admin.autenticar("nombre","queremos la copita"));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void usuarioConNombreNullEsInvalido() throws ClassNotFoundException {
+        new Usuario(null,"murcielago");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void usuarioConContraseniaNullEsInvalido() throws ClassNotFoundException {
+        new Usuario("nombre", null);
+    }
+
+    @Test(expected = ContraseniaDebilException.class)
+    public void contraseniaVaciaArrojaExcepcion() throws ClassNotFoundException {
+        new Usuario("nombre", "");
+    }
+
+    @Test
+    public void contraseniaDeOchoCaracteresEsValida() throws ClassNotFoundException {
+        new Usuario("nombre", "calabaza");
+    }
+
     @Test
     public void contraseniaFacilArrojaExcepcion() throws ClassNotFoundException {
         exceptionRule.expect(ContraseniaDebilException.class);
