@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.ArrayList;
 import mediosDePago.MedioDePago;
+import presupuesto.Presupuesto;
 
 public class Egreso
 {
@@ -12,6 +13,7 @@ public class Egreso
     private String idProveedor;
     private ArrayList<Item> items;
     private Date fecha;
+    private ArrayList<Presupuesto> presupuestos;
 
     public BigDecimal totalEgreso()
     {
@@ -24,12 +26,13 @@ public class Egreso
         return total;
     }
 
-    public Egreso(ArrayList<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, ArrayList<Item> unosItems, Date unaFecha)
+    public Egreso(ArrayList<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, ArrayList<Item> unosItems, Date unaFecha, ArrayList<Presupuesto> presupuestos)
     {
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
         this.idProveedor = unIdProveedor;
         this.items = unosItems;
         this.fecha = unaFecha;
+        this.presupuestos = presupuestos;
     }
 }
