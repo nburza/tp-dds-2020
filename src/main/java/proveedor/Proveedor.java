@@ -1,10 +1,12 @@
+package proveedor;
+
 public class Proveedor {
 
     private String nombre;
     private String documento;
-    private String direccionPostal;
+    private DireccionPostal direccionPostal;
 
-    public Proveedor(String nombre, String documento, String direccionPostal){
+    public Proveedor(String nombre, String documento, DireccionPostal direccionPostal){
 
         this.nombre = nombre;
         this.documento = documento;
