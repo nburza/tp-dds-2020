@@ -1,3 +1,5 @@
+package usuario;
+
 import org.passay.*;
 import org.passay.dictionary.Dictionary;
 import org.passay.dictionary.DictionaryBuilder;
@@ -60,7 +62,7 @@ public class Usuario {
     }
 
     private DictionaryRule reglaConClavesBaneadas() throws ClassNotFoundException {
-        Class cls = Class.forName("Usuario");
+        Class cls = Class.forName("usuario.Usuario");
         ClassLoader cLoader = cls.getClassLoader();
         InputStream inputStream = cLoader.getResourceAsStream("10k-most-common.txt");
         DictionaryBuilder dictionaryBuilder = new DictionaryBuilder();
