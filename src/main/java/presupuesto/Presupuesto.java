@@ -4,17 +4,17 @@ import egreso.DocComercial;
 import egreso.Egreso;
 import egreso.Item;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Presupuesto {
     private BigDecimal total;
-    private ArrayList<Item> detalles;
-    private ArrayList<DocComercial> documentosComerciales;
+    private List<Item> detalle;
+    private List<DocComercial> documentosComerciales;
     private Egreso egreso;
 
-    public Presupuesto(BigDecimal total, ArrayList<Item> detalles, ArrayList<DocComercial> documentosComerciales, Egreso egreso){
+    public Presupuesto(BigDecimal total, List<Item> detalle, List<DocComercial> documentosComerciales, Egreso egreso){
         this.total = total;
-        this.detalles = detalles;
+        this.detalle = detalle;
         this.documentosComerciales = documentosComerciales;
         this.egreso = egreso;
     }

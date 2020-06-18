@@ -2,6 +2,9 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import usuario.Administrador;
+import usuario.ContraseniaDebilException;
+import usuario.Usuario;
 
 public class UsuarioTest {
 

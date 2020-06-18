@@ -2,18 +2,23 @@ package egreso;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.ArrayList;
+import java.util.List;
 import mediosDePago.MedioDePago;
 import presupuesto.Presupuesto;
+import usuario.Usuario;
 
 public class Egreso
 {
-    private ArrayList<DocComercial> documentosComerciales;
+    private List<DocComercial> documentosComerciales;
     private MedioDePago medioDePago;
     private String idProveedor;
-    private ArrayList<Item> items;
+    private List<Item> items;
     private Date fecha;
-    private ArrayList<Presupuesto> presupuestos;
+    private List<Presupuesto> presupuestos = null;
+    private  boolean requierePresupuesto = true;
+    private List<Usuario> revisores = null;
+
+    private static final int presupuestosRequeridos = 3;
 
     public BigDecimal totalEgreso()
     {
@@ -26,7 +31,16 @@ public class Egreso
         return total;
     }
 
-    public Egreso(ArrayList<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, ArrayList<Item> unosItems, Date unaFecha, ArrayList<Presupuesto> presupuestos)
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, List<Item> unosItems, Date unaFecha)
+    {
+        this.documentosComerciales = unosDC;
+        this.medioDePago = unMedioDePago;
+        this.idProveedor = unIdProveedor;
+        this.items = unosItems;
+        this.fecha = unaFecha;
+    }
+
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, List<Item> unosItems, Date unaFecha, List<Presupuesto> presupuestos)
     {
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
@@ -34,5 +48,25 @@ public class Egreso
         this.items = unosItems;
         this.fecha = unaFecha;
         this.presupuestos = presupuestos;
+    }
+
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, List<Item> unosItems, Date unaFecha, boolean requierePresupuesto)
+    {
+        this.documentosComerciales = unosDC;
+        this.medioDePago = unMedioDePago;
+        this.idProveedor = unIdProveedor;
+        this.items = unosItems;
+        this.fecha = unaFecha;
+        this.requierePresupuesto = requierePresupuesto;
+    }
+
+    public void agregarPresupuesto(Presupuesto presupuesto) throws Exception {
+        if(requierePresupuesto){
+            presupuestos.add(presupuesto);
+        }else throw new Exception("El egreso no requiere presupuesto");
+    }
+
+    public void agregarRevisor(Usuario usuario){
+        revisores.add(usuario);
     }
 }
