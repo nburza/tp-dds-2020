@@ -66,7 +66,32 @@ public class Egreso
         }else throw new Exception("El egreso no requiere presupuesto");
     }
 
-    public void agregarRevisor(Usuario usuario){
+    public boolean esValido()
+    {
+        if(requierePresupuesto)
+        {
+            if(presupuestos.size() >= presupuestosRequeridos) //validación "A"
+            {
+                if(validarProveedor()) //validación "C"
+                {
+                    for (Presupuesto presupuesto : presupuestos) { //validación "B"
+                        if (presupuesto.getDetalle().equals(items))
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+        else return true;
+    }
+
+    public List<Usuario> getRevisores()
+    {
+        return revisores;
+    }
+
+    public void agregarRevisor(Usuario usuario)
+    {
         revisores.add(usuario);
     }
 }

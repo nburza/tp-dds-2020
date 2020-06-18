@@ -18,4 +18,9 @@ public class Presupuesto {
         this.documentosComerciales = documentosComerciales;
         this.egreso = egreso;
     }
+
+    public List<Item> getDetalle()
+    {
+        return detalle;
+    }
 }

@@ -1,9 +1,12 @@
 package egreso;
 
+import usuario.Usuario;
+
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
-class RepositorioDeEgresos{
+public class RepositorioDeEgresos{
 
     private List<Egreso> egresos;
 
@@ -29,14 +32,35 @@ class RepositorioDeEgresos{
         egresosPendientes.remove(unEgreso);
     }
 
-    //list<egresos> getAll(){return egresos}
+    public Hashtable<Egreso, String> getAll(Usuario unUsuario)
+    {
+        Hashtable<Egreso, String> DiccionarioDeValidaciones = new Hashtable<>();
+
+        for(Egreso egresoPendiente : egresosPendientes)
+        {
+            if(egresoPendiente.getRevisores().contains(unUsuario))
+            {
+                DiccionarioDeValidaciones.put(egresoPendiente, "Inválido");
+            }
+        }
+        for(Egreso egreso : egresos)
+        {
+            if(egreso.getRevisores().contains(unUsuario))
+            {
+                DiccionarioDeValidaciones.put(egreso, "Válido");
+            }
+        }
+        return DiccionarioDeValidaciones;
+    }
 
     public void validarTodos() throws Exception
     {
         if(egresosPendientes.size() == 0)
         {
-            for (Egreso egresoPendiente : egresosPendientes) {
-                if (egresoPendiente.esValido()) {
+            for (Egreso egresoPendiente : egresosPendientes)
+            {
+                if (egresoPendiente.esValido())
+                {
                     agregarEgresos(egresoPendiente);
                     eliminarEgresosPendientes(egresoPendiente);
                 }
