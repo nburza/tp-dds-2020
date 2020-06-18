@@ -19,6 +19,10 @@ public class Presupuesto {
         this.egreso = egreso;
     }
 
+    public BigDecimal getTotal() {
+        return total;
+    }
+
     public List<Item> getDetalle()
     {
         return detalle;

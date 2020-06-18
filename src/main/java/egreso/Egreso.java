@@ -5,13 +5,14 @@ import java.util.Date;
 import java.util.List;
 import mediosDePago.MedioDePago;
 import presupuesto.Presupuesto;
+import proveedor.Proveedor;
 import usuario.Usuario;
 
 public class Egreso
 {
     private List<DocComercial> documentosComerciales;
     private MedioDePago medioDePago;
-    private String idProveedor;
+    private Proveedor proveedor;
     private List<Item> items;
     private Date fecha;
     private List<Presupuesto> presupuestos = null;
@@ -31,30 +32,30 @@ public class Egreso
         return total;
     }
 
-    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, List<Item> unosItems, Date unaFecha)
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha)
     {
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
-        this.idProveedor = unIdProveedor;
+        this.proveedor = proveedor;
         this.items = unosItems;
         this.fecha = unaFecha;
     }
 
-    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, List<Item> unosItems, Date unaFecha, List<Presupuesto> presupuestos)
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha, List<Presupuesto> presupuestos)
     {
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
-        this.idProveedor = unIdProveedor;
+        this.proveedor = proveedor;
         this.items = unosItems;
         this.fecha = unaFecha;
         this.presupuestos = presupuestos;
     }
 
-    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, String unIdProveedor, List<Item> unosItems, Date unaFecha, boolean requierePresupuesto)
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha, boolean requierePresupuesto)
     {
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
-        this.idProveedor = unIdProveedor;
+        this.proveedor = proveedor;
         this.items = unosItems;
         this.fecha = unaFecha;
         this.requierePresupuesto = requierePresupuesto;
@@ -93,5 +94,32 @@ public class Egreso
     public void agregarRevisor(Usuario usuario)
     {
         revisores.add(usuario);
+    }
+
+    public boolean validarProveedor(){
+        BigDecimal menorValorPresupuesto = this.presupuestoMenorValor();
+        BigDecimal mayorValorPresupuesto = this.presupuestoMayorValor();
+        return (proveedor.getMenorValor() && this.totalEgreso().compareTo(menorValorPresupuesto) == 0) ||
+                (!proveedor.getMenorValor() && this.totalEgreso().compareTo(mayorValorPresupuesto) == 0);
+    }
+
+    public BigDecimal presupuestoMenorValor(){
+        BigDecimal valor = presupuestos.get(0).getTotal();
+        for (int i = 0; i < presupuestos.size(); i++){
+            if(valor.compareTo(presupuestos.get(i).getTotal()) == -1){
+                valor = presupuestos.get(i).getTotal();
+            }
+        }
+        return valor;
+    }
+
+    public BigDecimal presupuestoMayorValor(){
+        BigDecimal valor = new BigDecimal("0");
+        for (int i = 0; i < presupuestos.size(); i++){
+            if(valor.compareTo(presupuestos.get(i).getTotal()) == 1){
+                valor = presupuestos.get(i).getTotal();
+            }
+        }
+        return valor;
     }
 }
