@@ -1,6 +1,7 @@
 package egreso;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import mediosDePago.MedioDePago;
@@ -16,9 +17,9 @@ public class Egreso
     private Proveedor proveedor;
     private List<Item> items;
     private Date fecha;
-    private List<Presupuesto> presupuestos = null;
+    private List<Presupuesto> presupuestos = new ArrayList<>();
     private  boolean requierePresupuesto = true;
-    private List<Usuario> revisores = null;
+    private List<Usuario> revisores = new ArrayList<>();
     private Moneda moneda;
 
     private static final int presupuestosRequeridos = 3;
@@ -44,17 +45,6 @@ public class Egreso
         this.moneda = moneda;
     }
 
-    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha, List<Presupuesto> presupuestos, Moneda moneda)
-    {
-        this.documentosComerciales = unosDC;
-        this.medioDePago = unMedioDePago;
-        this.proveedor = proveedor;
-        this.items = unosItems;
-        this.fecha = unaFecha;
-        this.presupuestos = presupuestos;
-        this.moneda = moneda;
-    }
-
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha, boolean requierePresupuesto, Moneda moneda)
     {
         this.documentosComerciales = unosDC;
@@ -67,7 +57,7 @@ public class Egreso
     }
 
     public void agregarPresupuesto(Presupuesto presupuesto) throws Exception {
-        if(requierePresupuesto){
+        if(requierePresupuesto && presupuesto.getEgreso().equals(this)){
             presupuestos.add(presupuesto);
         }else throw new Exception("El egreso no requiere presupuesto");
     }
@@ -111,7 +101,7 @@ public class Egreso
     public BigDecimal presupuestoMenorValor(){
         BigDecimal valor = presupuestos.get(0).getTotal();
         for (int i = 0; i < presupuestos.size(); i++){
-            if(valor.compareTo(presupuestos.get(i).getTotal()) == -1){
+            if(valor.compareTo(presupuestos.get(i).getTotal()) == 1){
                 valor = presupuestos.get(i).getTotal();
             }
         }
@@ -121,7 +111,7 @@ public class Egreso
     public BigDecimal presupuestoMayorValor(){
         BigDecimal valor = new BigDecimal("0");
         for (int i = 0; i < presupuestos.size(); i++){
-            if(valor.compareTo(presupuestos.get(i).getTotal()) == 1){
+            if(valor.compareTo(presupuestos.get(i).getTotal()) == -1){
                 valor = presupuestos.get(i).getTotal();
             }
         }

@@ -1,7 +1,6 @@
 package egreso;
 
 import usuario.Usuario;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;

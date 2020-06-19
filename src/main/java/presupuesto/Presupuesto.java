@@ -3,6 +3,7 @@ package presupuesto;
 import egreso.DocComercial;
 import egreso.Egreso;
 import egreso.Item;
+import org.apache.commons.lang3.Validate;
 import proveedor.Moneda;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ public class Presupuesto {
     private Moneda moneda;
 
     public Presupuesto(BigDecimal total, List<Item> detalle, List<DocComercial> documentosComerciales, Egreso egreso, Moneda moneda){
+        Validate.notNull(egreso, "El egreso no puede ser nulo");
         this.total = total;
         this.detalle = detalle;
         this.documentosComerciales = documentosComerciales;
@@ -26,9 +28,9 @@ public class Presupuesto {
     public BigDecimal getTotal() {
         return total;
     }
-
     public List<Item> getDetalle()
     {
         return detalle;
     }
+    public Egreso getEgreso() {return egreso; }
 }
