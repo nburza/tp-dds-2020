@@ -119,4 +119,8 @@ public class Egreso
         }
         return valor;
     }
+
+    public List<Item> getItems() {
+        return items;
+    }
 }

@@ -1,4 +1,4 @@
-/*import egreso.DocComercial;
+import egreso.DocComercial;
 import egreso.Egreso;
 import egreso.Item;
 import egreso.TipoDocComercial;
@@ -10,9 +10,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import proveedor.Moneda;
 import presupuesto.Presupuesto;
+import proveedor.Proveedor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EgresoTest {
     @Test
@@ -48,10 +50,14 @@ public class EgresoTest {
         MedioDePago pagoFacil = new Efectivo("pagoFacil", null);
     }
 
-    Egreso egreso1 = new Egreso(null, null, null, null,null,true,null);
-    Presupuesto presu1 = new Presupuesto(new BigDecimal("100"),null,null,egreso1,null);
-    Presupuesto presu2 = new Presupuesto(new BigDecimal("200"),null,null,egreso1,null);
-    Presupuesto presu3 = new Presupuesto(new BigDecimal("300"),null,null,egreso1,null);
+    Proveedor provedor = new Proveedor(null,null,null,true);
+    Egreso egreso1 = new Egreso(null, null, provedor, new ArrayList<>(),null,null);
+    Item item1 = new Item(null, new BigDecimal("100"), 1, null);
+    Item item2 = new Item(null, new BigDecimal("200"), 1, null);
+    Item item3 = new Item(null, new BigDecimal("300"), 1, null);
+    Presupuesto presu1 = new Presupuesto(new ArrayList<>(Arrays.asList(item1)),null,egreso1,null);
+    Presupuesto presu2 = new Presupuesto(new ArrayList<>(Arrays.asList(item2)),null,egreso1,null);
+    Presupuesto presu3 = new Presupuesto(new ArrayList<>(Arrays.asList(item3)),null,egreso1,null);
     @Test
     public void obtengoElMenorValorDePresupuesto() throws Exception {
         egreso1.agregarPresupuesto(presu1);
@@ -66,4 +72,34 @@ public class EgresoTest {
         egreso1.agregarPresupuesto(presu3);
         Assert.assertEquals(egreso1.presupuestoMenorValor(), BigDecimal.valueOf(100));
     }
-}*/
+
+    @Test(expected = NullPointerException.class)
+    public void noSePuedeCrearUnPresupuestoSinEgreso() {
+        Presupuesto presu = new Presupuesto(null,null,null,null);
+    }
+
+    @Test
+    public void cantPresupuestosMenorAlRequerido() throws Exception{
+        egreso1.agregarPresupuesto(presu1);
+        egreso1.agregarPresupuesto(presu2);
+        Assert.assertFalse(egreso1.esValido());
+    }
+
+    @Test
+    public void presupuestoMalElegido() throws Exception{
+        egreso1.agregarPresupuesto(presu1);
+        egreso1.agregarPresupuesto(presu2);
+        egreso1.agregarPresupuesto(presu3);
+        egreso1.getItems().add(new Item(null, new BigDecimal("200"), 1, null));
+        Assert.assertFalse(egreso1.esValido());
+    }
+
+    @Test
+    public void itemsDistintosAlDetalle() throws Exception{
+        egreso1.agregarPresupuesto(presu1);
+        egreso1.agregarPresupuesto(presu2);
+        egreso1.agregarPresupuesto(presu3);
+        egreso1.getItems().add(new Item(null, new BigDecimal("100"), 1, null));
+        Assert.assertFalse(egreso1.esValido());
+    }
+}
