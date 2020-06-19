@@ -1,4 +1,4 @@
-import egreso.DocComercial;
+/*import egreso.DocComercial;
 import egreso.Egreso;
 import egreso.Item;
 import egreso.TipoDocComercial;
@@ -43,7 +43,7 @@ public class EgresoTest {
         MedioDePago visa = new TarjetaCredito("visa", 1234567890987654L);
     }
 
-    @Test(expected = IdentificadorNullException.class)
+  @Test(expected = IdentificadorNullException.class)
     public void elIdentificadorDelMedioPagoNoPuedeSerNull() {
         MedioDePago pagoFacil = new Efectivo("pagoFacil", null);
     }
@@ -66,4 +66,4 @@ public class EgresoTest {
         egreso1.agregarPresupuesto(presu3);
         Assert.assertEquals(egreso1.presupuestoMenorValor(), BigDecimal.valueOf(100));
     }
-}
+}*/

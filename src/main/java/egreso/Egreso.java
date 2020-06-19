@@ -12,10 +12,10 @@ import usuario.Usuario;
 
 public class Egreso
 {
-    private List<DocComercial> documentosComerciales;
+    private List<DocComercial> documentosComerciales = new ArrayList<>();
     private MedioDePago medioDePago;
     private Proveedor proveedor;
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
     private Date fecha;
     private List<Presupuesto> presupuestos = new ArrayList<>();
     private  boolean requierePresupuesto = true;
@@ -43,6 +43,7 @@ public class Egreso
         this.items = unosItems;
         this.fecha = unaFecha;
         this.moneda = moneda;
+        RepositorioDeEgresos.getInstance().agregarEgresosPendientes(this);
     }
 
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha, boolean requierePresupuesto, Moneda moneda)
@@ -54,10 +55,11 @@ public class Egreso
         this.fecha = unaFecha;
         this.requierePresupuesto = requierePresupuesto;
         this.moneda = moneda;
+        RepositorioDeEgresos.getInstance().agregarEgresosPendientes(this);
     }
 
     public void agregarPresupuesto(Presupuesto presupuesto) throws Exception {
-        if(requierePresupuesto && presupuesto.getEgreso().equals(this)){
+        if(requierePresupuesto){
             presupuestos.add(presupuesto);
         }else throw new Exception("El egreso no requiere presupuesto");
     }
@@ -99,10 +101,10 @@ public class Egreso
     }
 
     public BigDecimal presupuestoMenorValor(){
-        BigDecimal valor = presupuestos.get(0).getTotal();
+        BigDecimal valor = presupuestos.get(0).totalPresupuesto();
         for (int i = 0; i < presupuestos.size(); i++){
-            if(valor.compareTo(presupuestos.get(i).getTotal()) == 1){
-                valor = presupuestos.get(i).getTotal();
+            if(valor.compareTo(presupuestos.get(i).totalPresupuesto()) == 1){
+                valor = presupuestos.get(i).totalPresupuesto();
             }
         }
         return valor;
@@ -111,8 +113,8 @@ public class Egreso
     public BigDecimal presupuestoMayorValor(){
         BigDecimal valor = new BigDecimal("0");
         for (int i = 0; i < presupuestos.size(); i++){
-            if(valor.compareTo(presupuestos.get(i).getTotal()) == -1){
-                valor = presupuestos.get(i).getTotal();
+            if(valor.compareTo(presupuestos.get(i).totalPresupuesto()) == -1){
+                valor = presupuestos.get(i).totalPresupuesto();
             }
         }
         return valor;

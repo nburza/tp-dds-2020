@@ -37,22 +37,22 @@ public class Main {
         items2.add(item1);
         items2.add(item3);
         List<Item> items3 = new ArrayList<Item>();
-        items2.add(item2);
-        items2.add(item3);
+        items3.add(item2);
+        items3.add(item3);
+        List<Item> items4 = new ArrayList<Item>();
+        items4.add(item1);
+        items4.add(item3);
 
         //Instancio egresos de prueba y calculo sus totales
         Egreso egreso1 = new Egreso(null, null, proveedor1, items1, null, null);
         Egreso egreso2 = new Egreso(null, null, proveedor1, items2, null, null);
         Egreso egreso3 = new Egreso(null, null, proveedor1, items3, null, null);
-        Egreso egreso4 = new Egreso(null, null, proveedor1, items1, null, false ,null);
-        BigDecimal total1 = egreso1.totalEgreso(); //total = 700
-        BigDecimal total2 = egreso2.totalEgreso(); //total = 500
-        BigDecimal total3 = egreso3.totalEgreso(); //total = 650
+        Egreso egreso4 = new Egreso(null, null, proveedor1, items4, null, false ,null);
 
         //Instancio presupuestos de prueba
-        Presupuesto presupuesto1 = new Presupuesto(total1, items1, null, egreso1, null);
-        Presupuesto presupuesto2 = new Presupuesto(total2, items2, null, egreso2, null);
-        Presupuesto presupuesto3 = new Presupuesto(total3, items3, null, egreso3, null);
+        Presupuesto presupuesto1 = new Presupuesto(items1, null, egreso1, null);
+        Presupuesto presupuesto2 = new Presupuesto(items2, null, egreso2, null);
+        Presupuesto presupuesto3 = new Presupuesto(items3, null, egreso3, null);
 
         //Cargo presupuestos a egresos
 

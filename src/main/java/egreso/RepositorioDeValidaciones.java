@@ -7,15 +7,12 @@ import java.util.List;
 
 public class RepositorioDeValidaciones{
 
-    private Hashtable<Egreso, String> validaciones;
-    private static final RepositorioDeValidaciones instance = new RepositorioDeValidaciones(null);
+    private Hashtable<Egreso, String> validaciones = new Hashtable<>();
+    private static final RepositorioDeValidaciones instance = new RepositorioDeValidaciones();
 
     public static RepositorioDeValidaciones getInstance(){return  instance;}
 
-    private RepositorioDeValidaciones(Hashtable<Egreso, String> validaciones)
-    {
-        this.validaciones = validaciones;
-    }
+    private RepositorioDeValidaciones(){ }
 
     public Hashtable<Egreso, String> getAll(Usuario unUsuario)
     {
@@ -40,16 +37,18 @@ public class RepositorioDeValidaciones{
 
     public void validarTodos() throws Exception
     {
-        if(RepositorioDeEgresos.getInstance().getEgresosPendientes().size() == 0)
+        if(RepositorioDeEgresos.getInstance().getEgresosPendientes().size() != 0)
         {
+            List<Egreso> egresosPendientesAUX = new ArrayList<>();
             for (Egreso egresoPendiente : RepositorioDeEgresos.getInstance().getEgresosPendientes())
             {
                 if (egresoPendiente.esValido())
                 {
                     RepositorioDeEgresos.getInstance().agregarEgresos(egresoPendiente);
-                    RepositorioDeEgresos.getInstance().eliminarEgresosPendientes(egresoPendiente);
+                    egresosPendientesAUX.add(egresoPendiente);
                 }
             }
+            RepositorioDeEgresos.getInstance().getEgresosPendientes().removeAll(egresosPendientesAUX);
         }
         else throw new Exception("No existen egresos pendientes de validación");
     }
