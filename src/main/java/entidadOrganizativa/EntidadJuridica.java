@@ -1,5 +1,7 @@
 package entidadOrganizativa;
 import egreso.Egreso;
+import proveedor.DireccionPostal;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +10,12 @@ public abstract class EntidadJuridica implements Entidad {
     private String razonSocial;
     private String nombreFicticio;
     private int cuit;
-    private String direccionPostal;
+    private DireccionPostal direccionPostal;
     private Integer codigoIncripcionIGJ;
     private List<Egreso> egresos;
-
     private List<EntidadBase> listaEntidades = new ArrayList<>();
 
-    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, String direccionPostal, List<Egreso> egresos) {
+    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, List<Egreso> egresos) {
         this.razonSocial = razonSocial;
         this.nombreFicticio = nombreFicticio;
         this.cuit = cuit;
@@ -23,7 +24,7 @@ public abstract class EntidadJuridica implements Entidad {
         this.egresos = egresos;
     }
 
-    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, String direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
+    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
         this.razonSocial = razonSocial;
         this.nombreFicticio = nombreFicticio;
         this.cuit = cuit;
