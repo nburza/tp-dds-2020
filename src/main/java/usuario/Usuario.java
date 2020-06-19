@@ -23,7 +23,7 @@ public class Usuario {
         this.contraseniaHasheada = hashearContrasenia(contrasenia);
     }
 
-    public Hashtable<Egreso, String> consultarBandeja(RepositorioDeEgresos repositorioDeEgresos)
+    public Hashtable<Egreso, String> consultarBandeja()
     {
         return RepositorioDeValidaciones.getInstance().getAll(this);
     }

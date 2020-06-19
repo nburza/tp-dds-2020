@@ -77,7 +77,7 @@ public class Main {
         RepositorioDeValidaciones.getInstance().validarTodos();
 
         //Usuario consulta bandeja de entrada
-        System.out.println(usuario1.consultarBandeja(RepositorioDeEgresos.getInstance()));
-        System.out.println(usuario2.consultarBandeja(RepositorioDeEgresos.getInstance()));
+        System.out.println(usuario1.consultarBandeja());
+        System.out.println(usuario2.consultarBandeja());
     }
 }
