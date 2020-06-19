@@ -8,6 +8,7 @@ import mediosDePago.MedioDePago;
 import mediosDePago.TarjetaCredito;
 import org.junit.Assert;
 import org.junit.Test;
+import proveedor.Moneda;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,16 +16,18 @@ import java.util.ArrayList;
 public class EgresoTest {
     @Test
     public void autenticoEgresoCorrecto() {
-        Item item = new Item(null, new BigDecimal("100"), 1);
+        Moneda moneda = new Moneda("ARS", "$", "pesos");
+        Item item = new Item(null, new BigDecimal("100"), 1, moneda);
         ArrayList<Item> items = new ArrayList<Item>();
         items.add(item);
-        Egreso egreso = new Egreso(null, null, null, items, null);
+        Egreso egreso = new Egreso(null, null, null, items, null, moneda);
         Assert.assertEquals(egreso.totalEgreso(), BigDecimal.valueOf(100));
     }
 
     @Test
     public void autenticoItemCorrecto() {
-        Item item = new Item("lavandina", new BigDecimal("150"), 2);
+        Moneda moneda = new Moneda("ARS", "$", "pesos");
+        Item item = new Item("lavandina", new BigDecimal("150"), 2, moneda);
         Assert.assertEquals(item.precioTotal(), BigDecimal.valueOf(300));
     }
 
