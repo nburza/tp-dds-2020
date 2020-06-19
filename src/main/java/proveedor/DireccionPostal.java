@@ -13,4 +13,20 @@ public class DireccionPostal {
         this.ciudad = ciudad;
         this.direccion = direccion;
     }
+
+    public Pais getPais() {
+        return pais;
+    }
+
+    public Provincia getProvincia() {
+        return provincia;
+    }
+
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
 }

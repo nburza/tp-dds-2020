@@ -24,6 +24,10 @@ public class Provincia {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public List<Ciudad> getCiudades() {
         return cities;
     }
