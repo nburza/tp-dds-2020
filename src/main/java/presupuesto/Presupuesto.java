@@ -21,7 +21,6 @@ public class Presupuesto {
         this.documentosComerciales = documentosComerciales;
         this.egreso = egreso;
         this.moneda = moneda;
-        Validate.notNull(egreso, "El egreso no puede ser nulo");
     }
 
     public BigDecimal totalPresupuesto() {
