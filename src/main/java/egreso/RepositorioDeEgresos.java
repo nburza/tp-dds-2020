@@ -1,7 +1,6 @@
 package egreso;
 
 import usuario.Usuario;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -9,8 +8,16 @@ import java.util.List;
 public class RepositorioDeEgresos{
 
     private List<Egreso> egresos;
-
     private List<Egreso> egresosPendientes;
+    private static final RepositorioDeEgresos instance = new RepositorioDeEgresos(null, null);
+
+    public static RepositorioDeEgresos getInstance(){return  instance;}
+
+    private RepositorioDeEgresos(List<Egreso> egresos, List<Egreso> egresosPendientes)
+    {
+        this.egresos = egresos;
+        this.egresosPendientes = egresosPendientes;
+    }
 
     public void agregarEgresos(Egreso unEgreso)
     {
@@ -32,40 +39,11 @@ public class RepositorioDeEgresos{
         egresosPendientes.remove(unEgreso);
     }
 
-    public Hashtable<Egreso, String> getAll(Usuario unUsuario)
-    {
-        Hashtable<Egreso, String> DiccionarioDeValidaciones = new Hashtable<>();
-
-        for(Egreso egresoPendiente : egresosPendientes)
-        {
-            if(egresoPendiente.getRevisores().contains(unUsuario))
-            {
-                DiccionarioDeValidaciones.put(egresoPendiente, "Inválido");
-            }
-        }
-        for(Egreso egreso : egresos)
-        {
-            if(egreso.getRevisores().contains(unUsuario))
-            {
-                DiccionarioDeValidaciones.put(egreso, "Válido");
-            }
-        }
-        return DiccionarioDeValidaciones;
+    public List<Egreso> getEgresos() {
+        return egresos;
     }
 
-    public void validarTodos() throws Exception
-    {
-        if(egresosPendientes.size() == 0)
-        {
-            for (Egreso egresoPendiente : egresosPendientes)
-            {
-                if (egresoPendiente.esValido())
-                {
-                    agregarEgresos(egresoPendiente);
-                    eliminarEgresosPendientes(egresoPendiente);
-                }
-            }
-        }
-        else throw new Exception("No existen egresos pendientes de validación");
+    public List<Egreso> getEgresosPendientes() {
+        return egresosPendientes;
     }
 }

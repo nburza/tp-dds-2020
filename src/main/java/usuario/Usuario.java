@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
 import egreso.RepositorioDeEgresos;
+import egreso.RepositorioDeValidaciones;
 
 public class Usuario {
 
@@ -24,7 +25,7 @@ public class Usuario {
 
     public Hashtable<Egreso, String> consultarBandeja(RepositorioDeEgresos repositorioDeEgresos)
     {
-        return repositorioDeEgresos.getAll(this);
+        return RepositorioDeValidaciones.getInstance().getAll(this);
     }
     
     private void validarContrasenia(String nombreUsuario, String contrasenia) throws ClassNotFoundException {

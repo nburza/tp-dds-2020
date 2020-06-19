@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import mediosDePago.MedioDePago;
 import presupuesto.Presupuesto;
+import proveedor.Moneda;
 import proveedor.Proveedor;
 import usuario.Usuario;
 
@@ -19,6 +20,7 @@ public class Egreso
     private List<Presupuesto> presupuestos = new ArrayList<>();
     private  boolean requierePresupuesto = true;
     private List<Usuario> revisores = new ArrayList<>();
+    private Moneda moneda;
 
     private static final int presupuestosRequeridos = 3;
 
@@ -33,16 +35,17 @@ public class Egreso
         return total;
     }
 
-    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha)
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha, Moneda moneda)
     {
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
         this.proveedor = proveedor;
         this.items = unosItems;
         this.fecha = unaFecha;
+        this.moneda = moneda;
     }
 
-    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha, boolean requierePresupuesto)
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, Proveedor proveedor, List<Item> unosItems, Date unaFecha, boolean requierePresupuesto, Moneda moneda)
     {
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
@@ -50,6 +53,7 @@ public class Egreso
         this.items = unosItems;
         this.fecha = unaFecha;
         this.requierePresupuesto = requierePresupuesto;
+        this.moneda = moneda;
     }
 
     public void agregarPresupuesto(Presupuesto presupuesto) throws Exception {

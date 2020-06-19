@@ -8,6 +8,8 @@ import mediosDePago.MedioDePago;
 import mediosDePago.TarjetaCredito;
 import org.junit.Assert;
 import org.junit.Test;
+import proveedor.Moneda;
+import presupuesto.Presupuesto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,16 +17,18 @@ import java.util.ArrayList;
 public class EgresoTest {
     @Test
     public void autenticoEgresoCorrecto() {
-        Item item = new Item(null, new BigDecimal("100"), 1);
+        Moneda moneda = new Moneda("ARS", "$", "pesos");
+        Item item = new Item(null, new BigDecimal("100"), 1, moneda);
         ArrayList<Item> items = new ArrayList<Item>();
         items.add(item);
-        Egreso egreso = new Egreso(null, null, null, items, null);
+        Egreso egreso = new Egreso(null, null, null, items, null, moneda);
         Assert.assertEquals(egreso.totalEgreso(), BigDecimal.valueOf(100));
     }
 
     @Test
     public void autenticoItemCorrecto() {
-        Item item = new Item("lavandina", new BigDecimal("150"), 2);
+        Moneda moneda = new Moneda("ARS", "$", "pesos");
+        Item item = new Item("lavandina", new BigDecimal("150"), 2, moneda);
         Assert.assertEquals(item.precioTotal(), BigDecimal.valueOf(300));
     }
 
@@ -42,5 +46,24 @@ public class EgresoTest {
     @Test(expected = IdentificadorNullException.class)
     public void elIdentificadorDelMedioPagoNoPuedeSerNull() {
         MedioDePago pagoFacil = new Efectivo("pagoFacil", null);
+    }
+
+    Egreso egreso1 = new Egreso(null, null, null, null,null,true,null);
+    Presupuesto presu1 = new Presupuesto(new BigDecimal("100"),null,null,egreso1,null);
+    Presupuesto presu2 = new Presupuesto(new BigDecimal("200"),null,null,egreso1,null);
+    Presupuesto presu3 = new Presupuesto(new BigDecimal("300"),null,null,egreso1,null);
+    @Test
+    public void obtengoElMenorValorDePresupuesto() throws Exception {
+        egreso1.agregarPresupuesto(presu1);
+        egreso1.agregarPresupuesto(presu2);
+        egreso1.agregarPresupuesto(presu3);
+        Assert.assertEquals(egreso1.presupuestoMenorValor(), BigDecimal.valueOf(100));
+    }
+    @Test
+    public void obtengoElMayorValorDePresupuesto() throws Exception {
+        egreso1.agregarPresupuesto(presu1);
+        egreso1.agregarPresupuesto(presu2);
+        egreso1.agregarPresupuesto(presu3);
+        Assert.assertEquals(egreso1.presupuestoMenorValor(), BigDecimal.valueOf(100));
     }
 }
