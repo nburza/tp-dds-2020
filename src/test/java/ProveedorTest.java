@@ -7,7 +7,7 @@ public class ProveedorTest {
     @Test
     public void crearProveedor() {
 
-        Proveedor proveedor = new Proveedor("Carlitos SRL", "20-40131392-4", null, true);
+        Proveedor proveedor = new Proveedor("Carlitos SRL", "20-40131392-4", null);
         Assert.assertNotNull(proveedor);
     }
 }

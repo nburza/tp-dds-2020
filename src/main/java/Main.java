@@ -1,14 +1,10 @@
 import egreso.Egreso;
 import egreso.Item;
-import egreso.RepositorioDeEgresos;
 import egreso.RepositorioDeValidaciones;
-import mediosDePago.MedioDePago;
-import mediosDePago.TarjetaCredito;
 import presupuesto.Presupuesto;
 import proveedor.Proveedor;
 import usuario.Usuario;
 import java.math.BigDecimal;
-import javax.lang.model.type.ArrayType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +17,7 @@ public class Main {
         Usuario usuario2 = new Usuario("usuario2", "calabaza");
 
         //Instancio proveedor de prueba
-        Proveedor proveedor1 = new Proveedor(null, null, null, true);
+        Proveedor proveedor1 = new Proveedor(null, null, null);
 
         //Instancio items de prueba
         Item item1 = new Item("harina", new BigDecimal("50"), 1, null);
@@ -44,31 +40,28 @@ public class Main {
         items4.add(item3);
 
         //Instancio egresos de prueba y calculo sus totales
-        Egreso egreso1 = new Egreso(null, null, proveedor1, items1, null, null);
-        Egreso egreso2 = new Egreso(null, null, proveedor1, items2, null, null);
-        Egreso egreso3 = new Egreso(null, null, proveedor1, items3, null, null);
-        Egreso egreso4 = new Egreso(null, null, proveedor1, items4, null, false ,null);
+        Egreso egreso1 = new Egreso(null, null, items1, null, null);
+        Egreso egreso2 = new Egreso(null, null, items2, null, null);
+        Egreso egreso3 = new Egreso(null, null, items3, null, null);
+        Egreso egreso4 = new Egreso(null, null, items4, null, false ,null);
 
         //Instancio presupuestos de prueba
-        Presupuesto presupuesto1 = new Presupuesto(items1, null, egreso1, null);
-        Presupuesto presupuesto2 = new Presupuesto(items2, null, egreso2, null);
-        Presupuesto presupuesto3 = new Presupuesto(items3, null, egreso3, null);
+        Presupuesto presupuesto1 = new Presupuesto(items1, null, egreso1, null, proveedor1);
+        Presupuesto presupuesto2 = new Presupuesto(items2, null, egreso2, null, proveedor1); //presupuestos válidos
+        Presupuesto presupuesto3 = new Presupuesto(items3, null, egreso3, null, proveedor1);
 
         //Cargo presupuestos a egresos
 
-        egreso1.agregarPresupuesto(presupuesto1); //presupuesto válido
         egreso1.agregarPresupuesto(presupuesto2);
         egreso1.agregarPresupuesto(presupuesto3);
 
         egreso2.agregarPresupuesto(presupuesto1);
-        egreso2.agregarPresupuesto(presupuesto2); //presupuesto válido
         egreso2.agregarPresupuesto(presupuesto3);
 
         egreso3.agregarPresupuesto(presupuesto2);
-        egreso3.agregarPresupuesto(presupuesto3); //presupuesto válido
 
         //Cargo revisores a egresos
-        egreso1.agregarRevisor(usuario1); //egreso inválido - el presupuesto no es el de menor valor!
+        egreso1.agregarRevisor(usuario1); //egreso válido!
         egreso2.agregarRevisor(usuario1); //egreso válido!
         egreso3.agregarRevisor(usuario2); //egreso inválido - presupuestos insuficientes!
         egreso4.agregarRevisor(usuario2); //egreso válido - no requiere presupuestos!

@@ -14,6 +14,4 @@ public class EntidadBase implements Entidad {
         this.razonSocial = razonSocial;
         this.egresos = egresos;
     }
-
-
 }

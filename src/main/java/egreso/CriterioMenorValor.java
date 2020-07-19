@@ -4,6 +4,7 @@ import presupuesto.Presupuesto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CriterioMenorValor extends CriterioCompra{
 
@@ -15,13 +16,9 @@ public class CriterioMenorValor extends CriterioCompra{
 
     public List<Presupuesto> presupuestosQueCumplen(List<Presupuesto> presupuestos)
     {
-        List<Presupuesto> presupuestosCorrectos = new ArrayList<Presupuesto>();
-        Presupuesto presupuestoCorrecto = presupuestos.get(0);
-        presupuestosCorrectos.add(presupuestoCorrecto);
-        for(Presupuesto presupuesto : presupuestos){
-            if (presupuesto.totalPresupuesto().compareTo(presupuestoCorrecto.totalPresupuesto()) < 0);
-                presupuestoCorrecto = presupuesto;
-        }
-        return presupuestosCorrectos;
+       return presupuestos.stream()
+               .filter(x -> x.esElMenor(presupuestos))
+               .collect(Collectors.toList());
     }
 }
+

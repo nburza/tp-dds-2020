@@ -21,6 +21,20 @@ public class Egreso
     private List<Usuario> revisores = new ArrayList<>();
     private Moneda moneda;
     private CriterioCompra criterioDeSeleccion = CriterioMenorValor.getInstance();
+    private EstadoValidacion estado = EstadoValidacion.PENDIENTE;
+
+    public EstadoValidacion getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoValidacion estado) {
+        this.estado = estado;
+    }
+
+
+
+
+
     private static final int presupuestosRequeridos = 3;
 
     public BigDecimal totalEgreso()
@@ -40,7 +54,7 @@ public class Egreso
         this.items = unosItems;
         this.fecha = unaFecha;
         this.moneda = moneda;
-        RepositorioDeEgresos.getInstance().agregarEgresosPendientes(this);
+        RepositorioDeEgresos.getInstance().agregarEgresos(this);
     }
 
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, Date unaFecha, boolean requierePresupuesto, Moneda moneda)
@@ -51,7 +65,7 @@ public class Egreso
         this.fecha = unaFecha;
         this.requierePresupuesto = requierePresupuesto;
         this.moneda = moneda;
-        RepositorioDeEgresos.getInstance().agregarEgresosPendientes(this);
+        RepositorioDeEgresos.getInstance().agregarEgresos(this);
     }
 
     public void agregarPresupuesto(Presupuesto presupuesto) throws Exception {
