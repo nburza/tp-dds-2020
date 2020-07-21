@@ -1,44 +1,56 @@
 package entidadOrganizativa;
+
 import egreso.Egreso;
+import entidadOrganizativa.exceptions.EntidadBaseNoIncorporableException;
+import entidadOrganizativa.exceptions.EntidadSinEntidadesBaseException;
 import proveedor.DireccionPostal;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class EntidadJuridica implements Entidad {
-    private String razonSocial;
-    private String nombreFicticio;
+public abstract class EntidadJuridica extends Entidad {
     private int cuit;
     private DireccionPostal direccionPostal;
     private Integer codigoIncripcionIGJ;
-    private List<Egreso> egresos;
     private List<EntidadBase> listaEntidades = new ArrayList<>();
 
     public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, List<Egreso> egresos) {
-        this.razonSocial = razonSocial;
-        this.nombreFicticio = nombreFicticio;
+        super(nombreFicticio, razonSocial, egresos);
         this.cuit = cuit;
         this.direccionPostal = direccionPostal;
         this.codigoIncripcionIGJ = null;
-        this.egresos = egresos;
     }
 
     public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
-        this.razonSocial = razonSocial;
-        this.nombreFicticio = nombreFicticio;
+        super(nombreFicticio, razonSocial, egresos);
         this.cuit = cuit;
         this.direccionPostal = direccionPostal;
         this.codigoIncripcionIGJ = codigoIncripcionIGJ;
-        this.egresos = egresos;
     }
 
-
-    public EntidadBase agregarEntidadBase(String nombreFicticio, String razonSocial, List<Egreso> egresos) {
-       //Lo ideal es que sea esta la unica forma de crear entidades base
-        EntidadBase entidad = new EntidadBase(nombreFicticio, razonSocial, egresos);
-        this.listaEntidades.add(entidad);
-        return entidad;
+    @Override
+    public BigDecimal totalEgresos() {
+        BigDecimal totalEntidadesBase = listaEntidades.stream()
+                .map(Entidad::totalEgresos)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return super.totalEgresos().add(totalEntidadesBase);
     }
 
+    public void agregarEntidadBase(EntidadBase entidadBase) {
+        CategoriaEntidad categoriaEntidadBase = entidadBase.getCategoriaEntidad();
+        if(categoriaEntidadBase != null) {
+            if(categoriaEntidadBase.getReglas().contains(Regla.ENTIDAD_BASE_NO_INCORPORABLE)) {
+                throw new EntidadBaseNoIncorporableException("No se puede incorporar esta entidad base");
+            }
+        }
+        CategoriaEntidad categoriaEntidadJuridica = this.getCategoriaEntidad();
+        if(categoriaEntidadJuridica != null) {
+            if(categoriaEntidadJuridica.getReglas().contains(Regla.ENTIDAD_JURIDICA_SIN_ENTIDADES_BASE)) {
+                throw new EntidadSinEntidadesBaseException("Esta entidad juridica no puede incorporar entidades base");
+            }
+        }
+        this.listaEntidades.add(entidadBase);
+    }
 }
