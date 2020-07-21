@@ -95,4 +95,12 @@ public class EgresoTest {
         egreso1.getItems().add(new Item(null, new BigDecimal("100"), 1, null));
         Assert.assertFalse(egreso1.esValido());
     }
+
+    @Test
+    public void calculoTotalDeUnEgreso() {
+        egreso1.getItems().add(item1);
+        egreso1.getItems().add(item2);
+        egreso1.getItems().add(item3);
+        Assert.assertEquals(BigDecimal.valueOf(600), egreso1.totalEgreso());
+    }
 }
