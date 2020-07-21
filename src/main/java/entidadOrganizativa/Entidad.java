@@ -1,11 +1,14 @@
 package entidadOrganizativa;
 
 import egreso.Egreso;
+import egreso.Etiqueta;
 import entidadOrganizativa.exceptions.MontoSuperadoException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class Entidad  {
 
@@ -48,5 +51,12 @@ public abstract class Entidad  {
             }
         }
         egresos.add(egreso);
+    }
+
+    public BigDecimal gastosTotalPorEtiqueta(Etiqueta etiqueta){
+        return egresos.stream()
+                .filter(egreso -> egreso.getEtiquetas().contains(etiqueta))
+                .map(Egreso::totalEgreso)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

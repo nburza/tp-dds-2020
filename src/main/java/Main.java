@@ -6,11 +6,11 @@ import proveedor.Proveedor;
 import usuario.Usuario;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        System.out.println("Prueba");
 
         //Instancio usuarios de prueba
         Usuario usuario1 = new Usuario("usuario1", "calabaza");

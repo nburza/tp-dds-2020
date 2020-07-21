@@ -1,4 +1,5 @@
 import egreso.Egreso;
+import egreso.Etiqueta;
 import egreso.Item;
 import entidadOrganizativa.*;
 import entidadOrganizativa.exceptions.EntidadBaseNoIncorporableException;
@@ -88,5 +89,14 @@ public class EntidadTest {
         organizacion.agregarEntidad(entidadBase);
         organizacion.configurarCategoriaAEntidad(entidadBase,categoriaEntidad);
         entidadJuridica.agregarEntidadBase(entidadBase);
+    }
+
+    @Test
+    public void totalEgresosConEtiqueta(){
+        Etiqueta etiqueta1 = new Etiqueta("Indumentaria");
+        egreso1.agregarEtiqueta(etiqueta1);
+        entidadJuridica.agregarEgreso(egreso1);
+        entidadJuridica.agregarEgreso(egreso2);
+        Assert.assertEquals(BigDecimal.valueOf(600),entidadJuridica.gastosTotalPorEtiqueta(etiqueta1));
     }
 }

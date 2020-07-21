@@ -22,30 +22,7 @@ public class Egreso
     private Moneda moneda;
     private CriterioCompra criterioDeSeleccion = CriterioMenorValor.getInstance();
     private EstadoValidacion estado = EstadoValidacion.PENDIENTE;
-
-    public EstadoValidacion getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoValidacion estado) {
-        this.estado = estado;
-    }
-
-
-
-
-
-    private static final int presupuestosRequeridos = 3;
-
-    public BigDecimal totalEgreso()
-    {
-        BigDecimal total = new BigDecimal("0");
-        BigDecimal totalFinal = items.stream()
-                .map(x -> total.add(x.precioTotal()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        return totalFinal;
-    }
+    private List<Etiqueta> etiquetas = new ArrayList<>();
 
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, Date unaFecha, Moneda moneda)
     {
@@ -68,10 +45,38 @@ public class Egreso
         RepositorioDeEgresos.getInstance().agregarEgresos(this);
     }
 
+    public EstadoValidacion getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoValidacion estado) {
+        this.estado = estado;
+    }
+
+    private static final int presupuestosRequeridos = 3;
+
+    public BigDecimal totalEgreso()
+    {
+        BigDecimal total = new BigDecimal("0");
+        BigDecimal totalFinal = items.stream()
+                .map(x -> total.add(x.precioTotal()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return totalFinal;
+    }
+
     public void agregarPresupuesto(Presupuesto presupuesto) throws Exception {
         if(requierePresupuesto){
             presupuestos.add(presupuesto);
         }else throw new Exception("El egreso no requiere presupuesto");
+    }
+
+    public void agregarEtiqueta(Etiqueta etiqueta){
+        etiquetas.add(etiqueta);
+    }
+
+    public void quitarEtiqueta(Etiqueta etiqueta){
+        etiquetas.remove(etiqueta);
     }
 
     public boolean esValido()
@@ -123,4 +128,13 @@ public class Egreso
     }
 
     public CriterioCompra getCriterioDeSeleccion() { return criterioDeSeleccion; }
+
+    public List<Etiqueta> getEtiquetas() {
+        return etiquetas;
+    }
+
+    public Date getFecha(){
+        return fecha;
+    }
+
 }

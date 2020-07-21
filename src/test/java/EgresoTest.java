@@ -12,6 +12,7 @@ import proveedor.Proveedor;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class EgresoTest {
 
@@ -57,6 +58,16 @@ public class EgresoTest {
     public void autenticoDocComercialCorrecto() {
         DocComercial docComercial = new DocComercial(153460, TipoDocComercial.factura);
         Assert.assertEquals(docComercial.getTipoDC(), TipoDocComercial.factura);
+    }
+
+    @Test
+    public void creoEgresoConEtiquetas(){
+        Etiqueta etiqueta = new Etiqueta("Amoblamiento");
+        List<Etiqueta>etiquetas = new ArrayList<>();
+        etiquetas.add(etiqueta);
+        Egreso egreso = new Egreso(null,null,null,null,null);
+        egreso.agregarEtiqueta(etiqueta);
+        Assert.assertTrue(egreso.getEtiquetas().contains(etiqueta));
     }
 
     @Test
