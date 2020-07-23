@@ -1,6 +1,7 @@
 package egreso;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -15,7 +16,7 @@ public class Egreso
     private List<DocComercial> documentosComerciales = new ArrayList<>();
     private MedioDePago medioDePago;
     private List<Item> items = new ArrayList<>();
-    private Date fecha;
+    private LocalDate fecha;
     private List<Presupuesto> presupuestos = new ArrayList<>();
     private boolean requierePresupuesto = true;
     private List<Usuario> revisores = new ArrayList<>();
@@ -24,7 +25,7 @@ public class Egreso
     private EstadoValidacion estado = EstadoValidacion.PENDIENTE;
     private List<Etiqueta> etiquetas = new ArrayList<>();
 
-    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, Date unaFecha, Moneda moneda)
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, LocalDate unaFecha, Moneda moneda)
     {
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
@@ -34,7 +35,7 @@ public class Egreso
         RepositorioDeEgresos.getInstance().agregarEgresos(this);
     }
 
-    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, Date unaFecha, boolean requierePresupuesto, Moneda moneda)
+    public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, LocalDate unaFecha, boolean requierePresupuesto, Moneda moneda)
     {
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
@@ -133,8 +134,19 @@ public class Egreso
         return etiquetas;
     }
 
-    public Date getFecha(){
+    public LocalDate getFecha(){
         return fecha;
+    }
+
+    public boolean estaEnElUltimoMes(){
+        if(fecha == null){
+            fecha = LocalDate.now();
+        }
+        return fecha.compareTo(LocalDate.now().minusDays(30))==1;
+    }
+
+    public boolean tieneLaEtiqueta(Etiqueta etiqueta){
+        return etiquetas.contains(etiqueta);
     }
 
 }

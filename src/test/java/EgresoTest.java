@@ -67,7 +67,7 @@ public class EgresoTest {
         etiquetas.add(etiqueta);
         Egreso egreso = new Egreso(null,null,null,null,null);
         egreso.agregarEtiqueta(etiqueta);
-        Assert.assertTrue(egreso.getEtiquetas().contains(etiqueta));
+        Assert.assertTrue(egreso.tieneLaEtiqueta(etiqueta));
     }
 
     @Test

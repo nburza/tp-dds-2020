@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.time.LocalDate;
+import java.util.*;
 
 public class EntidadTest {
 
@@ -95,8 +95,10 @@ public class EntidadTest {
     public void totalEgresosConEtiqueta(){
         Etiqueta etiqueta1 = new Etiqueta("Indumentaria");
         egreso1.agregarEtiqueta(etiqueta1);
+        egreso2.agregarEtiqueta(etiqueta1);
         entidadJuridica.agregarEgreso(egreso1);
         entidadJuridica.agregarEgreso(egreso2);
-        Assert.assertEquals(BigDecimal.valueOf(600),entidadJuridica.gastosTotalPorEtiqueta(etiqueta1));
+        Assert.assertEquals(BigDecimal.valueOf(1200),entidadJuridica.gastosTotalPorEtiqueta(etiqueta1, entidadJuridica.getEgresos()));
     }
+
 }

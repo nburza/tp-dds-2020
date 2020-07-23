@@ -7,6 +7,8 @@ import entidadOrganizativa.exceptions.MontoSuperadoException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,9 +55,23 @@ public abstract class Entidad  {
         egresos.add(egreso);
     }
 
-    public BigDecimal gastosTotalPorEtiqueta(Etiqueta etiqueta){
+    public List<Egreso> getEgresos(){
+        return  egresos;
+    }
+
+    public Hashtable<Etiqueta,BigDecimal> reporteMensualGastosPorEtiqueta(Etiqueta etiqueta){
+        Hashtable<Etiqueta, BigDecimal> reporte = new Hashtable<>();
+        List<Egreso> egresosUltimoMes = new ArrayList<>();
+        egresosUltimoMes = egresos.stream()
+                                    .filter(Egreso::estaEnElUltimoMes)
+                                    .collect(Collectors.toList());
+        reporte.put(etiqueta,gastosTotalPorEtiqueta(etiqueta, egresosUltimoMes));
+        return reporte;
+    }
+
+    public BigDecimal gastosTotalPorEtiqueta(Etiqueta etiqueta, List<Egreso> egresos){
         return egresos.stream()
-                .filter(egreso -> egreso.getEtiquetas().contains(etiqueta))
+                .filter(egreso -> egreso.tieneLaEtiqueta(etiqueta))
                 .map(Egreso::totalEgreso)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
