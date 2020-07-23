@@ -29,11 +29,11 @@ public class EntidadTest {
         organizacion = new Organizacion(new ArrayList<>(),new ArrayList<>());
         entidadJuridica = new OrganizacionSectorSocial(null,null,156,null,new ArrayList<>());
         entidadBase = new EntidadBase(null,null,new ArrayList<>());
-        egreso1 = new Egreso(null, null, new ArrayList<>(),null,null);
-        egreso2 = new Egreso(null, null, new ArrayList<>(),null,null);
-        item1 = new Item(null, new BigDecimal("100"), 1, null);
-        item2 = new Item(null, new BigDecimal("200"), 1, null);
-        item3 = new Item(null, new BigDecimal("300"), 1, null);
+        egreso1 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
+        egreso2 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
+        item1 = new Item(null, new BigDecimal("100"), 1, "Peso argentino");
+        item2 = new Item(null, new BigDecimal("200"), 1, "Peso argentino");
+        item3 = new Item(null, new BigDecimal("300"), 1, "Peso argentino");
         egreso1.getItems().add(item1);
         egreso1.getItems().add(item2);
         egreso1.getItems().add(item3);
