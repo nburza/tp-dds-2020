@@ -1,20 +1,20 @@
-package proveedor;
+package proveedor.DTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pais {
+public class PaisDTO {
 
     private String id;
     private String name;
-    private List<Provincia> states = new ArrayList<>();
+    private List<ProvinciaDTO> states = new ArrayList<>();
 
-    public Pais(String id, String name) {
+    public PaisDTO(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Pais(String id, String name, List<Provincia> states) {
+    public PaisDTO(String id, String name, List<ProvinciaDTO> states) {
         this.id = id;
         this.name = name;
         this.states = states;
@@ -28,7 +28,7 @@ public class Pais {
         return name;
     }
 
-    public List<Provincia> getProvincias() {
+    public List<ProvinciaDTO> getProvincias() {
         return states;
     }
 
@@ -40,7 +40,7 @@ public class Pais {
         this.name = name;
     }
 
-    public void setStates(List<Provincia> states) {
+    public void setStates(List<ProvinciaDTO> states) {
         this.states = states;
     }
 }

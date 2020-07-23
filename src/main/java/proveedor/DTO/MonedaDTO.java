@@ -1,12 +1,12 @@
-package proveedor;
+package proveedor.DTO;
 
-public class Moneda {
+public class MonedaDTO {
 
     private String id;
     private String symbol;
     private String description;
 
-    public Moneda(String id, String symbol, String description) {
+    public MonedaDTO(String id, String symbol, String description) {
         this.id = id;
         this.symbol = symbol;
         this.description = description;
