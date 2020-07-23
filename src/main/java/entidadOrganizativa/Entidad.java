@@ -56,10 +56,21 @@ public abstract class Entidad  {
         return  egresos;
     }
 
-    public Hashtable<Etiqueta,BigDecimal> reporteMensualGastosPorEtiqueta(Etiqueta etiqueta){
+    public Hashtable<Etiqueta,BigDecimal> reporteMensualGastosPorEtiqueta(){
         Hashtable<Etiqueta, BigDecimal> reporte = new Hashtable<>();
-        reporte.put(etiqueta,gastosTotalPorEtiqueta(etiqueta, egresosDelUltimoMes()));
+        etiquetasEnUso()
+                .forEach(etiqueta -> reporte.put(etiqueta,gastosTotalPorEtiqueta(etiqueta, egresosDelUltimoMes())));
         return reporte;
+    }
+
+    public List<Etiqueta> etiquetasEnUso(){
+        List<Etiqueta> etiquetas = new ArrayList<>();
+        egresos.stream()
+                .map(Egreso::getEtiquetas)
+                .forEach(etiquetas::addAll);
+        return etiquetas.stream()
+                        .distinct()
+                        .collect(Collectors.toList());
     }
 
     public List<Egreso> egresosDelUltimoMes(){

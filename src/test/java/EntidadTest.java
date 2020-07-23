@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EntidadTest {
 
@@ -99,6 +100,21 @@ public class EntidadTest {
         entidadJuridica.agregarEgreso(egreso1);
         entidadJuridica.agregarEgreso(egreso2);
         Assert.assertEquals(BigDecimal.valueOf(1200),entidadJuridica.gastosTotalPorEtiqueta(etiqueta1, entidadJuridica.getEgresos()));
+    }
+
+    @Test
+    public void reporteGastoSemanal(){
+        Etiqueta etiqueta1 = new Etiqueta("Indumentaria");
+        Etiqueta etiqueta2 = new Etiqueta("Amoblamiento");
+        egreso1.agregarEtiqueta(etiqueta1);
+        egreso1.agregarEtiqueta(etiqueta2);
+        egreso2.agregarEtiqueta(etiqueta1);
+        entidadJuridica.agregarEgreso(egreso1);
+        entidadJuridica.agregarEgreso(egreso2);
+        Hashtable<Etiqueta,BigDecimal> totalPorEtiqueta = new Hashtable<>();
+        totalPorEtiqueta.put(etiqueta1, BigDecimal.valueOf(1200));
+        totalPorEtiqueta.put(etiqueta2, BigDecimal.valueOf(600));
+        Assert.assertEquals(totalPorEtiqueta,entidadJuridica.reporteMensualGastosPorEtiqueta());
     }
 
 }
