@@ -58,12 +58,14 @@ public abstract class Entidad  {
 
     public Hashtable<Etiqueta,BigDecimal> reporteMensualGastosPorEtiqueta(Etiqueta etiqueta){
         Hashtable<Etiqueta, BigDecimal> reporte = new Hashtable<>();
-        List<Egreso> egresosUltimoMes = new ArrayList<>();
-        egresosUltimoMes = egresos.stream()
-                                    .filter(Egreso::estaEnElUltimoMes)
-                                    .collect(Collectors.toList());
-        reporte.put(etiqueta,gastosTotalPorEtiqueta(etiqueta, egresosUltimoMes));
+        reporte.put(etiqueta,gastosTotalPorEtiqueta(etiqueta, egresosDelUltimoMes()));
         return reporte;
+    }
+
+    public List<Egreso> egresosDelUltimoMes(){
+        return egresos.stream()
+                .filter(Egreso::estaEnElUltimoMes)
+                .collect(Collectors.toList());
     }
 
     public BigDecimal gastosTotalPorEtiqueta(Etiqueta etiqueta, List<Egreso> egresos){
