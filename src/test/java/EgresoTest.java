@@ -6,7 +6,6 @@ import mediosDePago.TarjetaCredito;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import proveedor.Moneda;
 import presupuesto.Presupuesto;
 import proveedor.Proveedor;
 import java.math.BigDecimal;
@@ -28,29 +27,27 @@ public class EgresoTest {
     @Before
     public void objetosTest() throws Exception {
         proveedor = new Proveedor(null,null,null);
-        egreso1 = new Egreso(null, null, new ArrayList<>(),null,null);
-        item1 = new Item(null, new BigDecimal("100"), 1, null);
-        item2 = new Item(null, new BigDecimal("200"), 1, null);
-        item3 = new Item(null, new BigDecimal("300"), 1, null);
-        presu1 = new Presupuesto(new ArrayList<>(Arrays.asList(item1)),null, egreso1, null, proveedor);
-        presu2 = new Presupuesto(new ArrayList<>(Arrays.asList(item2)),null, egreso1, null, proveedor);
-        presu3 = new Presupuesto(new ArrayList<>(Arrays.asList(item3)),null, egreso1, null, proveedor);
+        egreso1 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
+        item1 = new Item(null, new BigDecimal("100"), 1, "Peso argentino");
+        item2 = new Item(null, new BigDecimal("200"), 1, "Peso argentino");
+        item3 = new Item(null, new BigDecimal("300"), 1, "Peso argentino");
+        presu1 = new Presupuesto(new ArrayList<>(Arrays.asList(item1)),null, egreso1, "Peso argentino", proveedor);
+        presu2 = new Presupuesto(new ArrayList<>(Arrays.asList(item2)),null, egreso1, "Peso argentino", proveedor);
+        presu3 = new Presupuesto(new ArrayList<>(Arrays.asList(item3)),null, egreso1, "Peso argentino", proveedor);
     }
 
     @Test
     public void autenticoEgresoCorrecto() {
-        Moneda moneda = new Moneda("ARS", "$", "pesos");
-        Item item = new Item(null, new BigDecimal("100"), 1, moneda);
+        Item item = new Item(null, new BigDecimal("100"), 1, "Peso argentino");
         ArrayList<Item> items = new ArrayList<Item>();
         items.add(item);
-        Egreso egreso = new Egreso(null, null, items, null, moneda);
+        Egreso egreso = new Egreso(null, null, items, null, "Peso argentino");
         Assert.assertEquals(egreso.totalEgreso(), BigDecimal.valueOf(100));
     }
 
     @Test
     public void autenticoItemCorrecto() {
-        Moneda moneda = new Moneda("ARS", "$", "pesos");
-        Item item = new Item("lavandina", new BigDecimal("150"), 2, moneda);
+        Item item = new Item("lavandina", new BigDecimal("150"), 2, "Peso argentino");
         Assert.assertEquals(item.precioTotal(), BigDecimal.valueOf(300));
     }
 
@@ -65,7 +62,7 @@ public class EgresoTest {
         Etiqueta etiqueta = new Etiqueta("Amoblamiento");
         List<Etiqueta>etiquetas = new ArrayList<>();
         etiquetas.add(etiqueta);
-        Egreso egreso = new Egreso(null,null,null,null,null);
+        Egreso egreso = new Egreso(null,null,null,null,"Peso argentino");
         egreso.agregarEtiqueta(etiqueta);
         Assert.assertTrue(egreso.tieneLaEtiqueta(etiqueta));
     }
@@ -87,7 +84,7 @@ public class EgresoTest {
 
     @Test(expected = NullPointerException.class)
     public void noSePuedeCrearUnPresupuestoSinEgreso() throws Exception {
-        Presupuesto presu = new Presupuesto(null,null,null,null, null);
+        Presupuesto presu = new Presupuesto(null,null,null,"Peso argentino", null);
     }
 
     @Test
@@ -97,13 +94,13 @@ public class EgresoTest {
 
     @Test
     public void presupuestoMalElegido() throws Exception{
-        egreso1.getItems().add(new Item(null, new BigDecimal("200"), 1, null));
+        egreso1.getItems().add(new Item(null, new BigDecimal("200"), 1, "Peso argentino"));
         Assert.assertFalse(egreso1.esValido());
     }
 
     @Test
     public void itemsDistintosAlDetalle() throws Exception{
-        egreso1.getItems().add(new Item(null, new BigDecimal("100"), 1, null));
+        egreso1.getItems().add(new Item(null, new BigDecimal("100"), 1, "Peso argentino"));
         Assert.assertFalse(egreso1.esValido());
     }
 

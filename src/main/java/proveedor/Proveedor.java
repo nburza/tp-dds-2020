@@ -11,5 +11,17 @@ public class Proveedor {
         this.documento = documento;
         this.direccionPostal = direccionPostal;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public DireccionPostal getDireccionPostal() {
+        return direccionPostal;
+    }
 }
 

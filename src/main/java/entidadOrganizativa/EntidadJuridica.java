@@ -39,17 +39,11 @@ public abstract class EntidadJuridica extends Entidad {
     }
 
     public void agregarEntidadBase(EntidadBase entidadBase) {
-        CategoriaEntidad categoriaEntidadBase = entidadBase.getCategoriaEntidad();
-        if(categoriaEntidadBase != null) {
-            if(categoriaEntidadBase.getReglas().contains(Regla.ENTIDAD_BASE_NO_INCORPORABLE)) {
-                throw new EntidadBaseNoIncorporableException("No se puede incorporar esta entidad base");
-            }
+        if(entidadBase.getCategoriaEntidad() != null) {
+            entidadBase.getCategoriaEntidad().verificarSiEntidadBaseEsIncorporable();
         }
-        CategoriaEntidad categoriaEntidadJuridica = this.getCategoriaEntidad();
-        if(categoriaEntidadJuridica != null) {
-            if(categoriaEntidadJuridica.getReglas().contains(Regla.ENTIDAD_JURIDICA_SIN_ENTIDADES_BASE)) {
-                throw new EntidadSinEntidadesBaseException("Esta entidad juridica no puede incorporar entidades base");
-            }
+        if(this.getCategoriaEntidad() != null) {
+            this.getCategoriaEntidad().verificarSiEntidadJuridicaPuedeAgregarEntidadesBase();
         }
         this.listaEntidades.add(entidadBase);
     }

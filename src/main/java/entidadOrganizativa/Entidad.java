@@ -46,11 +46,8 @@ public abstract class Entidad  {
     }
 
     public void agregarEgreso(Egreso egreso) {
-        if(categoriaEntidad != null) {
-            if(categoriaEntidad.getReglas().contains(Regla.BLOQUEO_EGRESOS_POR_MONTO) &&
-                    superoMontoLimite(egreso)){
-                throw new MontoSuperadoException("No se puede agregar el egreso, se superó el monto limite");
-            }
+        if(this.categoriaEntidad != null) {
+            this.categoriaEntidad.verificarAgregadoDeEgreso(this, egreso);
         }
         egresos.add(egreso);
     }
