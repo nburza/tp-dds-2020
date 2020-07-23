@@ -4,23 +4,24 @@ import egreso.DocComercial;
 import egreso.Egreso;
 import egreso.Item;
 import org.apache.commons.lang3.Validate;
-import proveedor.Moneda;
+import proveedor.DTO.MonedaDTO;
 import proveedor.Proveedor;
+import proveedor.ValidadorDeMoneda;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class Presupuesto {
     private List<Item> detalle = new ArrayList<>();
     private List<DocComercial> documentosComerciales = new ArrayList<>();
-    private Moneda moneda;
+    private String moneda;
     private Proveedor proveedor;
 
-    public Presupuesto(List<Item> detalle, List<DocComercial> documentosComerciales, Egreso egreso, Moneda moneda, Proveedor proveedor) throws Exception {
+    public Presupuesto(List<Item> detalle, List<DocComercial> documentosComerciales, Egreso egreso, String moneda, Proveedor proveedor) throws Exception {
         Validate.notNull(egreso, "El egreso no puede ser nulo");
+        ValidadorDeMoneda.getInstance().validarMoneda(moneda);
         this.detalle = detalle;
         this.documentosComerciales = documentosComerciales;
         this.moneda = moneda;
