@@ -11,4 +11,7 @@ Respecto a la validación de presupuestos:
 
 Respecto a la relación entre usuarios revisores y egresos:
   Consideramos que fuera el usuario quien tenga una lista de egresos de los cuales es revisor, en lugar de tener el egreso una lista de usuarios revisores. Pero esto terminaría complejizando el algoritmo a la hora de consultar la bandeja de entrada.
-  
+
+Control de las monedas y las ubicaciones:
+  En este momento los tests estan quedando bastante acoplados a lo que viene desde la API de Mercadolibre.
+  ¿Se soluciona con mockito?
