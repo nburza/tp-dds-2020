@@ -15,3 +15,8 @@ Respecto a la relación entre usuarios revisores y egresos:
 Control de las monedas y las ubicaciones:
   En este momento los tests estan quedando bastante acoplados a lo que viene desde la API de Mercadolibre.
   ¿Se soluciona con mockito?
+
+ Candelarizacion de tares:
+  Encontramos dos formas de hacerlo, usando el ScheduledExecutorService o TimeTask con Calendar.
+  Nos quedamos con ScheduledExecutorService porque segun investigamos, es mejor en cuanto a performance que TimeTask.
+  Sin enbargo, con TimeTask es mas sencillo lograr ejecutar una tarea en un cierto dia, definiendo un calendar.
