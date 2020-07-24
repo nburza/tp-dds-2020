@@ -91,7 +91,7 @@ public class Main {
         ejecutorDeTareas.nuevaTarea(tareaEjemplo2);
         ejecutorDeTareas.nuevaTarea(TareaValidarEgreso.getInstance());
         ejecutorDeTareas.ejecutarTareas(2);
-        ejecutorDeTareas.ejecutarTareas(1,26,20,1);
+        ejecutorDeTareas.ejecutarTareas(20,24,10,1);
 
 
         /*

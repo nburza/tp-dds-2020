@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class EjecutorDeTareas {
 
     ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-    public List<Tarea> tareasPendientes = new ArrayList<>();
+    private List<Tarea> tareasPendientes = new ArrayList<>();
 
     public void nuevaTarea(Tarea tarea){
 
