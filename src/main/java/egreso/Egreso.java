@@ -148,6 +148,6 @@ public class Egreso
         if(fecha == null){
             fecha = LocalDate.now();
         }
-        return fecha.compareTo(LocalDate.now().minusDays(30))==1;
+        return fecha.compareTo(LocalDate.now().minusMonths(1))==1;
     }
 }

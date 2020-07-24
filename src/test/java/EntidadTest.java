@@ -21,6 +21,9 @@ public class EntidadTest {
     private EntidadBase entidadBase;
     private Egreso egreso1;
     private Egreso egreso2;
+    private Egreso egreso3;
+    private Etiqueta etiqueta1;
+    private Etiqueta etiqueta2;
     private Item item1;
     private Item item2;
     private Item item3;
@@ -32,6 +35,7 @@ public class EntidadTest {
         entidadBase = new EntidadBase(null,null,new ArrayList<>());
         egreso1 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
         egreso2 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
+        egreso3 = new Egreso(null, null, new ArrayList<>(),LocalDate.now().minusDays(60),"Peso argentino");
         item1 = new Item(null, new BigDecimal("100"), 1, "Peso argentino");
         item2 = new Item(null, new BigDecimal("200"), 1, "Peso argentino");
         item3 = new Item(null, new BigDecimal("300"), 1, "Peso argentino");
@@ -41,6 +45,13 @@ public class EntidadTest {
         egreso2.getItems().add(item1);
         egreso2.getItems().add(item2);
         egreso2.getItems().add(item3);
+        egreso3.getItems().add(item1);
+        etiqueta1 = new Etiqueta("Indumentaria");
+        etiqueta2 = new Etiqueta("Amoblamiento");
+        egreso1.agregarEtiqueta(etiqueta1);
+        egreso1.agregarEtiqueta(etiqueta2);
+        egreso2.agregarEtiqueta(etiqueta1);
+        egreso3.agregarEtiqueta(etiqueta1);
     }
 
     @Test
@@ -103,14 +114,20 @@ public class EntidadTest {
     }
 
     @Test
-    public void reporteGastoSemanal(){
-        Etiqueta etiqueta1 = new Etiqueta("Indumentaria");
-        Etiqueta etiqueta2 = new Etiqueta("Amoblamiento");
-        egreso1.agregarEtiqueta(etiqueta1);
-        egreso1.agregarEtiqueta(etiqueta2);
-        egreso2.agregarEtiqueta(etiqueta1);
+    public void reporteGastoSMensual(){
         entidadJuridica.agregarEgreso(egreso1);
         entidadJuridica.agregarEgreso(egreso2);
+        Hashtable<Etiqueta,BigDecimal> totalPorEtiqueta = new Hashtable<>();
+        totalPorEtiqueta.put(etiqueta1, BigDecimal.valueOf(1200));
+        totalPorEtiqueta.put(etiqueta2, BigDecimal.valueOf(600));
+        Assert.assertEquals(totalPorEtiqueta,entidadJuridica.reporteMensualGastosPorEtiqueta());
+    }
+
+    @Test
+    public void reporteGastoMensualConEgresosViejos(){
+        entidadJuridica.agregarEgreso(egreso1);
+        entidadJuridica.agregarEgreso(egreso2);
+        entidadJuridica.agregarEgreso(egreso3);
         Hashtable<Etiqueta,BigDecimal> totalPorEtiqueta = new Hashtable<>();
         totalPorEtiqueta.put(etiqueta1, BigDecimal.valueOf(1200));
         totalPorEtiqueta.put(etiqueta2, BigDecimal.valueOf(600));
