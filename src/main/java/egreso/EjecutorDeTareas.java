@@ -25,12 +25,7 @@ public class EjecutorDeTareas {
 
     public void ejecutarTareas(int hora, int minutos, int segundos, int diasIntervalo)
     {
-        Runnable tareas = new Runnable() {
-            @Override
-            public void run() {
-                tareasPendientes.forEach(Tarea::ejecutar);
-            }
-        };
+        Runnable tareas = () -> tareasPendientes.forEach(Tarea::ejecutar);
 
         long delay = siguienteEjecucion(hora,minutos,segundos);
         executorService.scheduleAtFixedRate(tareas,delay,TimeUnit.DAYS.toSeconds(diasIntervalo),TimeUnit.SECONDS);
@@ -38,12 +33,7 @@ public class EjecutorDeTareas {
 
     public void ejecutarTareas(int horas)
     {
-        Runnable tareas = new Runnable() {
-            @Override
-            public void run() {
-                tareasPendientes.forEach(Tarea::ejecutar);
-            }
-        };
+        Runnable tareas = () -> tareasPendientes.forEach(Tarea::ejecutar);
         executorService.scheduleAtFixedRate(tareas,1, TimeUnit.HOURS.toSeconds(horas), TimeUnit.SECONDS);
     }
 

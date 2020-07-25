@@ -39,12 +39,6 @@ public abstract class Entidad  {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private boolean superoMontoLimite(Egreso egreso) {
-        BigDecimal montoLimite = categoriaEntidad.getMontoLimite();
-        BigDecimal montoFuturo = totalEgresos().add(egreso.totalEgreso());
-        return montoFuturo.compareTo(montoLimite) > 0;
-    }
-
     public void agregarEgreso(Egreso egreso) {
         if(this.categoriaEntidad != null) {
             this.categoriaEntidad.verificarAgregadoDeEgreso(this, egreso);

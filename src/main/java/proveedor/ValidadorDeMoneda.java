@@ -15,8 +15,7 @@ public class ValidadorDeMoneda {
     public static ValidadorDeMoneda getInstance(){return  instance;}
 
     private ValidadorDeMoneda() {
-        if(monedasValidas.isEmpty())
-            this.monedasValidas = new ServicioUbicacionMercadoLibre().getMonedas();
+        this.monedasValidas = new ServicioUbicacionMercadoLibre().getMonedas();
     }
 
     private boolean esMonedaValida(String moneda) {

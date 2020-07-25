@@ -31,9 +31,9 @@ public class EgresoTest {
         item1 = new Item(null, new BigDecimal("100"), 1, "Peso argentino");
         item2 = new Item(null, new BigDecimal("200"), 1, "Peso argentino");
         item3 = new Item(null, new BigDecimal("300"), 1, "Peso argentino");
-        presu1 = new Presupuesto(new ArrayList<>(Arrays.asList(item1)),null, egreso1, "Peso argentino", proveedor);
-        presu2 = new Presupuesto(new ArrayList<>(Arrays.asList(item2)),null, egreso1, "Peso argentino", proveedor);
-        presu3 = new Presupuesto(new ArrayList<>(Arrays.asList(item3)),null, egreso1, "Peso argentino", proveedor);
+        presu1 = new Presupuesto(Arrays.asList(item1),null, egreso1, "Peso argentino", proveedor);
+        presu2 = new Presupuesto(Arrays.asList(item2),null, egreso1, "Peso argentino", proveedor);
+        presu3 = new Presupuesto(Arrays.asList(item3),null, egreso1, "Peso argentino", proveedor);
     }
 
     @Test

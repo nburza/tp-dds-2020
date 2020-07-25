@@ -3,17 +3,7 @@ import presupuesto.Presupuesto;
 import proveedor.Proveedor;
 import usuario.Usuario;
 import java.math.BigDecimal;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.chrono.Chronology;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -92,89 +82,8 @@ public class Main {
         ejecutorDeTareas.nuevaTarea(TareaValidarEgreso.getInstance());
         ejecutorDeTareas.ejecutarTareas(2);
         ejecutorDeTareas.ejecutarTareas(20,24,10,1);
-
-
-        /*
-        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-
-        Runnable realizarValidaciones = () -> {
-            try {
-                RepositorioDeValidaciones.getInstance().validarTodos();
-                System.out.println("Validaciones realizadas con exito.");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
-
-        ZonedDateTime hoy = ZonedDateTime.now(ZoneId.systemDefault());
-        ZonedDateTime siguienteEjecucion = hoy.withHour(5).withMinute(0).withSecond(0);
-        if (hoy.compareTo(siguienteEjecucion) > 0)
-        {
-            siguienteEjecucion = hoy.plusDays(1);
-        }
-
-        Duration duracion = Duration.between(hoy, siguienteEjecucion);
-        long delay = duracion.getSeconds();
-
-        ScheduledFuture<?> scheduledFuture = ses.scheduleAtFixedRate(realizarValidaciones,delay,TimeUnit.DAYS.toSeconds(1),TimeUnit.SECONDS);
-
-        while (true){
-            int count = 0
-            System.out.println("count :" + count);
-            Thread.sleep(1000);
-            if (count == 5) {
-                System.out.println("Count is 5, cancel the scheduledFuture!");
-                scheduledFuture.cancel(true);
-                ses.shutdown();
-                break;
-            }
-        }
-        */
-
-        /*
-        Calendar calendario = Calendar.getInstance();
-        calendario.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
-        calendario.set(Calendar.HOUR_OF_DAY, 16);
-        calendario.set(Calendar.MINUTE, 58);
-        calendario.set(Calendar.SECOND, 45);
-        calendario.set(Calendar.MILLISECOND, 0);
-        Date fecha = calendario.getTime();
-
-        TimerTask TareaValidaciones = new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    RepositorioDeValidaciones.getInstance().validarTodos();
-                    System.out.println("Validaciones Realizadas");
-
-                } catch (Exception ex) {
-                    System.out.println("error al realizar las validaciones " + ex.getMessage());
-                }
-            }
-        };
-
-        DateTimeFormatter  formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime fechaLimite = LocalDateTime.of(2020,7,22,18,53,0); //para frenar la tarea
-
-        Timer time = new Timer();
-        time.schedule(TareaValidaciones,fecha,TimeUnit.SECONDS.toMillis(1));
-
-        while (true)
-        {
-            //Esto es porque LocalDateTime.now() devuelve los segundos del dia con todos los decimales, y es casi
-            //imposible que maché
-            String stringHoy = LocalDateTime.now().format(formatter); //con este formato los segundos no tiene decimales
-            LocalDateTime hoy = LocalDateTime.parse(stringHoy, formatter); //podria comparar strings directamente, pero no
-            Thread.sleep(1000); //esto es para que cada un segundo se ejecute el while
-
-            if(hoy.isEqual(fechaLimite)){
-                time.cancel();
-                time.purge();
-                break;
-            }
-        }
-        */
     }
+
     public static class TareaEjemplo1 implements Tarea {
         public void ejecutar() {
             try {

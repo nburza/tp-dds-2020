@@ -29,15 +29,15 @@ public class RepositorioDeValidaciones{
 
     public Hashtable<Egreso, String> getAll(Usuario unUsuario)
     {
-        Hashtable<Egreso, String> DiccionarioDeValidaciones = new Hashtable<>();
+        Hashtable<Egreso, String> diccionarioDeValidaciones = new Hashtable<>();
 
         for(Egreso egreso : RepositorioDeEgresos.getInstance().getEgresos())
         {
             if(egreso.getRevisores().contains(unUsuario))
             {
-                DiccionarioDeValidaciones.put(egreso, egreso.getEstado().toString());
+                diccionarioDeValidaciones.put(egreso, egreso.getEstado().toString());
             }
         }
-        return DiccionarioDeValidaciones;
+        return diccionarioDeValidaciones;
     }
 }
