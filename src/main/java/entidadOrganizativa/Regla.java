@@ -1,0 +1,7 @@
+package entidadOrganizativa;
+
+public enum Regla {
+    BLOQUEO_EGRESOS_POR_MONTO,
+    ENTIDAD_JURIDICA_SIN_ENTIDADES_BASE,
+    ENTIDAD_BASE_NO_INCORPORABLE
+}

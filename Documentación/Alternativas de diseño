@@ -1,0 +1,22 @@
+-Alternativas de diseño-
+
+Respecto a la validación de egresos:
+  Consideramos la opción de abstraer la lógica de la validación de egresos en una clase llamada ValidadorDeEgresos. Con esta solución conseguiríamos desacoplar a la clase Egreso, pero nos arriesgamos a crear demasiadas clases para un sistema cuya extensión quizá no lo requiere.
+
+Respecto a la instanciación de presupuestos:
+  Consideramos la opción de instanciar los presupuestos de un Egreso en el constructor y controlar mediante excepciones que no existan egresos que no requieren presupuestos (requierePresupuesto = false) y al mismo tiempo cuentan con presupuestos en su lista (presupuestos != null). Decidimos que esto agregaría al sistema una complejidad innecesaria cuando podemos manejarlo cargando Egresos sin presupuestos, y agregar los presupuestos al mismo en una etapa siguiente.
+
+Respecto a la validación de presupuestos:
+  Consideramos validar que los presupuestos ingresados correspondan al egreso en cuestión a la hora de agregarlos al mismo. Descartamos esta opción ya que nos pareció conveniente que todas las validaciones del egreso se realizaran en el mismo lugar (método "esValido").
+
+Respecto a la relación entre usuarios revisores y egresos:
+  Consideramos que fuera el usuario quien tenga una lista de egresos de los cuales es revisor, en lugar de tener el egreso una lista de usuarios revisores. Pero esto terminaría complejizando el algoritmo a la hora de consultar la bandeja de entrada.
+
+Control de las monedas y las ubicaciones:
+  En este momento los tests estan quedando bastante acoplados a lo que viene desde la API de Mercadolibre.
+  ¿Se soluciona con mockito?
+
+ Candelarizacion de tares:
+  Encontramos dos formas de hacerlo, usando el ScheduledExecutorService o TimeTask con Calendar.
+  Nos quedamos con ScheduledExecutorService porque segun investigamos, es mejor en cuanto a performance que TimeTask.
+  Sin enbargo, con TimeTask es mas sencillo lograr ejecutar una tarea en un cierto dia, definiendo un calendar.
