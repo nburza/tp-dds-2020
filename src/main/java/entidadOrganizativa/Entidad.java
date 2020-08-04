@@ -16,20 +16,22 @@ public abstract class Entidad  {
 
     private String nombreFicticio;
     private String razonSocial;
-    private CategoriaEntidad categoriaEntidad;
+    private List <CategoriaEntidad> categoriaEntidad ;
     private List<Egreso> egresos;
 
     public Entidad(String nombreFicticio, String razonSocial, List<Egreso> egresos) {
         this.nombreFicticio = nombreFicticio;
         this.razonSocial = razonSocial;
         this.egresos = egresos;
+        this.categoriaEntidad = new ArrayList<>();
     }
 
-    public void configurarCategoria(CategoriaEntidad categoria) {
-        this.categoriaEntidad = categoria;
+
+    public void agregarCategoria(CategoriaEntidad categoria) {
+        this.categoriaEntidad.add(categoria);
     }
 
-    public CategoriaEntidad getCategoriaEntidad() {
+    public List<CategoriaEntidad> getCategoriaEntidad() {
         return categoriaEntidad;
     }
 
@@ -40,10 +42,12 @@ public abstract class Entidad  {
     }
 
     public void agregarEgreso(Egreso egreso) {
-        if(this.categoriaEntidad != null) {
-            this.categoriaEntidad.verificarAgregadoDeEgreso(this, egreso);
+
+        for (CategoriaEntidad categoria : categoriaEntidad) {
+            categoria.verificarAgregadoDeEgreso(this, egreso);
         }
         egresos.add(egreso);
+
     }
 
     public List<Egreso> getEgresos(){

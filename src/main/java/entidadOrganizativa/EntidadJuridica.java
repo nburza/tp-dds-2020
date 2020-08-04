@@ -39,12 +39,11 @@ public abstract class EntidadJuridica extends Entidad {
     }
 
     public void agregarEntidadBase(EntidadBase entidadBase) {
-        if(entidadBase.getCategoriaEntidad() != null) {
-            entidadBase.getCategoriaEntidad().verificarSiEntidadBaseEsIncorporable();
-        }
-        if(this.getCategoriaEntidad() != null) {
-            this.getCategoriaEntidad().verificarSiEntidadJuridicaPuedeAgregarEntidadesBase();
-        }
+
+        this.getCategoriaEntidad().forEach(CategoriaEntidad::verificarSiEntidadJuridicaPuedeAgregarEntidadesBase);
+
+        entidadBase.getCategoriaEntidad().forEach(CategoriaEntidad::verificarSiEntidadBaseEsIncorporable);
+
         this.listaEntidades.add(entidadBase);
     }
 }

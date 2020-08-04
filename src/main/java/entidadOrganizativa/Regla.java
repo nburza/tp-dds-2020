@@ -1,7 +1,20 @@
 package entidadOrganizativa;
 
-public enum Regla {
-    BLOQUEO_EGRESOS_POR_MONTO,
-    ENTIDAD_JURIDICA_SIN_ENTIDADES_BASE,
-    ENTIDAD_BASE_NO_INCORPORABLE
+
+import egreso.Egreso;
+
+public abstract class Regla {
+    public void verificarAgregadoDeEgreso(Entidad unaEntidad, Egreso unEgreso){
+
+    }
+
+    public void verificarSiEntidadBaseEsIncorporable(){
+
+    }
+
+    public void verificarSiEntidadJuridicaPuedeAgregarEntidadesBase(){
+
+    }
+
+
 }

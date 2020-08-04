@@ -78,30 +78,36 @@ public class EntidadTest {
 
     @Test(expected = MontoSuperadoException.class)
     public void bloqueoEgresoPorMontoLimite() {
-        CategoriaEntidad categoriaEntidad = new CategoriaEntidad("ONG",BigDecimal.valueOf(1000), Arrays.asList(Regla.BLOQUEO_EGRESOS_POR_MONTO));
+
+        CategoriaEntidad categoriaEntidad = new CategoriaEntidad("ONG");
+        categoriaEntidad.agregarRegla(new ReglaBloqueoEgresoPorMonto(BigDecimal.valueOf(1000)));
         organizacion.agregarCategoria(categoriaEntidad);
         organizacion.agregarEntidad(entidadBase);
-        organizacion.configurarCategoriaAEntidad(entidadBase,categoriaEntidad);
+        organizacion.agregarCategoriaAEntidad(entidadBase,categoriaEntidad);
         entidadBase.agregarEgreso(egreso1);
         entidadBase.agregarEgreso(egreso2);
+
     }
 
     @Test(expected = EntidadSinEntidadesBaseException.class)
     public void entidadJuridicaNoPuedeAgregarEntidadesBase() {
-        CategoriaEntidad categoriaEntidad = new CategoriaEntidad("Agro",null, Arrays.asList(Regla.ENTIDAD_JURIDICA_SIN_ENTIDADES_BASE));
+
+        CategoriaEntidad categoriaEntidad=new CategoriaEntidad("Agro");
+        categoriaEntidad.agregarRegla(new ReglaProhibidoAgregarEntidadesBase());
         organizacion.agregarCategoria(categoriaEntidad);
         organizacion.agregarEntidad(entidadJuridica);
-        organizacion.configurarCategoriaAEntidad(entidadJuridica,categoriaEntidad);
+        organizacion.agregarCategoriaAEntidad(entidadJuridica,categoriaEntidad);
         entidadJuridica.agregarEntidadBase(entidadBase);
     }
 
     @Test(expected = EntidadBaseNoIncorporableException.class)
     public void entidadBaseNoEsIncorporableAEntidadJuridica() {
-        CategoriaEntidad categoriaEntidad = new CategoriaEntidad("Pyme",null, Arrays.asList(Regla.ENTIDAD_BASE_NO_INCORPORABLE));
+       CategoriaEntidad categoriaEntidad = new CategoriaEntidad("Pyme");
+       categoriaEntidad.agregarRegla(new ReglaEntidadBaseNoIncorporable());
         organizacion.agregarCategoria(categoriaEntidad);
         organizacion.agregarEntidad(entidadJuridica);
         organizacion.agregarEntidad(entidadBase);
-        organizacion.configurarCategoriaAEntidad(entidadBase,categoriaEntidad);
+        organizacion.agregarCategoriaAEntidad(entidadBase,categoriaEntidad);
         entidadJuridica.agregarEntidadBase(entidadBase);
     }
 

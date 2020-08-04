@@ -24,7 +24,7 @@ public class Organizacion {
         this.categorias.remove(categoria);
     }
 
-    public void configurarCategoriaAEntidad(Entidad entidad, CategoriaEntidad categoria) {
-        entidad.configurarCategoria(categoria);
+    public void agregarCategoriaAEntidad(Entidad entidad, CategoriaEntidad categoria) {
+        entidad.agregarCategoria(categoria);
     }
 }
