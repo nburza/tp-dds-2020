@@ -1,11 +1,5 @@
 package egreso;
 
-import proveedor.ValidadorDeMoneda;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.TimerTask;
-
 public class TareaValidarEgreso implements Tarea {
 
     private static final TareaValidarEgreso instance = new TareaValidarEgreso();
@@ -22,7 +16,7 @@ public class TareaValidarEgreso implements Tarea {
 
     public void ejecutar() {
         try {
-            RepositorioDeValidaciones.getInstance().validarTodos();
+            ValidadorDeEgresos.getInstance().validarTodos();
             System.out.println("Validaciones realizadas con exito");
         } catch (Exception e) {
             e.printStackTrace();

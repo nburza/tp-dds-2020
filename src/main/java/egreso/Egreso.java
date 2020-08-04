@@ -82,38 +82,43 @@ public class Egreso
         etiquetas.remove(etiqueta);
     }
 
+    public void validar(){
+        if (this.esValido()){
+            this.setEstado(EstadoValidacion.VALIDO);
+        }
+    }
+
     public boolean esValido()
     {
-        return this.cumplePresupuestosMinimos() && //cantidad mínima de presupuestos requeridos
+        return (!requierePresupuesto||this.cumpleCondicionDeValidacion());
+
+    }
+    public boolean cumpleCondicionDeValidacion (){
+        return this.cumplePresupuestosMinimos() &&
                 this.estaBasadoEnUnPresupuesto() &&
-                this.cumpleCriterioSeleccion();
-    }/* si en un futuro hay que hacer validaciones sin presupuesto, se pone un IF de si requiere o no, y lo sacamos
-        de cada una de estas validaciones. */
+            this.cumpleCriterioSeleccion();
+
+}
+
     public boolean cumplePresupuestosMinimos()
     {
-        if(requierePresupuesto)
-        {
+
             return presupuestos.size() >= presupuestosRequeridos;
-        }
-        return true;
+
     }
 
     public boolean estaBasadoEnUnPresupuesto()
     {
-        if(requierePresupuesto)
-        {
+
             return presupuestos.stream().anyMatch(x -> x.getDetalle().equals(items));
-        }
-        return true;
+
     }
 
     public boolean cumpleCriterioSeleccion()
     {
-        if(requierePresupuesto)
-        {
+
             return presupuestos.stream().anyMatch(x -> this.getCriterioDeSeleccion().presupuestosQueCumplen(presupuestos).contains(x));
-        }
-        return true;
+
     }
 
     public List<Usuario> getRevisores()
@@ -150,4 +155,9 @@ public class Egreso
         }
         return fecha.compareTo(LocalDate.now().minusMonths(1))==1;
     }
+
+    public boolean esRevisor(Usuario unUsuario){
+        return revisores.contains(unUsuario);
+    }
+
 }

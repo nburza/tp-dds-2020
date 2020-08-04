@@ -23,17 +23,17 @@ public class Main {
         Item item3 = new Item("leche", new BigDecimal("150"), 3, "Peso argentino");
 
         //Instancio listas de items de prueba
-        List<Item> items1 = new ArrayList<Item>();
+        List<Item> items1 = new ArrayList<>();
         items1.add(item1);
         items1.add(item2);
         items1.add(item3);
-        List<Item> items2 = new ArrayList<Item>();
+        List<Item> items2 = new ArrayList<>();
         items2.add(item1);
         items2.add(item3);
-        List<Item> items3 = new ArrayList<Item>();
+        List<Item> items3 = new ArrayList<>();
         items3.add(item2);
         items3.add(item3);
-        List<Item> items4 = new ArrayList<Item>();
+        List<Item> items4 = new ArrayList<>();
         items4.add(item1);
         items4.add(item3);
 
@@ -65,7 +65,7 @@ public class Main {
         egreso4.agregarRevisor(usuario2); //egreso válido - no requiere presupuestos!
 
         //Ejecuto validaciones
-        RepositorioDeValidaciones.getInstance().validarTodos();
+        ValidadorDeEgresos.getInstance().validarTodos();
 
         //Usuario consulta bandeja de entrada
         System.out.println(usuario1.consultarBandeja());

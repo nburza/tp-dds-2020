@@ -9,8 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
-import egreso.RepositorioDeEgresos;
-import egreso.RepositorioDeValidaciones;
+
+import egreso.ValidadorDeEgresos;
 
 public class Usuario {
 
@@ -25,7 +25,7 @@ public class Usuario {
 
     public Hashtable<Egreso, String> consultarBandeja()
     {
-        return RepositorioDeValidaciones.getInstance().getAll(this);
+        return ValidadorDeEgresos.getInstance().getAll(this);
     }
     
     private void validarContrasenia(String nombreUsuario, String contrasenia) throws ClassNotFoundException {

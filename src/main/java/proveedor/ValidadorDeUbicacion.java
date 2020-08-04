@@ -9,15 +9,14 @@ import java.util.List;
 
 public class ValidadorDeUbicacion {
 
-    private List<PaisDTO> paises = new ArrayList<>();
+    private List<PaisDTO> paises;
 
     private static final ValidadorDeUbicacion instance = new ValidadorDeUbicacion();
 
     public static ValidadorDeUbicacion getInstance(){return  instance;}
 
     private ValidadorDeUbicacion() {
-        if(paises.isEmpty())
-            this.paises = new ServicioUbicacionMercadoLibre().getPaises();
+        this.paises = new ServicioUbicacionMercadoLibre().getPaises();
             paises.forEach(pais -> pais.setStates(new ServicioUbicacionMercadoLibre().getProvincias(pais)));
             paises.forEach(pais -> pais.getProvincias()
                     .forEach(provincia -> provincia.setCiudades(new ServicioUbicacionMercadoLibre().getCiudades(provincia))));
