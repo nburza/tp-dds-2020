@@ -1,6 +1,6 @@
 import egreso.*;
 import presupuesto.Presupuesto;
-import proveedor.Proveedor;
+import presupuesto.Proveedor;
 import usuario.Usuario;
 import java.math.BigDecimal;
 import java.util.*;

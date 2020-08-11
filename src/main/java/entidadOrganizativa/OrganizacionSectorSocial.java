@@ -1,7 +1,7 @@
 package entidadOrganizativa;
 import java.util.List;
 import egreso.Egreso;
-import proveedor.DireccionPostal;
+import presupuesto.DireccionPostal;
 
 public class OrganizacionSectorSocial extends EntidadJuridica {
 

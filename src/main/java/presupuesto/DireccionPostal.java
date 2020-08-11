@@ -1,4 +1,6 @@
-package proveedor;
+package presupuesto;
+
+import apiMercadoLibre.ServiceLocator;
 
 public class DireccionPostal {
 
@@ -8,7 +10,7 @@ public class DireccionPostal {
     private String direccion;
 
     public DireccionPostal(String pais, String provincia, String ciudad, String direccion) {
-        ValidadorDeUbicacion.getInstance().validarDireccionPostal(pais,provincia,ciudad);
+        ServiceLocator.getInstance().getValidadorDeUbicacion().validarDireccionPostal(pais,provincia,ciudad);
         this.pais = pais;
         this.provincia = provincia;
         this.ciudad = ciudad;

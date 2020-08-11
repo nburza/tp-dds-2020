@@ -1,19 +1,19 @@
-package proveedor;
+package apiMercadoLibre;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import proveedor.DTO.*;
+import apiMercadoLibre.DTO.*;
 
 import javax.ws.rs.core.MediaType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServicioUbicacionMercadoLibre {
+public class ServicioAPIMercadoLibre {
 
-    public ServicioUbicacionMercadoLibre() {}
+    public ServicioAPIMercadoLibre() {}
 
     public List<MonedaDTO> getMonedas() {
         String json = Client.create()
@@ -57,5 +57,13 @@ public class ServicioUbicacionMercadoLibre {
                 .getEntity(String.class);
         ProvinciaDTO provinciaDTOConCiudades = new Gson().fromJson(json, ProvinciaDTO.class);
         return provinciaDTOConCiudades.getCiudades();
+    }
+
+    public List<PaisDTO> getUbicaciones() {
+        List<PaisDTO> paises = new ServicioAPIMercadoLibre().getPaises();
+        paises.forEach(pais -> pais.setStates(new ServicioAPIMercadoLibre().getProvincias(pais)));
+        paises.forEach(pais -> pais.getProvincias()
+                .forEach(provincia -> provincia.setCiudades(new ServicioAPIMercadoLibre().getCiudades(provincia))));
+        return paises;
     }
 }

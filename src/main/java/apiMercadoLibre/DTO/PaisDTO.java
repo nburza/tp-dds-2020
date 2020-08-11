@@ -1,4 +1,4 @@
-package proveedor.DTO;
+package apiMercadoLibre.DTO;
 
 import java.util.ArrayList;
 import java.util.List;

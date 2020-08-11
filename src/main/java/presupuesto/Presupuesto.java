@@ -4,9 +4,7 @@ import egreso.DocComercial;
 import egreso.Egreso;
 import egreso.Item;
 import org.apache.commons.lang3.Validate;
-import proveedor.DTO.MonedaDTO;
-import proveedor.Proveedor;
-import proveedor.ValidadorDeMoneda;
+import apiMercadoLibre.ServiceLocator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ public class Presupuesto {
 
     public Presupuesto(List<Item> detalle, List<DocComercial> documentosComerciales, Egreso egreso, String moneda, Proveedor proveedor) throws Exception {
         Validate.notNull(egreso, "El egreso no puede ser nulo");
-        ValidadorDeMoneda.getInstance().validarMoneda(moneda);
+        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
         this.detalle = detalle;
         this.documentosComerciales = documentosComerciales;
         this.moneda = moneda;

@@ -1,6 +1,6 @@
 package entidadOrganizativa;
 import egreso.Egreso;
-import proveedor.DireccionPostal;
+import presupuesto.DireccionPostal;
 
 import java.util.List;
 

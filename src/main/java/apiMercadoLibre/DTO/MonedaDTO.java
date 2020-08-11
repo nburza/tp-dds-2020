@@ -1,4 +1,4 @@
-package proveedor.DTO;
+package apiMercadoLibre.DTO;
 
 public class MonedaDTO {
 

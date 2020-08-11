@@ -1,6 +1,4 @@
-package proveedor.DTO;
-
-import proveedor.DTO.CiudadDTO;
+package apiMercadoLibre.DTO;
 
 import java.util.ArrayList;
 import java.util.List;

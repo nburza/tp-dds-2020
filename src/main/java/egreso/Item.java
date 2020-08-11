@@ -1,7 +1,6 @@
 package egreso;
 
-import proveedor.DTO.MonedaDTO;
-import proveedor.ValidadorDeMoneda;
+import apiMercadoLibre.ServiceLocator;
 
 import java.math.BigDecimal;
 
@@ -19,7 +18,7 @@ public class Item
 
     public Item(String unaDescripcion, BigDecimal unPrecioUnitario, int unaCantidad, String moneda)
     {
-        ValidadorDeMoneda.getInstance().validarMoneda(moneda);
+        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
         this.descripcion = unaDescripcion;
         this.precioUnitario = unPrecioUnitario;
         this.cantidad = unaCantidad;

@@ -1,4 +1,4 @@
-package proveedor;
+package presupuesto;
 
 public class Proveedor {
 

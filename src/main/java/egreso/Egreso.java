@@ -3,12 +3,10 @@ package egreso;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import mediosDePago.MedioDePago;
 import presupuesto.Presupuesto;
-import proveedor.ValidadorDeMoneda;
+import apiMercadoLibre.ServiceLocator;
 import usuario.Usuario;
 
 public class Egreso
@@ -27,7 +25,7 @@ public class Egreso
 
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, LocalDate unaFecha, String moneda)
     {
-        ValidadorDeMoneda.getInstance().validarMoneda(moneda);
+        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
         this.items = unosItems;
@@ -38,7 +36,7 @@ public class Egreso
 
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, LocalDate unaFecha, boolean requierePresupuesto, String moneda)
     {
-        ValidadorDeMoneda.getInstance().validarMoneda(moneda);
+        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
         this.items = unosItems;

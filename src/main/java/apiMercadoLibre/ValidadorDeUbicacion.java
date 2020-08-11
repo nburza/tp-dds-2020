@@ -1,29 +1,22 @@
-package proveedor;
+package apiMercadoLibre;
 
-import proveedor.DTO.CiudadDTO;
-import proveedor.DTO.PaisDTO;
-import proveedor.DTO.ProvinciaDTO;
+import apiMercadoLibre.DTO.CiudadDTO;
+import apiMercadoLibre.DTO.PaisDTO;
+import apiMercadoLibre.DTO.ProvinciaDTO;
+import apiMercadoLibre.exceptions.DireccionInvalidaException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ValidadorDeUbicacion {
 
     private List<PaisDTO> paises;
 
-    private static final ValidadorDeUbicacion instance = new ValidadorDeUbicacion();
-
-    public static ValidadorDeUbicacion getInstance(){return  instance;}
-
-    private ValidadorDeUbicacion() {
-        this.paises = new ServicioUbicacionMercadoLibre().getPaises();
-            paises.forEach(pais -> pais.setStates(new ServicioUbicacionMercadoLibre().getProvincias(pais)));
-            paises.forEach(pais -> pais.getProvincias()
-                    .forEach(provincia -> provincia.setCiudades(new ServicioUbicacionMercadoLibre().getCiudades(provincia))));
+    public ValidadorDeUbicacion(List<PaisDTO> paises) {
+        this.paises = paises;
     }
 
     private boolean esDireccionValida(String paisString, String provinciaString, String ciudadString) {
-        PaisDTO paisIndicado = null;
+        PaisDTO paisIndicado;
         ProvinciaDTO provinciaIndicada = null;
         CiudadDTO ciudadIndicada = null;
         paisIndicado = this.paises.stream().filter(p -> p.getName().equals(paisString))
@@ -47,7 +40,7 @@ public class ValidadorDeUbicacion {
 
     public void validarDireccionPostal(String paisString, String provinciaString, String ciudadString) {
         if(!esDireccionValida(paisString,provinciaString,ciudadString)) {
-            throw new RuntimeException("La direccion postal es invalida");
+            throw new DireccionInvalidaException("La direccion postal es invalida");
         }
     }
 }

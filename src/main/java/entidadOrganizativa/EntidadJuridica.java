@@ -1,9 +1,7 @@
 package entidadOrganizativa;
 
 import egreso.Egreso;
-import entidadOrganizativa.exceptions.EntidadBaseNoIncorporableException;
-import entidadOrganizativa.exceptions.EntidadSinEntidadesBaseException;
-import proveedor.DireccionPostal;
+import presupuesto.DireccionPostal;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
