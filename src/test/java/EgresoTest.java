@@ -7,7 +7,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import presupuesto.Presupuesto;
-import proveedor.Proveedor;
+import apiMercadoLibre.DTO.MonedaDTO;
+import presupuesto.Proveedor;
+import apiMercadoLibre.ServiceLocator;
+import apiMercadoLibre.ValidadorDeMoneda;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +30,9 @@ public class EgresoTest {
 
     @Before
     public void objetosTest() throws Exception {
+        MonedaDTO pesoArgentino = new MonedaDTO(null,null,"Peso argentino");
+        ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(Arrays.asList(pesoArgentino));
+        ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
         proveedor = new Proveedor(null,null,null);
         egreso1 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
         item1 = new Item(null, new BigDecimal("100"), 1, "Peso argentino");

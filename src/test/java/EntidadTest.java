@@ -8,11 +8,13 @@ import entidadOrganizativa.exceptions.MontoSuperadoException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import apiMercadoLibre.DTO.MonedaDTO;
+import apiMercadoLibre.ServiceLocator;
+import apiMercadoLibre.ValidadorDeMoneda;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class EntidadTest {
 
@@ -31,6 +33,9 @@ public class EntidadTest {
 
     @Before
     public void objetosTest() {
+        MonedaDTO pesoArgentino = new MonedaDTO(null,null,"Peso argentino");
+        ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(Arrays.asList(pesoArgentino));
+        ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
         organizacion = new Organizacion(new ArrayList<>(),new ArrayList<>());
         entidadJuridica = new OrganizacionSectorSocial(null,null,156,null,new ArrayList<>());
         entidadBase = new EntidadBase(null,null,new ArrayList<>());
