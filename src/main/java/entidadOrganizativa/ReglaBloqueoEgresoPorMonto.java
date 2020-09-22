@@ -3,8 +3,12 @@ package entidadOrganizativa;
 import egreso.Egreso;
 import entidadOrganizativa.exceptions.MontoSuperadoException;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 
+@Entity
+@DiscriminatorValue("BEPM")
 public class ReglaBloqueoEgresoPorMonto extends Regla {
     BigDecimal montoLimite;
 

@@ -1,7 +1,11 @@
 package entidadOrganizativa;
 
 import entidadOrganizativa.exceptions.EntidadSinEntidadesBaseException;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
+@Entity
+@DiscriminatorValue("PAEB")
 public class ReglaProhibidoAgregarEntidadesBase extends Regla {
 
     @Override

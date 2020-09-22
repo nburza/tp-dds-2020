@@ -1,13 +1,18 @@
 package entidadOrganizativa;
 
 import egreso.Egreso;
+import persistencia.EntidadPersistente;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriaEntidad {
+@Entity
+public class CategoriaEntidad extends EntidadPersistente {
 
     private String nombre;
+    @ManyToMany
     private List<Regla> reglas;
     public CategoriaEntidad(String nombre, List<Regla> reglas) {
         this.nombre = nombre;
