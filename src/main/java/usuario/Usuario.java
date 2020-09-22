@@ -11,8 +11,15 @@ import java.io.InputStreamReader;
 import java.util.Hashtable;
 
 import egreso.ValidadorDeEgresos;
+import persistencia.EntidadPersistente;
 
-public class Usuario {
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "rol", length = 1)
+@DiscriminatorValue("U")
+public class Usuario extends EntidadPersistente {
 
     private String nombreUsuario;
     private String contraseniaHasheada;
