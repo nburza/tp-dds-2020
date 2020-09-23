@@ -17,6 +17,8 @@
         <class>entidadOrganizativa.ReglaProhibidoAgregarEntidadesBase</class>
         <class>usuario.Usuario</class>
         <class>usuario.Administrador</class>
+        <class>presupuesto.Proveedor</class>
+        <class>presupuesto.DireccionPostal</class>
 
         <properties>
             <property name="hibernate.archive.autodetection" value="class"/>

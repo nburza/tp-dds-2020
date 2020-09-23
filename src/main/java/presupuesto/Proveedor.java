@@ -1,9 +1,16 @@
 package presupuesto;
 
-public class Proveedor {
+import persistencia.EntidadPersistente;
+
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
+@Entity
+public class Proveedor extends EntidadPersistente {
 
     private String nombre;
     private String documento;
+    @OneToOne
     private DireccionPostal direccionPostal;
 
     public Proveedor(String nombre, String documento, DireccionPostal direccionPostal){
