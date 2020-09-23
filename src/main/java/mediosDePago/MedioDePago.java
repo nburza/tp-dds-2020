@@ -1,6 +1,14 @@
 package mediosDePago;
 
-public abstract class MedioDePago {
+import persistencia.EntidadPersistente;
+
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "forma", length = 1)
+
+public abstract class MedioDePago extends EntidadPersistente {
     private String descripcion;
     private Long identificador;
 
