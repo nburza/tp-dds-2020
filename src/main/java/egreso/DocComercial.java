@@ -1,8 +1,16 @@
 package egreso;
 
-public class DocComercial
+import persistencia.EntidadPersistente;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+@Entity
+public class DocComercial extends EntidadPersistente
 {
     private int numero;
+    @Enumerated(EnumType.STRING)
     private TipoDocComercial tipoDC;
 
     public DocComercial(int unNumero, TipoDocComercial unTipoDC)
