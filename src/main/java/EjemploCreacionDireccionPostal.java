@@ -1,6 +1,6 @@
-import mediosDePago.MedioDePago;
+/*import mediosDePago.MedioDePago;
 import mediosDePago.TarjetaCredito;
-import proveedor.*;
+//import proveedor.*;
 import java.io.Console;
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class EjemploCreacionDireccionPostal {
     public static void main(String[] args)  {
         //Esto claramente repite codigo, pero como probablemente lo descartaremos y es solo para mostrar, no se si es correcto pero podria crear interfaces para pulir el main
-        /*
+
         Scanner scan =new Scanner(System.in);
         List<Pais> paises = new ServicioUbicacionMercadoLibre().getPaises();
         Iterator<Pais> itPais= paises.iterator();
@@ -66,7 +66,7 @@ public class EjemploCreacionDireccionPostal {
         System.out.println("Provincia: "  +nuevaDireccion.getProvincia().getName());
         System.out.println("Ciudad: " +nuevaDireccion.getCiudad().getName());
         System.out.println("Codigo Postal: " +nuevaDireccion.getDireccion());
-        */
+
     }
 
  //   public void mostrarElementoDeLaLista (List lista){
@@ -78,3 +78,4 @@ public class EjemploCreacionDireccionPostal {
     //    }
  //  }
 }
+*/

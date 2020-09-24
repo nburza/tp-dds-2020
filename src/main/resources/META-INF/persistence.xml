@@ -28,6 +28,11 @@
         <class>egreso.DocComercial</class>
         <class>egreso.CriterioCompra</class>
         <class>egreso.CriterioMenorValor</class>
+        <class>egreso.Egreso</class>
+        <class>egreso.EstadoValidacion</class>
+        <class>egreso.Etiqueta</class>
+        <class>egreso.Item</class>
+        <class>presupuesto.Presupuesto</class>
 
         <properties>
             <property name="hibernate.archive.autodetection" value="class"/>

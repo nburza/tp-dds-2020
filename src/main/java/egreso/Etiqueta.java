@@ -1,8 +1,15 @@
 package egreso;
 
+import persistencia.EntidadPersistente;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
-public class Etiqueta {
+@Entity
+@Table(name = "Etiquetas")
+public class Etiqueta extends EntidadPersistente
+{
     private String nombre;
 
     public Etiqueta (String nombre){

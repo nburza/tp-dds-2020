@@ -1,26 +1,31 @@
 package egreso;
 
 import apiMercadoLibre.ServiceLocator;
+import persistencia.EntidadPersistente;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
-public class Item
+@Entity
+@Table(name = "Items")
+public class Item extends EntidadPersistente
 {
-    private String descripcion;
-    private BigDecimal precioUnitario;
+    @ManyToOne
+    private Producto producto;
     private int cantidad;
     private String moneda;
 
     public BigDecimal precioTotal()
     {
-        return precioUnitario.multiply(BigDecimal.valueOf(cantidad)) ;
+        return producto.getPrecioUnitario().multiply(BigDecimal.valueOf(cantidad)) ;
     }
 
-    public Item(String unaDescripcion, BigDecimal unPrecioUnitario, int unaCantidad, String moneda)
+    public Item(Producto unProducto, int unaCantidad, String moneda)
     {
         ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
-        this.descripcion = unaDescripcion;
-        this.precioUnitario = unPrecioUnitario;
+        this.producto = unProducto;
         this.cantidad = unaCantidad;
         this.moneda = moneda;
     }

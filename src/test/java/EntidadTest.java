@@ -1,6 +1,7 @@
 import egreso.Egreso;
 import egreso.Etiqueta;
 import egreso.Item;
+import egreso.Producto;
 import entidadOrganizativa.*;
 import entidadOrganizativa.exceptions.EntidadBaseNoIncorporableException;
 import entidadOrganizativa.exceptions.EntidadSinEntidadesBaseException;
@@ -27,6 +28,9 @@ public class EntidadTest {
     private Etiqueta etiqueta1;
     private Etiqueta etiqueta2;
     private Etiqueta etiqueta3;
+    private Producto producto1;
+    private Producto producto2;
+    private Producto producto3;
     private Item item1;
     private Item item2;
     private Item item3;
@@ -42,9 +46,12 @@ public class EntidadTest {
         egreso1 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
         egreso2 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
         egreso3 = new Egreso(null, null, new ArrayList<>(),LocalDate.now().minusDays(60),"Peso argentino");
-        item1 = new Item(null, new BigDecimal("100"), 1, "Peso argentino");
-        item2 = new Item(null, new BigDecimal("200"), 1, "Peso argentino");
-        item3 = new Item(null, new BigDecimal("300"), 1, "Peso argentino");
+        producto1 = new Producto(null, new BigDecimal("100"));
+        producto2 = new Producto(null, new BigDecimal("200"));
+        producto3 = new Producto(null, new BigDecimal("300"));
+        item1 = new Item(producto1, 1, "Peso argentino");
+        item2 = new Item(producto2, 1, "Peso argentino");
+        item3 = new Item(producto3, 1, "Peso argentino");
         egreso1.getItems().add(item1);
         egreso1.getItems().add(item2);
         egreso1.getItems().add(item3);

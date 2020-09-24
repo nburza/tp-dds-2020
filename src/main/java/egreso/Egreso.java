@@ -5,22 +5,43 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import mediosDePago.MedioDePago;
+import persistencia.EntidadPersistente;
 import presupuesto.Presupuesto;
 import apiMercadoLibre.ServiceLocator;
 import usuario.Usuario;
+import javax.persistence.*;
 
-public class Egreso
+@Entity
+@Table(name = "Egresos")
+public class Egreso extends EntidadPersistente
 {
+
+    @OneToMany
+    @JoinColumn(name = "egreso_id")
     private List<DocComercial> documentosComerciales = new ArrayList<>();
+    @ManyToOne
     private MedioDePago medioDePago;
+    @OneToMany
+    @JoinColumn(name = "egreso_id")
     private List<Item> items = new ArrayList<>();
     private LocalDate fecha;
+    @OneToMany
+    @JoinColumn(name = "egreso_id")
     private List<Presupuesto> presupuestos = new ArrayList<>();
     private boolean requierePresupuesto = true;
+    @ManyToMany
+    @JoinTable(name = "revisor_x_egreso")
     private List<Usuario> revisores = new ArrayList<>();
     private String moneda;
+    @OneToMany
+    @JoinColumn(name = "egreso_id")
     private CriterioCompra criterioDeSeleccion = CriterioMenorValor.getInstance();
+    @Enumerated(EnumType.STRING)
+    @OneToMany
+    @JoinColumn(name = "egreso_id")
     private EstadoValidacion estado = EstadoValidacion.PENDIENTE;
+    @OneToMany
+    @JoinColumn(name = "egreso_id")
     private List<Etiqueta> etiquetas = new ArrayList<>();
 
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, LocalDate unaFecha, String moneda)

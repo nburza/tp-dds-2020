@@ -5,16 +5,30 @@ import egreso.Egreso;
 import egreso.Item;
 import org.apache.commons.lang3.Validate;
 import apiMercadoLibre.ServiceLocator;
+import persistencia.EntidadPersistente;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Presupuesto {
+@Entity
+@Table(name = "Presupuestos")
+public class Presupuesto extends EntidadPersistente
+{
+    @OneToMany
+    @JoinColumn(name = "presupuesto_id")
     private List<Item> detalle = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "presupuesto_id")
     private List<DocComercial> documentosComerciales = new ArrayList<>();
     private String moneda;
+    @OneToMany
+    @JoinColumn(name = "presupuesto_id")
     private Proveedor proveedor;
 
     public Presupuesto(List<Item> detalle, List<DocComercial> documentosComerciales, Egreso egreso, String moneda, Proveedor proveedor) throws Exception {
@@ -24,7 +38,6 @@ public class Presupuesto {
         this.documentosComerciales = documentosComerciales;
         this.moneda = moneda;
         this.proveedor = proveedor;
-
         egreso.agregarPresupuesto(this);
     }
 
