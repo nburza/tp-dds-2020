@@ -40,8 +40,8 @@ public class Egreso extends EntidadPersistente
     @OneToMany
     @JoinColumn(name = "egreso_id")
     private EstadoValidacion estado = EstadoValidacion.PENDIENTE;
-    @OneToMany
-    @JoinColumn(name = "egreso_id")
+    @ManyToMany
+    @JoinTable(name = "egreso_x_etiqueta")
     private List<Etiqueta> etiquetas = new ArrayList<>();
 
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, LocalDate unaFecha, String moneda)
