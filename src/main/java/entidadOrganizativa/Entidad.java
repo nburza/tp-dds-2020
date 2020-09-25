@@ -4,6 +4,8 @@ import egreso.Egreso;
 import egreso.Etiqueta;
 import entidadOrganizativa.exceptions.MontoSuperadoException;
 
+import javax.lang.model.element.Name;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,11 +14,20 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity
+@Table(name = "Entidades")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "entidad", length = 1)
 public abstract class Entidad  {
 
     private String nombreFicticio;
     private String razonSocial;
+
+    @ManyToMany
     private List <CategoriaEntidad> categoriaEntidad ;
+
+    @OneToMany
+    @JoinColumn(name = "entidad_id")
     private List<Egreso> egresos;
 
     public Entidad(String nombreFicticio, String razonSocial, List<Egreso> egresos) {

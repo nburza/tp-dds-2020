@@ -2,10 +2,17 @@ package entidadOrganizativa;
 import egreso.Egreso;
 import presupuesto.DireccionPostal;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.List;
 
+@Entity
+@DiscriminatorValue("EMP")
 public class Empresa extends EntidadJuridica {
 
+    @Enumerated(EnumType.STRING)
     private CategoriaEmpresa categoria;
 
     public Empresa(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, CategoriaEmpresa categoria, List<Egreso> egresos) {

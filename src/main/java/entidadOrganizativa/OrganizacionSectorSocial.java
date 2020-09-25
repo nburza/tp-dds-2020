@@ -3,6 +3,11 @@ import java.util.List;
 import egreso.Egreso;
 import presupuesto.DireccionPostal;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("OSS")
 public class OrganizacionSectorSocial extends EntidadJuridica {
 
     public OrganizacionSectorSocial(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, List<Egreso> egreso) {

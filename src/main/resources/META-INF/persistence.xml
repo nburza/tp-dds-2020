@@ -15,6 +15,11 @@
         <class>entidadOrganizativa.ReglaBloqueoEgresoPorMonto</class>
         <class>entidadOrganizativa.ReglaEntidadBaseNoIncorporable</class>
         <class>entidadOrganizativa.ReglaProhibidoAgregarEntidadesBase</class>
+        <class>entidadOrganizativa.Empresa</class>
+        <class>entidadOrganizativa.Entidad</class>
+        <class>entidadOrganizativa.EntidadBase</class>
+        <class>entidadOrganizativa.EntidadJuridica</class>
+        <class>entidadOrganizativa.OrganizacionSectorSocial</class>
         <class>usuario.Usuario</class>
         <class>usuario.Administrador</class>
         <class>presupuesto.Proveedor</class>
