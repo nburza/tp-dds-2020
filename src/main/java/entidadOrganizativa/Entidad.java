@@ -3,6 +3,7 @@ package entidadOrganizativa;
 import egreso.Egreso;
 import egreso.Etiqueta;
 import entidadOrganizativa.exceptions.MontoSuperadoException;
+import persistencia.EntidadPersistente;
 
 import javax.lang.model.element.Name;
 import javax.persistence.*;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @Table(name = "Entidades")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "entidad", length = 1)
-public abstract class Entidad  {
+public abstract class Entidad extends EntidadPersistente {
 
     private String nombreFicticio;
     private String razonSocial;

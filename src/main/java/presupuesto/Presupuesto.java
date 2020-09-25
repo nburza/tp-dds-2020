@@ -7,10 +7,7 @@ import org.apache.commons.lang3.Validate;
 import apiMercadoLibre.ServiceLocator;
 import persistencia.EntidadPersistente;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -27,8 +24,7 @@ public class Presupuesto extends EntidadPersistente
     @JoinColumn(name = "presupuesto_id")
     private List<DocComercial> documentosComerciales = new ArrayList<>();
     private String moneda;
-    @OneToMany
-    @JoinColumn(name = "presupuesto_id")
+    @ManyToOne
     private Proveedor proveedor;
 
     public Presupuesto(List<Item> detalle, List<DocComercial> documentosComerciales, Egreso egreso, String moneda, Proveedor proveedor) throws Exception {

@@ -33,12 +33,9 @@ public class Egreso extends EntidadPersistente
     @JoinTable(name = "revisor_x_egreso")
     private List<Usuario> revisores = new ArrayList<>();
     private String moneda;
-    @OneToMany
-    @JoinColumn(name = "egreso_id")
+    @ManyToOne
     private CriterioCompra criterioDeSeleccion = CriterioMenorValor.getInstance();
     @Enumerated(EnumType.STRING)
-    @OneToMany
-    @JoinColumn(name = "egreso_id")
     private EstadoValidacion estado = EstadoValidacion.PENDIENTE;
     @ManyToMany
     @JoinTable(name = "egreso_x_etiqueta")
