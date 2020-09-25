@@ -13,7 +13,7 @@ public class ValidadorDeEgresos {
 
     public void validarTodos()
     {
-            for (Egreso egresoPendiente : RepositorioDeEgresos.getInstance().getEgresos())
+            for (Egreso egresoPendiente : RepositorioDeEgresos.getInstance().getAllInstances())
             {
                 egresoPendiente.validar();
             }
@@ -24,7 +24,7 @@ public class ValidadorDeEgresos {
     {
         Hashtable<Egreso, String> diccionarioDeValidaciones = new Hashtable<>();
 
-        for(Egreso egreso : RepositorioDeEgresos.getInstance().getEgresos())
+        for(Egreso egreso : RepositorioDeEgresos.getInstance().getAllInstances())
         {
             if(egreso.esRevisor(unUsuario))
             {
