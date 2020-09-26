@@ -15,8 +15,8 @@ public class ReglaBloqueoEgresoPorMonto extends Regla {
     @Override
     public void verificarAgregadoDeEgreso(Entidad unaEntidad, Egreso unEgreso) {
 
-    if (superaMontoLimite(unaEntidad,unEgreso))
-        throw   new MontoSuperadoException("No se puede agregar el egreso, se superó el monto limite");
+        if (superaMontoLimite(unaEntidad, unEgreso))
+            throw new MontoSuperadoException("No se puede agregar el egreso, se superó el monto limite");
     }
 
     private boolean superaMontoLimite(Entidad entidad, Egreso egreso) {
@@ -24,8 +24,8 @@ public class ReglaBloqueoEgresoPorMonto extends Regla {
         return montoFuturo.compareTo(montoLimite) > 0;
     }
 
-    public ReglaBloqueoEgresoPorMonto(BigDecimal montoLimite){
+    public ReglaBloqueoEgresoPorMonto(BigDecimal montoLimite) {
 
-        this.montoLimite=montoLimite;
+        this.montoLimite = montoLimite;
     }
 }

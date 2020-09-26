@@ -5,6 +5,7 @@ import persistencia.EntidadPersistente;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class CategoriaEntidad extends EntidadPersistente {
 
     private String nombre;
     @ManyToMany
+    @OrderColumn(name = "orden")
     private List<Regla> reglas;
     public CategoriaEntidad(String nombre, List<Regla> reglas) {
         this.nombre = nombre;

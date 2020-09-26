@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "Entidades")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "entidad", length = 1)
+@DiscriminatorColumn(name = "entidad", length = 3)
 public abstract class Entidad extends EntidadPersistente {
 
     private String nombreFicticio;

@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo", length = 1)
-@DiscriminatorValue("EJ")
 public abstract class EntidadJuridica extends Entidad {
     private int cuit;
     @OneToOne
