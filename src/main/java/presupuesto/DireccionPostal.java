@@ -3,9 +3,11 @@ package presupuesto;
 import apiMercadoLibre.ServiceLocator;
 import persistencia.EntidadPersistente;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 
 @Entity
+@Embeddable
 public class DireccionPostal extends EntidadPersistente {
 
     private String pais;

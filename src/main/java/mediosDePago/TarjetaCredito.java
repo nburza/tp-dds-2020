@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("TC")
 
 public class TarjetaCredito extends MedioDePago{
-    public TarjetaCredito (String descripcion, Long identificador){
+    public TarjetaCredito (String descripcion, String identificador){
         super(descripcion,identificador);
     }
 }

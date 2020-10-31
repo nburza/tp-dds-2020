@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("DC")
 
 public class DineroCuenta extends  MedioDePago{
-    public DineroCuenta(String descripcion, Long identificador) {
+    public DineroCuenta(String descripcion, String identificador) {
         super(descripcion, identificador);
     }
 }

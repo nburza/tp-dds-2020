@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("E")
 public class Efectivo extends MedioDePago{
-    public Efectivo (String descripcion, Long identificador){
+    public Efectivo (String descripcion, String identificador){
         super(descripcion, identificador);
     }
 }

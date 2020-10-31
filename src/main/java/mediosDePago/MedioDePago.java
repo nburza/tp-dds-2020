@@ -10,9 +10,9 @@ import javax.persistence.*;
 
 public abstract class MedioDePago extends EntidadPersistente {
     private String descripcion;
-    private Long identificador;
+    private String identificador;
 
-    public MedioDePago(String descripcion, Long identificador){
+    public MedioDePago(String descripcion, String identificador){
         if(identificador==null){throw new IdentificadorNullException("El identificador del medio de pago no puede estar vacio");}
         this.descripcion = descripcion;
         this.identificador = identificador;

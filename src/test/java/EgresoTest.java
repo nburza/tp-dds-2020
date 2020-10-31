@@ -84,7 +84,7 @@ public class EgresoTest {
 
     @Test
     public void crearMedioDePagoCorrecto() {
-        MedioDePago visa = new TarjetaCredito("visa", 1234567890987654L);
+        MedioDePago visa = new TarjetaCredito("visa", "1234567890987654L");
     }
 
     @Test(expected = IdentificadorNullException.class)
