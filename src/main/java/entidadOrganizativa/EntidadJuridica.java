@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 public abstract class EntidadJuridica extends Entidad {
     private int cuit;
-    @OneToOne
+    @Embedded
     private DireccionPostal direccionPostal;
     private Integer codigoIncripcionIGJ;
     @OneToMany

@@ -2,6 +2,7 @@ package presupuesto;
 
 import persistencia.EntidadPersistente;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -10,7 +11,7 @@ public class Proveedor extends EntidadPersistente {
 
     private String nombre;
     private String documento;
-    @OneToOne
+    @Embedded
     private DireccionPostal direccionPostal;
 
     public Proveedor(String nombre, String documento, DireccionPostal direccionPostal){

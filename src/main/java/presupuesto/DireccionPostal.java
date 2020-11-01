@@ -6,9 +6,9 @@ import persistencia.EntidadPersistente;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 
-@Entity
+
 @Embeddable
-public class DireccionPostal extends EntidadPersistente {
+public class DireccionPostal  {
 
     private String pais;
     private String provincia;
