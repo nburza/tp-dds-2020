@@ -10,23 +10,33 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "Items")
-public class Item extends EntidadPersistente
-{
+public class Item extends EntidadPersistente {
     @ManyToOne
     private Producto producto;
+    private BigDecimal precioUnitario;
     private int cantidad;
     private String moneda;
 
-    public BigDecimal precioTotal()
-    {
-        return producto.getPrecioUnitario().multiply(BigDecimal.valueOf(cantidad)) ;
+    public BigDecimal precioTotal() {
+        return getPrecioUnitario().multiply(BigDecimal.valueOf(cantidad));
     }
 
-    public Item(Producto unProducto, int unaCantidad, String moneda)
-    {
+    public Item(Producto unProducto, int unaCantidad, String moneda, BigDecimal unPrecioUnitario) {
+        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
+        this.producto = unProducto;
+        this.precioUnitario = unPrecioUnitario;
+        this.cantidad = unaCantidad;
+        this.moneda = moneda;
+    }
+
+    public Item(Producto unProducto, int unaCantidad, String moneda) {
         ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
         this.producto = unProducto;
         this.cantidad = unaCantidad;
         this.moneda = moneda;
+    }
+
+    public BigDecimal getPrecioUnitario() {
+        return precioUnitario;
     }
 }

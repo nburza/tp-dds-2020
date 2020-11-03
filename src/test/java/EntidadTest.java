@@ -46,12 +46,12 @@ public class EntidadTest {
         egreso1 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
         egreso2 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
         egreso3 = new Egreso(null, null, new ArrayList<>(),LocalDate.now().minusDays(60),"Peso argentino");
-        producto1 = new Producto(null, new BigDecimal("100"));
-        producto2 = new Producto(null, new BigDecimal("200"));
-        producto3 = new Producto(null, new BigDecimal("300"));
-        item1 = new Item(producto1, 1, "Peso argentino");
-        item2 = new Item(producto2, 1, "Peso argentino");
-        item3 = new Item(producto3, 1, "Peso argentino");
+        producto1 = new Producto(null);
+        producto2 = new Producto(null);
+        producto3 = new Producto(null);
+        item1 = new Item(producto1, 1, "Peso argentino", new BigDecimal("100"));
+        item2 = new Item(producto2, 1, "Peso argentino", new BigDecimal("200"));
+        item3 = new Item(producto3, 1, "Peso argentino", new BigDecimal("300"));
         egreso1.getItems().add(item1);
         egreso1.getItems().add(item2);
         egreso1.getItems().add(item3);

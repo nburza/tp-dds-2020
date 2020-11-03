@@ -38,12 +38,12 @@ public class EgresoTest {
         ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
         proveedor = new Proveedor(null,null,null);
         egreso1 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
-        producto1 = new Producto(null, new BigDecimal("100"));
-        producto2 = new Producto(null, new BigDecimal("200"));
-        producto3 = new Producto(null, new BigDecimal("300"));
-        item1 = new Item(producto1, 1, "Peso argentino");
-        item2 = new Item(producto2, 1, "Peso argentino");
-        item3 = new Item(producto3, 1, "Peso argentino");
+        producto1 = new Producto(null);
+        producto2 = new Producto(null);
+        producto3 = new Producto(null);
+        item1 = new Item(producto1, 1, "Peso argentino", new BigDecimal("100"));
+        item2 = new Item(producto2, 1, "Peso argentino", new BigDecimal("200"));
+        item3 = new Item(producto3, 1, "Peso argentino", new BigDecimal("300"));
         presu1 = new Presupuesto(Arrays.asList(item1),null, egreso1, "Peso argentino", proveedor);
         presu2 = new Presupuesto(Arrays.asList(item2),null, egreso1, "Peso argentino", proveedor);
         presu3 = new Presupuesto(Arrays.asList(item3),null, egreso1, "Peso argentino", proveedor);
@@ -51,8 +51,8 @@ public class EgresoTest {
 
     @Test
     public void autenticoEgresoCorrecto() {
-        Producto producto = new Producto(null, new BigDecimal("100"));
-        Item item = new Item(producto,1, "Peso argentino");
+        Producto producto = new Producto(null);
+        Item item = new Item(producto,1, "Peso argentino", new BigDecimal("100"));
         ArrayList<Item> items = new ArrayList<Item>();
         items.add(item);
         Egreso egreso = new Egreso(null, null, items, null, "Peso argentino");
@@ -61,8 +61,8 @@ public class EgresoTest {
 
     @Test
     public void autenticoItemCorrecto() {
-        Producto producto = new Producto("lavandina", new BigDecimal("150"));
-        Item item = new Item(producto, 2, "Peso argentino");
+        Producto producto = new Producto("lavandina");
+        Item item = new Item(producto, 2, "Peso argentino", new BigDecimal("150"));
         Assert.assertEquals(item.precioTotal(), BigDecimal.valueOf(300));
     }
 
@@ -109,15 +109,15 @@ public class EgresoTest {
 
     @Test
     public void presupuestoMalElegido() throws Exception{
-        Producto producto = new Producto(null, new BigDecimal("200"));
-        egreso1.getItems().add(new Item(producto, 1, "Peso argentino"));
+        Producto producto = new Producto(null);
+        egreso1.getItems().add(new Item(producto, 1, "Peso argentino", new BigDecimal("200")));
         Assert.assertFalse(egreso1.esValido());
     }
 
     @Test
     public void itemsDistintosAlDetalle() throws Exception{
-        Producto producto = new Producto(null, new BigDecimal("100"));
-        egreso1.getItems().add(new Item(producto, 1, "Peso argentino"));
+        Producto producto = new Producto(null);
+        egreso1.getItems().add(new Item(producto, 1, "Peso argentino", new BigDecimal("100")));
         Assert.assertFalse(egreso1.esValido());
     }
 

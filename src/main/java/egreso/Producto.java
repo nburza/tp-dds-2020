@@ -9,17 +9,12 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "Productos")
-public class Producto extends EntidadPersistente
-{
+public class Producto extends EntidadPersistente {
 
     private String descripcion;
-    private BigDecimal precioUnitario;
 
-    public Producto(String unaDescripcion, BigDecimal unPrecioUnitario)
-    {
+    public Producto(String unaDescripcion) {
         this.descripcion = unaDescripcion;
-        this.precioUnitario = unPrecioUnitario;
     }
 
-    public BigDecimal getPrecioUnitario(){ return precioUnitario;}
 }
