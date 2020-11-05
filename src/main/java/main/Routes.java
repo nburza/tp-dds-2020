@@ -1,5 +1,6 @@
 package main;
 
+import controllers.LoginController;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -12,9 +13,10 @@ public class Routes {
     public static void main(String[] args) {
         Spark.port(8088);
         Spark.staticFileLocation("/public");
-
         HandlebarsTemplateEngine engine = new HandlebarsTemplateEngine();
 
         Spark.get("/",(request, response) -> {return "Hola";});
+        Spark.get("/login", LoginController::show, engine);
+        Spark.post("/login", LoginController::login, engine);
     }
 }

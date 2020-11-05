@@ -1,0 +1,21 @@
+.header {
+    border-bottom: solid 3px #1976D2;
+    background-color: #2196F3;
+    padding: 12px 0;
+}
+
+.container-fluid {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px
+}
+/*
+.navbar-default {
+    background-color:#F8F8F8;
+}
+
+.navbar-nav {
+    margin: 10.25px -15px
+}
+*/
