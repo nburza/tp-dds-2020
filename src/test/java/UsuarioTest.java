@@ -2,11 +2,15 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import usuario.Administrador;
-import usuario.ContraseniaDebilException;
-import usuario.Usuario;
+import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
+import org.uqbarproject.jpa.java8.extras.test.AbstractPersistenceTest;
+import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
+import usuario.*;
 
-public class UsuarioTest {
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class UsuarioTest extends AbstractPersistenceTest implements WithGlobalEntityManager, TransactionalOps {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
@@ -14,8 +18,15 @@ public class UsuarioTest {
     @Test
     public void autenticoUsuarioCorrecto() throws ClassNotFoundException {
 
-        Usuario usuario = new Usuario("nombre","queremos la copa");
-        Assert.assertTrue(usuario.autenticar("nombre","queremos la copa"));
+        Usuario usuario = new Usuario("nombre1","queremos la copa");
+        RepositorioDeUsuarios.getInstance().agregar(usuario);
+        entityManager().clear();
+        Optional<Usuario> usuarioRecuperado = RepositorioDeUsuarios.getInstance().getPorNombreDeUsuario(usuario.getNombreUsuario());
+        AtomicBoolean autenticacion = new AtomicBoolean(false);
+        usuarioRecuperado.ifPresent(u -> {
+            autenticacion.set(u.autenticar("nombre1", "queremos la copa"));
+        });
+        Assert.assertTrue(autenticacion.get());
     }
 
     @Test
@@ -95,5 +106,27 @@ public class UsuarioTest {
         exceptionRule.expect(ContraseniaDebilException.class);
         exceptionRule.expectMessage("La contraseña contiene una repetición de caracteres");
         new Usuario("nombre", "holaaaaaaa");
+    }
+
+    @Test
+    public void recuperoUsuarioPersistido() throws ClassNotFoundException {
+        Usuario usuario = new Usuario("nombre", "alta clave");
+        withTransaction( () -> RepositorioDeUsuarios.getInstance().agregar(usuario));
+        entityManager().clear();
+        Optional<Usuario> usuarioRecuperado = RepositorioDeUsuarios.getInstance().getPorNombreDeUsuario(usuario.getNombreUsuario());
+        Assert.assertTrue(usuarioRecuperado.isPresent());
+        usuarioRecuperado.ifPresent(u -> {
+            Assert.assertEquals(usuario.getId(), u.getId());
+            withTransaction(() -> RepositorioDeUsuarios.getInstance().borrar(u));
+        });
+    }
+
+    @Test(expected = NombreDeUsuarioRepetidoException.class)
+    public void noSePuedeCrearUsuarioConNombreRepetido() throws ClassNotFoundException {
+        Usuario usuario = new Usuario("nombreRepetido", "alta clave");
+        RepositorioDeUsuarios.getInstance().agregar(usuario);
+        entityManager().clear();
+        Usuario usuarioConNombreRepetido = new Usuario("nombreRepetido", "alta clave");
+        RepositorioDeUsuarios.getInstance().agregar(usuarioConNombreRepetido);
     }
 }

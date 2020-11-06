@@ -12,12 +12,15 @@ import org.junit.Test;
 import apiMercadoLibre.DTO.MonedaDTO;
 import apiMercadoLibre.ServiceLocator;
 import apiMercadoLibre.ValidadorDeMoneda;
+import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
+import org.uqbarproject.jpa.java8.extras.test.AbstractPersistenceTest;
+import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-public class EntidadTest {
+public class EntidadTest extends AbstractPersistenceTest implements WithGlobalEntityManager, TransactionalOps{
 
     private Organizacion organizacion;
     private EntidadJuridica entidadJuridica;
@@ -166,4 +169,33 @@ public class EntidadTest {
         Assert.assertEquals(totalPorEtiqueta,entidadJuridica.reporteMensualGastosPorEtiqueta());
     }
 
+    @Test
+    public void recuperoOrganizacionConDosEntidades(){
+        organizacion.agregarEntidad(entidadBase);
+        organizacion.agregarEntidad(entidadJuridica);
+        withTransaction(() -> RepositorioDeOrganizaciones.getInstance().agregar(organizacion));
+        entityManager().clear();
+        Optional<Organizacion> organizacionMisteriosa = RepositorioDeOrganizaciones.getInstance().getPorId(organizacion.getId());
+        Assert.assertTrue(organizacionMisteriosa.isPresent());
+        organizacionMisteriosa.ifPresent( o -> {
+            Assert.assertEquals(2,o.getEntidades().size());
+            withTransaction(() -> RepositorioDeOrganizaciones.getInstance().borrar(o));
+        });
+    }
+
+    @Test
+    public void recuperoEntidadConEgresos(){
+        entidadJuridica.agregarEgreso(egreso1);
+        organizacion.agregarEntidad(entidadJuridica);
+        withTransaction(() -> RepositorioDeOrganizaciones.getInstance().agregar(organizacion));
+        entityManager().clear();
+        Optional<Organizacion> organizacionMisteriosa = RepositorioDeOrganizaciones.getInstance().getPorId(organizacion.getId());
+        Assert.assertTrue(organizacionMisteriosa.isPresent());
+        organizacionMisteriosa.ifPresent( o -> {
+            Entidad entidadMisteriosa = o.getEntidades().stream().filter(e -> e.getId().equals(entidadJuridica.getId())).findFirst().get();
+            Egreso egresoMisterioso = entidadMisteriosa.getEgresos().stream().filter(eg -> eg.getId().equals(egreso1.getId())).findFirst().get();
+            Assert.assertEquals(3,egresoMisterioso.getItems().size());
+            withTransaction(() -> RepositorioDeOrganizaciones.getInstance().borrar(o));
+        });
+    }
 }
