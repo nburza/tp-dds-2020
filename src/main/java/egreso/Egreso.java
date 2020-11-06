@@ -49,7 +49,6 @@ public class Egreso extends EntidadPersistente
         this.items = unosItems;
         this.fecha = unaFecha;
         this.moneda = moneda;
-        RepositorioDeEgresos.getInstance().agregar(this);
     }
 
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, LocalDate unaFecha, boolean requierePresupuesto, String moneda)
