@@ -61,7 +61,49 @@ public class Egreso extends EntidadPersistente
         this.fecha = unaFecha;
         this.requierePresupuesto = requierePresupuesto;
         this.moneda = moneda;
-        RepositorioDeEgresos.getInstance().agregar(this);
+    }
+
+    public Egreso() {
+    }
+
+    public void setDocumentosComerciales(List<DocComercial> documentosComerciales) {
+        this.documentosComerciales = documentosComerciales;
+    }
+
+    public void setMedioDePago(MedioDePago medioDePago) {
+        this.medioDePago = medioDePago;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public void setPresupuestos(List<Presupuesto> presupuestos) {
+        this.presupuestos = presupuestos;
+    }
+
+    public void setRequierePresupuesto(boolean requierePresupuesto) {
+        this.requierePresupuesto = requierePresupuesto;
+    }
+
+    public void setRevisores(List<Usuario> revisores) {
+        this.revisores = revisores;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
+    }
+
+    public void setCriterioDeSeleccion(CriterioCompra criterioDeSeleccion) {
+        this.criterioDeSeleccion = criterioDeSeleccion;
+    }
+
+    public void setEtiquetas(List<Etiqueta> etiquetas) {
+        this.etiquetas = etiquetas;
     }
 
     public EstadoValidacion getEstado() {
@@ -70,6 +112,10 @@ public class Egreso extends EntidadPersistente
 
     public void setEstado(EstadoValidacion estado) {
         this.estado = estado;
+    }
+
+    public List<Presupuesto> getPresupuestos() {
+        return presupuestos;
     }
 
     private static final int presupuestosRequeridos = 3;

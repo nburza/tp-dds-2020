@@ -24,10 +24,25 @@ public class Usuario extends EntidadPersistente {
     private String nombreUsuario;
     private String contraseniaHasheada;
 
+    public Usuario() {
+    }
+
     public Usuario(String nombreUsuario, String contrasenia) throws ClassNotFoundException {
         validarContrasenia(nombreUsuario,contrasenia);
         this.nombreUsuario = nombreUsuario;
         this.contraseniaHasheada = hashearContrasenia(contrasenia);
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public void setContraseniaHasheada(String contraseniaHasheada) {
+        this.contraseniaHasheada = contraseniaHasheada;
     }
 
     public Hashtable<Egreso, String> consultarBandeja()

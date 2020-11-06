@@ -9,4 +9,7 @@ public class Efectivo extends MedioDePago{
     public Efectivo (String descripcion, String identificador){
         super(descripcion, identificador);
     }
+
+    public Efectivo() {
+    }
 }

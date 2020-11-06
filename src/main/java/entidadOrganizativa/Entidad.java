@@ -38,6 +38,24 @@ public abstract class Entidad extends EntidadPersistente {
         this.categoriaEntidad = new ArrayList<>();
     }
 
+    public Entidad() {
+    }
+
+    public void setNombreFicticio(String nombreFicticio) {
+        this.nombreFicticio = nombreFicticio;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public void setCategoriaEntidad(List<CategoriaEntidad> categoriaEntidad) {
+        this.categoriaEntidad = categoriaEntidad;
+    }
+
+    public void setEgresos(List<Egreso> egresos) {
+        this.egresos = egresos;
+    }
 
     public void agregarCategoria(CategoriaEntidad categoria) {
         this.categoriaEntidad.add(categoria);

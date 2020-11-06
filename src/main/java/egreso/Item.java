@@ -36,6 +36,25 @@ public class Item extends EntidadPersistente {
         this.moneda = moneda;
     }
 
+    public Item() {
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
+    }
+
     public BigDecimal getPrecioUnitario() {
         return precioUnitario;
     }

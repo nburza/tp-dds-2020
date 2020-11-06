@@ -14,4 +14,7 @@ public class EntidadBase extends Entidad {
     public EntidadBase(String nombreFicticio, String razonSocial, List<Egreso> egresos) {
         super(nombreFicticio, razonSocial, egresos);
     }
+
+    public EntidadBase() {
+    }
 }

@@ -32,6 +32,25 @@ public abstract class EntidadJuridica extends Entidad {
         this.codigoIncripcionIGJ = codigoIncripcionIGJ;
     }
 
+    public EntidadJuridica() {
+    }
+
+    public void setCuit(int cuit) {
+        this.cuit = cuit;
+    }
+
+    public void setDireccionPostal(DireccionPostal direccionPostal) {
+        this.direccionPostal = direccionPostal;
+    }
+
+    public void setCodigoIncripcionIGJ(Integer codigoIncripcionIGJ) {
+        this.codigoIncripcionIGJ = codigoIncripcionIGJ;
+    }
+
+    public void setListaEntidades(List<EntidadBase> listaEntidades) {
+        this.listaEntidades = listaEntidades;
+    }
+
     @Override
     public BigDecimal totalEgresos() {
         BigDecimal totalEntidadesBase = listaEntidades.stream()

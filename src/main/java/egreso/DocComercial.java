@@ -19,6 +19,17 @@ public class DocComercial extends EntidadPersistente
         this.tipoDC = unTipoDC;
     }
 
+    public DocComercial() {
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public void setTipoDC(TipoDocComercial tipoDC) {
+        this.tipoDC = tipoDC;
+    }
+
     public TipoDocComercial getTipoDC(){
         return tipoDC;
 }

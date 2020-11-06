@@ -25,4 +25,10 @@ public class Empresa extends EntidadJuridica {
         this.categoria=categoria;
     }
 
+    public Empresa() {
+    }
+
+    public void setCategoria(CategoriaEmpresa categoria) {
+        this.categoria = categoria;
+    }
 }

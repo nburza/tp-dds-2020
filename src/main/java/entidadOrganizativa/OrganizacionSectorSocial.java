@@ -17,4 +17,7 @@ public class OrganizacionSectorSocial extends EntidadJuridica {
     public OrganizacionSectorSocial(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
         super(razonSocial, nombreFicticio, cuit, direccionPostal, codigoIncripcionIGJ, egresos);
     }
+
+    public OrganizacionSectorSocial() {
+    }
 }

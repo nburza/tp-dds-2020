@@ -37,6 +37,29 @@ public class Presupuesto extends EntidadPersistente
         egreso.agregarPresupuesto(this);
     }
 
+    public Presupuesto() {
+    }
+
+    public void setDetalle(List<Item> detalle) {
+        this.detalle = detalle;
+    }
+
+    public void setDocumentosComerciales(List<DocComercial> documentosComerciales) {
+        this.documentosComerciales = documentosComerciales;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
     public BigDecimal totalPresupuesto() {
 
         BigDecimal total = new BigDecimal("0");

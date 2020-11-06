@@ -23,6 +23,9 @@ public class DireccionPostal  {
         this.direccion = direccion;
     }
 
+    public DireccionPostal() {
+    }
+
     public String getPais() {
         return pais;
     }

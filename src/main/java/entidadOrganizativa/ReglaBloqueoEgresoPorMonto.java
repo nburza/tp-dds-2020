@@ -28,4 +28,11 @@ public class ReglaBloqueoEgresoPorMonto extends Regla {
 
         this.montoLimite = montoLimite;
     }
+
+    public ReglaBloqueoEgresoPorMonto() {
+    }
+
+    public void setMontoLimite(BigDecimal montoLimite) {
+        this.montoLimite = montoLimite;
+    }
 }

@@ -16,6 +16,7 @@ public class CategoriaEntidad extends EntidadPersistente {
     @ManyToMany
     @OrderColumn(name = "orden")
     private List<Regla> reglas;
+
     public CategoriaEntidad(String nombre, List<Regla> reglas) {
         this.nombre = nombre;
         this.reglas = reglas;
@@ -24,6 +25,13 @@ public class CategoriaEntidad extends EntidadPersistente {
     public CategoriaEntidad(String nombre) {
         this.nombre = nombre;
         this.reglas = new ArrayList<>();
+    }
+
+    public CategoriaEntidad() {
+    }
+
+    public void setReglas(List<Regla> reglas) {
+        this.reglas = reglas;
     }
 
     public String getNombre() {

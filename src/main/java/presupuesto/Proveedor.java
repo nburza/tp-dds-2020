@@ -20,6 +20,21 @@ public class Proveedor extends EntidadPersistente {
         this.direccionPostal = direccionPostal;
     }
 
+    public Proveedor() {
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
+    public void setDireccionPostal(DireccionPostal direccionPostal) {
+        this.direccionPostal = direccionPostal;
+    }
+
     public String getNombre() {
         return nombre;
     }

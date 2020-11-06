@@ -11,4 +11,7 @@ public class TarjetaCredito extends MedioDePago{
     public TarjetaCredito (String descripcion, String identificador){
         super(descripcion,identificador);
     }
+
+    public TarjetaCredito() {
+    }
 }

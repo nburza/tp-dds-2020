@@ -22,6 +22,25 @@ public class Organizacion extends EntidadPersistente {
         this.categorias = categorias;
     }
 
+    public Organizacion() {
+    }
+
+    public void setEntidades(List<Entidad> entidades) {
+        this.entidades = entidades;
+    }
+
+    public void setCategorias(List<CategoriaEntidad> categorias) {
+        this.categorias = categorias;
+    }
+
+    public List<Entidad> getEntidades() {
+        return entidades;
+    }
+
+    public List<CategoriaEntidad> getCategorias() {
+        return categorias;
+    }
+
     public void agregarEntidad(Entidad entidad) {
         this.entidades.add(entidad);
     }
