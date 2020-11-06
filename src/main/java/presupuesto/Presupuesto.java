@@ -17,14 +17,14 @@ import java.util.List;
 @Table(name = "Presupuestos")
 public class Presupuesto extends EntidadPersistente
 {
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "presupuesto_id")
     private List<Item> detalle = new ArrayList<>();
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "presupuesto_id")
     private List<DocComercial> documentosComerciales = new ArrayList<>();
     private String moneda;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Proveedor proveedor;
 
     public Presupuesto(List<Item> detalle, List<DocComercial> documentosComerciales, Egreso egreso, String moneda, Proveedor proveedor) throws Exception {

@@ -2,6 +2,7 @@ package entidadOrganizativa;
 
 import persistencia.EntidadPersistente;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -10,10 +11,10 @@ import java.util.List;
 @Entity
 public class Organizacion extends EntidadPersistente {
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "organizacion_id")
     private List<Entidad> entidades;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "organizacion_id")
     private List<CategoriaEntidad> categorias;
 

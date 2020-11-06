@@ -27,7 +27,7 @@ public abstract class Entidad extends EntidadPersistente {
     @ManyToMany
     private List <CategoriaEntidad> categoriaEntidad ;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entidad_id")
     private List<Egreso> egresos;
 

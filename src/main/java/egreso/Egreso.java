@@ -16,16 +16,16 @@ import javax.persistence.*;
 public class Egreso extends EntidadPersistente
 {
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "egreso_id")
     private List<DocComercial> documentosComerciales = new ArrayList<>();
     @ManyToOne
     private MedioDePago medioDePago;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "egreso_id")
     private List<Item> items = new ArrayList<>();
     private LocalDate fecha;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "egreso_id")
     private List<Presupuesto> presupuestos = new ArrayList<>();
     private boolean requierePresupuesto = true;
@@ -33,11 +33,11 @@ public class Egreso extends EntidadPersistente
     @JoinTable(name = "revisor_x_egreso")
     private List<Usuario> revisores = new ArrayList<>();
     private String moneda;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private CriterioCompra criterioDeSeleccion = CriterioMenorValor.getInstance();
     @Enumerated(EnumType.STRING)
     private EstadoValidacion estado = EstadoValidacion.PENDIENTE;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "egreso_x_etiqueta")
     private List<Etiqueta> etiquetas = new ArrayList<>();
 

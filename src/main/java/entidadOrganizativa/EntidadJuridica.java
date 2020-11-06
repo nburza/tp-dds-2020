@@ -14,7 +14,7 @@ public abstract class EntidadJuridica extends Entidad {
     @Embedded
     private DireccionPostal direccionPostal;
     private Integer codigoIncripcionIGJ;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entidad_juridica_id")
     private List<EntidadBase> listaEntidades = new ArrayList<>();
 
