@@ -1,13 +1,48 @@
-{{#partial "contenido"}}
+<html>
+<head>
+    <title>GeSoc - Login</title>
+    <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet"  href="main.css">
+    <script src="https://kit.fontawesome.com/816b172e21.js" crossorigin="anonymous"></script>
 
-<form method="POST" action="/login">
-	<div> Usuario <input type="text" name="usuario"/>  </div> 
-	<div> Password <input type="text" name="password"/>  </div>
-	<div>
-	    <button type="button" class="btn btn-outline-primary">Primary</button>
-	</div>
-</form>
+    <!--<link rel="icon" href="./img/icon-logo-dds.ico"> -->
+</head>
 
-{{/partial}}
+<header class="header">
+    <div class="container-fluid">
+        <h2 class="text-left">aca va la imagen</h2>
+        <!--<img src="https://doinglobal.com/wp-content/uploads/2019/09/DGPS-logo.png" class="img-responsive"/>-->
+    </div>
+</header>
 
-{{>layout.hbs}}
+<body>
+<div class="card login-card">
+    <!--<img src="https://doinglobal.com/wp-content/uploads/2019/09/DGPS-logo.png" class="card-img-top">-->
+    <div class="card-header">
+        <h4>Iniciar Sesión</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="/login">
+            <div class="form-group">
+                <label>Nombre de usuario</label>
+                <input name="usuario" class="form-control" placeholder="usuario" type="text" maxlength="64">
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input name="password" class="form-control" placeholder="contraseña" type="password" maxlength="64">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn btn-outline-primary btn-block" data-loading-text="Ingresando..."><i class="fas fa-sign-in-alt"></i> Ingresar  </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container-fluid">
+        <p>© {{anio}} GeSoc</p>
+    </div>
+</footer>
+
+</body>
+</html>

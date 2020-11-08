@@ -2,6 +2,8 @@ package usuario;
 
 import persistencia.RepositorioGenerico;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class RepositorioDeUsuarios extends RepositorioGenerico<Usuario> {
@@ -11,6 +13,8 @@ public class RepositorioDeUsuarios extends RepositorioGenerico<Usuario> {
     public static RepositorioDeUsuarios getInstance(){return  instance;}
 
     private RepositorioDeUsuarios(){ }
+
+    public static List<Usuario> usuariosLogueados = new ArrayList<>();
 
     @Override
     protected Class<Usuario> getClase() {
