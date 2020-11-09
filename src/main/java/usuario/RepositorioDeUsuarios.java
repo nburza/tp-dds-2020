@@ -14,8 +14,6 @@ public class RepositorioDeUsuarios extends RepositorioGenerico<Usuario> {
 
     private RepositorioDeUsuarios(){ }
 
-    public static List<Usuario> usuariosLogueados = new ArrayList<>();
-
     @Override
     protected Class<Usuario> getClase() {
         return Usuario.class;
