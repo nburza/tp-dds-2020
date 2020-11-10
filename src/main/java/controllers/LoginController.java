@@ -13,10 +13,17 @@ import java.util.Optional;
 
 public class LoginController {
 
-
     public ModelAndView show(Request req, Response res){
         Map<String, Object> viewModel = new HashMap<String, Object>();
-        viewModel.put("anio", LocalDate.now().getYear());
+
+        if(RepositorioDeUsuarios.estaLogueado(req,res))
+        {
+            res.redirect("/home");
+        }
+        else
+        {
+            viewModel.put("anio", LocalDate.now().getYear());
+        }
         return new ModelAndView(viewModel, "login.hbs");
     }
 
@@ -42,4 +49,6 @@ public class LoginController {
         res.redirect("/login");
         return null;
     }
+
+
 }

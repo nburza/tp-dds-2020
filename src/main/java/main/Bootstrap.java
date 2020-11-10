@@ -35,6 +35,5 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
                 e.printStackTrace();
             }
         });
-        entityManager().clear();
     }
 }
