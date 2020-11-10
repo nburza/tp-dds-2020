@@ -1,0 +1,24 @@
+{{#partial "contenido"}}
+
+    <div>
+        <h2>Organizacion {{idOrganizacion}}</h2>
+        <a class="btn btn-primary" href="/entidades/nueva" role="button">Agregar</a>
+        <table style="width:100%">
+            <tr>
+                <th>ID</th>
+                <th>Nombre ficticio</th>
+                <th>Razon Social</th>
+            </tr>
+            {{#each entidades}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{nombreFicticio}}</td>
+                <td>{{razonSocial}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+
+{{/partial}}
+
+{{>layout.hbs}}

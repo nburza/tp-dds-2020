@@ -16,6 +16,61 @@
                     {{/each}}
                 </select>
             </div>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary active">
+                    <input type="radio" id="base" name="tipo" value="base" autocomplete="off" checked>
+                    Base
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" id="juridica" name="tipo" value="juridica" autocomplete="off">
+                    Juridica
+                </label>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label>Cuit</label><input name="cuit" class="form-control" type="text" maxlength="64">
+                </div>
+                <div class="form-group">
+                    <label>País</label><input name="pais" class="form-control" type="text" maxlength="64">
+                </div>
+                <div class="form-group">
+                    <label>Provincia</label><input name="provincia" class="form-control" type="text" maxlength="64">
+                </div>
+                <div class="form-group">
+                    <label>Ciudad</label><input name="ciudad" class="form-control" type="text" maxlength="64">
+                </div>
+                <div class="form-group">
+                    <label>Dirección</label><input name="direccion" class="form-control" type="text" maxlength="64">
+                </div>
+                <div class="form-group">
+                    <label>Código IGJ</label><input name="cod-igj" class="form-control" type="text" maxlength="64">
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="oss" name="tipo" value="oss">
+                    <label for="male">Organizacion Sector Social</label>
+                    <input type="radio" id="empresa" name="tipo" value="empresa">
+                    <label for="female">Empresa</label>
+                </div>
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary active">
+                        <input type="radio" id="oss" name="tipoEntidadJuridica" value="oss" autocomplete="off" checked>
+                        Organizacion Sector Social
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" id="empresa" name="tipoEntidadJuridica" value="empresa" autocomplete="off">
+                        Empresa
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="categorias">Categorias</label>
+                    <select id="categorias" name="categorias" size="4" multiple>
+                        <option value="micro">Micro</option>
+                        <option value="pequenia">Pequeña</option>
+                        <option value="medianaTramo1">Mediana tramo 1</option>
+                        <option value="medianaTramo2">Mediana tramo 2</option>
+                    </select>
+                </div>
+            </div>
             <div class="form-group">
                 <button type="submit" class="btn btn btn-outline-primary btn-block" data-loading-text="Creando..."><i class="fas fa-sign-in-alt"></i>Crear</button>
             </div>

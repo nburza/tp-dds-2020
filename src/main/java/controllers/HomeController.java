@@ -25,4 +25,14 @@ public class HomeController {
         }
         return new ModelAndView(viewModel, "home.hbs");
     }
+
+    public Void index(Request request, Response response){
+        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
+            response.redirect("/login");
+        }
+        else {
+            response.redirect("/home");
+        }
+        return null;
+    }
 }

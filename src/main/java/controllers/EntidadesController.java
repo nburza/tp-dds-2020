@@ -1,11 +1,14 @@
 package controllers;
 
+import apiMercadoLibre.DTO.PaisDTO;
+import apiMercadoLibre.ServiceLocator;
 import entidadOrganizativa.CategoriaEntidad;
 import entidadOrganizativa.Organizacion;
 import entidadOrganizativa.RepositorioDeOrganizaciones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import usuario.RepositorioDeUsuarios;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -15,17 +18,35 @@ import java.util.Map;
 
 public class EntidadesController {
 
-    public ModelAndView getFormularioNuevaEntidad(Request request, Response response) {
+    public ModelAndView showEntidades(Request request, Response response) {
         Map<String, Object> viewModel = new HashMap<String, Object>();
-        viewModel.put("anio", LocalDate.now().getYear());
-        viewModel.put("titulo", "Home");
-        //viewModel.put("nombreUsuario", )
-        viewModel.put("categorias", getCategorias(request, response));
+        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
+            response.redirect("/login");
+        }
+        else {
+            viewModel.put("anio", LocalDate.now().getYear());
+            viewModel.put("titulo", "Entidades");
+            viewModel.put("idOrganizacion", getOrganizacion(request).getId());
+            viewModel.put("entidades", getOrganizacion(request).getEntidades());
+        }
+        return new ModelAndView(viewModel, "entidades.hbs");
+    }
+
+    public ModelAndView showFormularioNuevaEntidad(Request request, Response response) {
+        Map<String, Object> viewModel = new HashMap<String, Object>();
+        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
+            response.redirect("/login");
+        }
+        else {
+            viewModel.put("anio", LocalDate.now().getYear());
+            viewModel.put("titulo", "Crear entidad");
+            viewModel.put("categorias", getOrganizacion(request).getCategorias());
+        }
         return new ModelAndView(viewModel, "nuevaEntidad.hbs");
     }
 
-    private List<CategoriaEntidad> getCategorias(Request request, Response response) {
+    private Organizacion getOrganizacion(Request request) {
         Long idUsuario = request.session().attribute("idUsuario");
-        return RepositorioDeOrganizaciones.getInstance().getOrganizacionDelUsuarioConId(idUsuario).get().getCategorias();
+        return RepositorioDeOrganizaciones.getInstance().getOrganizacionDelUsuarioConId(idUsuario).get();
     }
 }
