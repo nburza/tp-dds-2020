@@ -1,5 +1,6 @@
 package main;
 
+import controllers.EntidadesController;
 import controllers.HomeController;
 import controllers.LoginController;
 import spark.ModelAndView;
@@ -20,10 +21,13 @@ public class Routes {
         HandlebarsTemplateEngine engine = new HandlebarsTemplateEngine();
         LoginController loginController = new LoginController();
         HomeController homeController = new HomeController();
+        EntidadesController entidadesController = new EntidadesController();
 
         Spark.get("/home",(request, response) ->  homeController.show(request, response), engine);
         Spark.get("/login", (request, response) -> loginController.show(request, response), engine);
         Spark.post("/login", (request, response) -> loginController.login(request, response));
         Spark.get("/logout", (request, response) -> loginController.logout(request, response));
+
+        Spark.get("/entidades/nueva", (request, response) ->  entidadesController.getFormularioNuevaEntidad(request, response), engine);
     }
 }
