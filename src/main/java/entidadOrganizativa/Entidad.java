@@ -121,4 +121,8 @@ public abstract class Entidad extends EntidadPersistente {
                 .map(Egreso::totalEgreso)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    public boolean tieneCategoria(String nombreCategoria) {
+        return categoriaEntidad.stream().anyMatch(c -> c.getNombre().equals(nombreCategoria));
+    }
 }

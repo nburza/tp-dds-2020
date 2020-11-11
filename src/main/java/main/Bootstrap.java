@@ -41,6 +41,7 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
         organizacion.agregarCategoria(categoria2);
         organizacion.agregarCategoria(categoria3);
         organizacion.agregarCategoria(categoria4);
+        entidadBase.agregarCategoria(categoria3);
         MonedaDTO pesoArgentino = new MonedaDTO(null,null,"Peso argentino");
         ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(Arrays.asList(pesoArgentino));
         ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);

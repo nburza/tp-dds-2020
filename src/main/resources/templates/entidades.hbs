@@ -3,6 +3,15 @@
     <div>
         <h2>Organizacion {{idOrganizacion}}</h2>
         <a class="btn btn-primary" href="/entidades/nueva" role="button">Agregar</a>
+        <form action="/entidades" method="GET">
+            <label for="categoriaFiltrada">Buscar por categoria</label>
+            <select id="categoriaFiltrada" name="categoriaFiltrada">
+                {{#each categorias}}
+                    <option value={{nombre}}>{{nombre}}</option>
+                {{/each}}
+            </select>
+            <input type="submit" value="Buscar">
+        </form>
         <table style="width:100%">
             <tr>
                 <th>ID</th>

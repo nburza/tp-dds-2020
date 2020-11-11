@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Organizacion extends EntidadPersistente {
@@ -72,5 +73,9 @@ public class Organizacion extends EntidadPersistente {
 
     public void agregarUsuario(Usuario usuario) {
         usuarios.add(usuario);
+    }
+
+    public List<Entidad> getEntidadesPorCategoria(String nombreCategoria) {
+        return entidades.stream().filter(e -> e.tieneCategoria(nombreCategoria)).collect(Collectors.toList());
     }
 }

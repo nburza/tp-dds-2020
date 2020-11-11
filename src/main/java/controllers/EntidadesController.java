@@ -26,7 +26,12 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Entidades");
             viewModel.put("idOrganizacion", getOrganizacion(request).getId());
-            viewModel.put("entidades", getOrganizacion(request).getEntidades());
+            viewModel.put("categorias", getOrganizacion(request).getCategorias());
+            String categoriaFiltrada = request.queryParams("categoriaFiltrada");
+            if(categoriaFiltrada == null)
+                viewModel.put("entidades", getOrganizacion(request).getEntidades());
+            else
+                viewModel.put("entidades", getOrganizacion(request).getEntidadesPorCategoria(categoriaFiltrada));
         }
         return new ModelAndView(viewModel, "entidades.hbs");
     }
