@@ -8,8 +8,7 @@ import apiMercadoLibre.ServiceLocator;
 import apiMercadoLibre.ServicioAPIMercadoLibre;
 import apiMercadoLibre.ValidadorDeMoneda;
 import apiMercadoLibre.ValidadorDeUbicacion;
-import egreso.Egreso;
-import egreso.RepositorioDeEgresos;
+import egreso.*;
 import entidadOrganizativa.*;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
@@ -17,8 +16,10 @@ import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
 import usuario.RepositorioDeUsuarios;
 import usuario.Usuario;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
 
@@ -42,10 +43,10 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
         organizacion.agregarCategoria(categoria3);
         organizacion.agregarCategoria(categoria4);
         entidadBase.agregarCategoria(categoria3);
-        MonedaDTO pesoArgentino = new MonedaDTO(null,null,"Peso argentino");
+        MonedaDTO pesoArgentino = new MonedaDTO(null,null,"Dolar");
         ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(Arrays.asList(pesoArgentino));
         ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
-        Egreso egreso =  new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
+        Egreso egreso =  new Egreso( null, null, new ArrayList<>(), LocalDate.now(),false,"Dolar");
         RepositorioDeEgresos.getInstance().agregar(egreso);
         withTransaction(() -> {
             try {
@@ -54,6 +55,7 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
                 RepositorioDeUsuarios.getInstance().agregar(migue);
                 organizacion.agregarUsuario(migue);
                 egreso.agregarRevisor(migue);
+                ValidadorDeEgresos.getInstance().validarTodos();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
