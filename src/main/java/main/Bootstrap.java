@@ -1,11 +1,15 @@
 package main;
 
 import apiMercadoLibre.DTO.CiudadDTO;
+import apiMercadoLibre.DTO.MonedaDTO;
 import apiMercadoLibre.DTO.PaisDTO;
 import apiMercadoLibre.DTO.ProvinciaDTO;
 import apiMercadoLibre.ServiceLocator;
 import apiMercadoLibre.ServicioAPIMercadoLibre;
+import apiMercadoLibre.ValidadorDeMoneda;
 import apiMercadoLibre.ValidadorDeUbicacion;
+import egreso.Egreso;
+import egreso.RepositorioDeEgresos;
 import entidadOrganizativa.*;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
@@ -37,12 +41,18 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
         organizacion.agregarCategoria(categoria2);
         organizacion.agregarCategoria(categoria3);
         organizacion.agregarCategoria(categoria4);
+        MonedaDTO pesoArgentino = new MonedaDTO(null,null,"Peso argentino");
+        ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(Arrays.asList(pesoArgentino));
+        ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
+        Egreso egreso =  new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
+        RepositorioDeEgresos.getInstance().agregar(egreso);
         withTransaction(() -> {
             try {
                 RepositorioDeOrganizaciones.getInstance().agregar(organizacion);
                 Usuario migue = new Usuario("migue","alta clave");
                 RepositorioDeUsuarios.getInstance().agregar(migue);
                 organizacion.agregarUsuario(migue);
+                egreso.agregarRevisor(migue);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }

@@ -1,0 +1,19 @@
+{{#partial "contenido"}}
+
+    <div>
+        <h2>Mensajes</h2>
+        <table style="width:100%">
+            <tr>
+                <th>egresos</th>
+            </tr>
+            {{#each egresos}}
+                <tr>
+                    <td>{{egresos}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    </div>
+
+{{/partial}}
+
+{{>layout.hbs}}

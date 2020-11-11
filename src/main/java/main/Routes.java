@@ -3,6 +3,7 @@ package main;
 import controllers.EntidadesController;
 import controllers.HomeController;
 import controllers.LoginController;
+import controllers.MensajesController;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -22,6 +23,7 @@ public class Routes {
         LoginController loginController = new LoginController();
         HomeController homeController = new HomeController();
         EntidadesController entidadesController = new EntidadesController();
+        MensajesController mensajesController = new MensajesController();
 
         Spark.get("/", homeController::index);
 
@@ -32,6 +34,8 @@ public class Routes {
 
         Spark.get("/entidades", entidadesController::showEntidades, engine);
         Spark.get("/entidades/nueva", entidadesController::showFormularioNuevaEntidad, engine);
+
+        Spark.get("/mensajes",mensajesController::showMensajes, engine);
         Spark.post("/entidades", entidadesController::agregarEntidad);
     }
 }
