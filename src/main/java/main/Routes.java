@@ -32,5 +32,6 @@ public class Routes {
 
         Spark.get("/entidades", entidadesController::showEntidades, engine);
         Spark.get("/entidades/nueva", entidadesController::showFormularioNuevaEntidad, engine);
+        Spark.post("/entidades", entidadesController::agregarEntidad);
     }
 }

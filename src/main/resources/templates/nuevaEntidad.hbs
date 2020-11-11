@@ -18,11 +18,11 @@
             </div>
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-primary active">
-                    <input type="radio" id="base" name="tipo" value="base" autocomplete="off" checked>
+                    <input type="radio" id="base" name="tipoEntidad" value="base" autocomplete="off" checked>
                     Base
                 </label>
                 <label class="btn btn-primary">
-                    <input type="radio" id="juridica" name="tipo" value="juridica" autocomplete="off">
+                    <input type="radio" id="juridica" name="tipoEntidad" value="juridica" autocomplete="off">
                     Juridica
                 </label>
             </div>
@@ -43,27 +43,17 @@
                     <label>Dirección</label><input name="direccion" class="form-control" type="text" maxlength="64">
                 </div>
                 <div class="form-group">
-                    <label>Código IGJ</label><input name="cod-igj" class="form-control" type="text" maxlength="64">
+                    <label>Código IGJ</label><input name="codigoIgj" class="form-control" type="text" maxlength="64">
                 </div>
                 <div class="form-group">
-                    <input type="radio" id="oss" name="tipo" value="oss">
-                    <label for="male">Organizacion Sector Social</label>
-                    <input type="radio" id="empresa" name="tipo" value="empresa">
-                    <label for="female">Empresa</label>
-                </div>
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary active">
-                        <input type="radio" id="oss" name="tipoEntidadJuridica" value="oss" autocomplete="off" checked>
-                        Organizacion Sector Social
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" id="empresa" name="tipoEntidadJuridica" value="empresa" autocomplete="off">
-                        Empresa
-                    </label>
+                    <input type="radio" id="oss" name="tipoEntidadJuridica" value="oss">
+                    <label for="oss">Organizacion Sector Social</label>
+                    <input type="radio" id="empresa" name="tipoEntidadJuridica" value="empresa">
+                    <label for="empresa">Empresa</label>
                 </div>
                 <div class="form-group">
-                    <label for="categorias">Categorias</label>
-                    <select id="categorias" name="categorias" size="4" multiple>
+                    <label for="categoriaEmpresa">Categorias de empresa</label>
+                    <select id="categoriaEmpresa" name="categoriaEmpresa" size="4">
                         <option value="micro">Micro</option>
                         <option value="pequenia">Pequeña</option>
                         <option value="medianaTramo1">Mediana tramo 1</option>

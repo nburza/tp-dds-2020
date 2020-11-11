@@ -1,22 +1,21 @@
 package controllers;
 
-import apiMercadoLibre.DTO.PaisDTO;
-import apiMercadoLibre.ServiceLocator;
-import entidadOrganizativa.CategoriaEntidad;
-import entidadOrganizativa.Organizacion;
-import entidadOrganizativa.RepositorioDeOrganizaciones;
+import entidadOrganizativa.*;
+import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
+import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
+import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
+import presupuesto.DireccionPostal;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import usuario.RepositorioDeUsuarios;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Hashtable;
 import java.util.Map;
 
-public class EntidadesController {
+public class EntidadesController implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
 
     public ModelAndView showEntidades(Request request, Response response) {
         Map<String, Object> viewModel = new HashMap<String, Object>();
@@ -43,6 +42,44 @@ public class EntidadesController {
             viewModel.put("categorias", getOrganizacion(request).getCategorias());
         }
         return new ModelAndView(viewModel, "nuevaEntidad.hbs");
+    }
+
+    public Void agregarEntidad(Request request, Response response) {
+        Entidad entidad;
+        String nombreFicticio = request.queryParams("nombreFicticio");
+        String razonSocial = request.queryParams("razonSocial");
+        String tipoEntidad = request.queryParams("tipoEntidad");
+        String cuit = request.queryParams("cuit");
+        String pais = request.queryParams("pais");
+        String provincia = request.queryParams("provincia");
+        String ciudad = request.queryParams("ciudad");
+        String direccion = request.queryParams("direccion");
+        String codigoIgj = request.queryParams("codigoIgj");
+        String tipoEntidadJuridica = request.queryParams("tipoEntidadJuridica");
+        String categoriaEmpresa = request.queryParams("categoriaEmpresa");
+        if(tipoEntidad.equals("base")) {
+            entidad = new EntidadBase(nombreFicticio,razonSocial,null);
+        } else {
+            DireccionPostal direccionPostal = new DireccionPostal(pais,provincia,ciudad,direccion);
+            if(tipoEntidadJuridica.equals("oss")) {
+                entidad = new OrganizacionSectorSocial(razonSocial,nombreFicticio,Integer.parseInt(cuit),direccionPostal,Integer.valueOf(codigoIgj),null);
+            } else {
+                entidad = new Empresa(razonSocial,nombreFicticio,Integer.parseInt(cuit),direccionPostal,Integer.valueOf(codigoIgj),parsearCategoriaEmpresa(categoriaEmpresa),null);
+            }
+        }
+        Organizacion organizacion = getOrganizacion(request);
+        withTransaction(() -> organizacion.agregarEntidad(entidad));
+        response.redirect("/entidades");
+        return null;
+    }
+
+    private CategoriaEmpresa parsearCategoriaEmpresa(String categoriaEmpresa) {
+        Hashtable<String, CategoriaEmpresa> DiccionarioDeCategorias = new Hashtable<>();
+        DiccionarioDeCategorias.put("micro", CategoriaEmpresa.MICRO);
+        DiccionarioDeCategorias.put("pequenia",CategoriaEmpresa.PEQUENIA);
+        DiccionarioDeCategorias.put("medianaTramo1", CategoriaEmpresa.MEDIANA_TRAMO_1);
+        DiccionarioDeCategorias.put("medianaTramo2", CategoriaEmpresa.MEDIANA_TRAMO_2);
+        return DiccionarioDeCategorias.get(categoriaEmpresa);
     }
 
     private Organizacion getOrganizacion(Request request) {

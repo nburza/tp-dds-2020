@@ -57,6 +57,14 @@ public abstract class Entidad extends EntidadPersistente {
         this.egresos = egresos;
     }
 
+    public String getNombreFicticio() {
+        return nombreFicticio;
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
     public void agregarCategoria(CategoriaEntidad categoria) {
         this.categoriaEntidad.add(categoria);
     }
