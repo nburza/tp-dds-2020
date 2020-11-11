@@ -1,5 +1,6 @@
 package main;
 
+import controllers.EgresosController;
 import controllers.EntidadesController;
 import controllers.HomeController;
 import controllers.LoginController;
@@ -24,6 +25,7 @@ public class Routes {
         HomeController homeController = new HomeController();
         EntidadesController entidadesController = new EntidadesController();
         MensajesController mensajesController = new MensajesController();
+        EgresosController egresosController = new EgresosController();
 
         Spark.get("/", homeController::index);
 
@@ -34,8 +36,8 @@ public class Routes {
 
         Spark.get("/entidades", entidadesController::showEntidades, engine);
         Spark.get("/entidades/nueva", entidadesController::showFormularioNuevaEntidad, engine);
-
         Spark.get("/mensajes",mensajesController::showMensajes, engine);
         Spark.post("/entidades", entidadesController::agregarEntidad);
+        Spark.get("/altaEgresos", (request, response) -> egresosController.show(request, response), engine);
     }
 }
