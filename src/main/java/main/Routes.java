@@ -5,6 +5,7 @@ import controllers.EntidadesController;
 import controllers.HomeController;
 import controllers.LoginController;
 import controllers.MensajesController;
+import controllers.CategoriasController;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
