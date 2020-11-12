@@ -97,6 +97,14 @@ public class Egreso extends EntidadPersistente
         this.moneda = moneda;
     }
 
+    public String getMoneda(){
+        return moneda;
+    }
+
+    public BigDecimal getImporteTotal(){
+        return totalEgreso();
+    }
+
     public void setCriterioDeSeleccion(CriterioCompra criterioDeSeleccion) {
         this.criterioDeSeleccion = criterioDeSeleccion;
     }

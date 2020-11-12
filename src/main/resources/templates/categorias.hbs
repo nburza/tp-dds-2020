@@ -1,0 +1,23 @@
+{{#partial "contenido"}}
+
+    <div>
+        <h2>Organizacion {{idOrganizacion}}</h2>
+        <a class="btn btn-primary" href="/categorias/nueva" role="button">Agregar</a>
+        <table style="width:100%">
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+
+            </tr>
+            {{#each categorias}}
+            <tr>
+                <td>{{id}} </td>
+                <td>{{nombre}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+
+{{/partial}}
+
+{{>layout.hbs}}

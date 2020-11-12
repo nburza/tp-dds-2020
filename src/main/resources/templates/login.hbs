@@ -3,21 +3,27 @@
     <title>GeSoc - Login</title>
     <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet"  href="main.css">
+    <link rel="icon" href="/img/icon-logo-dds.ico">
     <script src="https://kit.fontawesome.com/816b172e21.js" crossorigin="anonymous"></script>
-
-    <!--<link rel="icon" href="./img/icon-logo-dds.ico"> -->
 </head>
 
 <header class="header">
     <div class="container-fluid">
-        <h2 class="text-left">aca va la imagen</h2>
-        <!--<img src="https://doinglobal.com/wp-content/uploads/2019/09/DGPS-logo.png" class="img-responsive"/>-->
+        <img src="/img/Logo-head.png" class="img-responsive"/>
     </div>
 </header>
 
+
 <body>
+{{#if mensaje}}
+    <div class="alert alert-{{tipoMensaje}} alert-dismissible fade show" role="alert">
+        <strong>{{tituloMensaje}}</strong> {{textoMensaje}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{{/if}}
 <div class="card login-card">
-    <!--<img src="https://doinglobal.com/wp-content/uploads/2019/09/DGPS-logo.png" class="card-img-top">-->
     <div class="card-header">
         <h4>Iniciar Sesión</h4>
     </div>
@@ -25,11 +31,11 @@
         <form method="POST" action="/login">
             <div class="form-group">
                 <label>Nombre de usuario</label>
-                <input name="usuario" class="form-control" placeholder="usuario" type="text" maxlength="64">
+                <input name="usuario" class="form-control" placeholder="usuario" type="text" maxlength="64" required>
             </div>
             <div class="form-group">
                 <label>Contraseña</label>
-                <input name="password" class="form-control" placeholder="contraseña" type="password" maxlength="64">
+                <input name="password" class="form-control" placeholder="contraseña" type="password" maxlength="64" required>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn btn-outline-primary btn-block" data-loading-text="Ingresando..."><i class="fas fa-sign-in-alt"></i> Ingresar  </button>

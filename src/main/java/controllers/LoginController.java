@@ -18,7 +18,7 @@ public class LoginController {
 
         if(RepositorioDeUsuarios.estaLogueado(req,res))
         {
-            res.redirect("/home");
+            res.redirect("/");
         }
         else
         {
@@ -27,7 +27,8 @@ public class LoginController {
         return new ModelAndView(viewModel, "login.hbs");
     }
 
-    public Void login(Request req, Response res) {
+    public ModelAndView login(Request req, Response res) {
+        Map<String, Object> viewModel = new HashMap<String, Object>();
         String username = req.queryParams("usuario");
         String password = req.queryParams("password");
         Optional<Usuario> usuario = RepositorioDeUsuarios.getInstance().getPorNombreDeUsuario(username);
@@ -35,11 +36,16 @@ public class LoginController {
         if(usuario.isPresent() && usuario.get().autenticar(username,password)) {
             req.session().attribute("idUsuario", usuario.get().getId());
             res.redirect("/home");
+            return null;
         } else {
-            res.redirect("/login");
+            viewModel.put("mensaje", true);
+            viewModel.put("tipoMensaje", "danger");
+            viewModel.put("tituloMensaje", "Error!");
+            viewModel.put("textoMensaje", "El usuario ingresado no existe. Ingrese nuevamente.");
+            viewModel.put("anio", LocalDate.now().getYear());
         }
 
-        return null;
+        return new ModelAndView(viewModel, "login.hbs");
     }
 
     public Void logout(Request req, Response res) {

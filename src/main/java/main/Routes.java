@@ -1,9 +1,11 @@
 package main;
 
+import controllers.EgresosController;
 import controllers.EntidadesController;
 import controllers.HomeController;
 import controllers.LoginController;
 import controllers.MensajesController;
+import controllers.CategoriasController;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -24,18 +26,25 @@ public class Routes {
         HomeController homeController = new HomeController();
         EntidadesController entidadesController = new EntidadesController();
         MensajesController mensajesController = new MensajesController();
+        EgresosController egresosController = new EgresosController();
+        CategoriasController categoriasController = new CategoriasController();
 
         Spark.get("/", homeController::index);
 
         Spark.get("/home",(request, response) ->  homeController.show(request, response), engine);
         Spark.get("/login", (request, response) -> loginController.show(request, response), engine);
-        Spark.post("/login", (request, response) -> loginController.login(request, response));
+        Spark.post("/login", (request, response) -> loginController.login(request, response), engine);
         Spark.get("/logout", (request, response) -> loginController.logout(request, response));
 
         Spark.get("/entidades", entidadesController::showEntidades, engine);
         Spark.get("/entidades/nueva", entidadesController::showFormularioNuevaEntidad, engine);
-
         Spark.get("/mensajes",mensajesController::showMensajes, engine);
         Spark.post("/entidades", entidadesController::agregarEntidad);
+        Spark.get("/altaEgresos", (request, response) -> egresosController.show(request, response), engine);
+
+        Spark.get("/categorias",categoriasController::showCategorias,engine);
+        Spark.get("/categorias/nueva",categoriasController::showFormularioNuevaCategoria,engine);
+        Spark.post("/categorias", categoriasController::agregarCategoria);
+
     }
 }

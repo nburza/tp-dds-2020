@@ -4,13 +4,22 @@
         <h2>Mensajes</h2>
         <table style="width:100%">
             <tr>
-                <th>egresos</th>
+                <th>Egreso ID</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Moneda</th>
+                <th>Importe Total</th>
             </tr>
             {{#each egresos}}
                 <tr>
-                    <td>{{egresos}}</td>
+                    <td>{{id}}</td>
+                    <td>{{fecha}}</td>
+                    <td>{{estado}}</td>
+                    <td>{{moneda}}</td>
+                    <td>{{importeTotal}}</td>
                 </tr>
             {{/each}}
+
         </table>
     </div>
 

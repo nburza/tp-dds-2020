@@ -37,8 +37,7 @@ public class Item extends EntidadPersistente {
         this.moneda = moneda;
     }
 
-    public Item() {
-    }
+    public Item(){}
 
     public void setProducto(Producto producto) {
         this.producto = producto;
