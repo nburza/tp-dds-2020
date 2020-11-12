@@ -2,13 +2,19 @@
 
     <div>
         <h2>Mensajes</h2>
-        <table style="width:100%">
+        <table style="width:80%">
             <tr>
-                <th>egresos</th>
+                <th>Fecha</th>
+                <th>Egreso</th>
+                <th>Estado</th>
+                <th>Moneda</th>
             </tr>
             {{#each egresos}}
                 <tr>
-                    <td>{{egresos}}</td>
+                    <td>{{fecha}}</td>
+                    <td><a href="/"><i ></i> {{id}} </a></td>
+                    <td>{{estado}}</td>
+                    <td>{{moneda}}</td>
                 </tr>
             {{/each}}
         </table>
