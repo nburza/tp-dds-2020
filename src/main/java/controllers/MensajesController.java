@@ -8,6 +8,7 @@ import spark.Response;
 import usuario.RepositorioDeUsuarios;
 import usuario.Usuario;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,19 +19,22 @@ public class MensajesController {
         if(!RepositorioDeUsuarios.estaLogueado(request, response)){
             response.redirect("/login");
         }else {
-            viewModel.put("egresos", egresosPorUsuarioLogueado(request));
+            Usuario usuarioLogueado = RepositorioDeUsuarios.getUsuarioLogueado(request);
+            viewModel.put("anio", LocalDate.now().getYear());
+            viewModel.put("nombreUsuario",usuarioLogueado.getNombreUsuario());
+            viewModel.put("egresos", egresosPorUsuario(usuarioLogueado));
         }
         return new ModelAndView(viewModel, "mensajes.hbs");
     }
 
-    public List<Egreso> egresosPorUsuarioLogueado(Request request){
-        Usuario usuarioLogueado = RepositorioDeUsuarios.getUsuarioLogueado(request);
+    public List<Egreso> egresosPorUsuario(Usuario usuario){
         List<Egreso> egresosList = new ArrayList<>();
-        for (Enumeration<Egreso> egresos = usuarioLogueado.consultarBandeja().keys();egresos.hasMoreElements();){
+        for (Enumeration<Egreso> egresos = usuario.consultarBandeja().keys();egresos.hasMoreElements();){
             egresosList.add(egresos.nextElement());
         }
         return egresosList;
     }
+
 }
 
 
