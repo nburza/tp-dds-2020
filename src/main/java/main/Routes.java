@@ -33,7 +33,7 @@ public class Routes {
 
         Spark.get("/home",(request, response) ->  homeController.show(request, response), engine);
         Spark.get("/login", (request, response) -> loginController.show(request, response), engine);
-        Spark.post("/login", (request, response) -> loginController.login(request, response));
+        Spark.post("/login", (request, response) -> loginController.login(request, response), engine);
         Spark.get("/logout", (request, response) -> loginController.logout(request, response));
 
         Spark.get("/entidades", entidadesController::showEntidades, engine);
