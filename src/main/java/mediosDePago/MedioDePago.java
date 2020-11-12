@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "forma", length = 1)
+@DiscriminatorColumn(name = "forma", length = 2)
 
 public abstract class MedioDePago extends EntidadPersistente {
     private String descripcion;

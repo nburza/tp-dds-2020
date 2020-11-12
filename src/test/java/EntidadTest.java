@@ -198,4 +198,10 @@ public class EntidadTest extends AbstractPersistenceTest implements WithGlobalEn
             withTransaction(() -> RepositorioDeOrganizaciones.getInstance().borrar(o));
         });
     }
+
+    @Test
+    public void calculoTotalDeEgresosDeUnaEntidadSinEgresos(){
+        Entidad entidad = new EntidadBase(null,null,new ArrayList<>());
+        Assert.assertEquals(BigDecimal.valueOf(0),entidad.totalEgresos());
+    }
 }

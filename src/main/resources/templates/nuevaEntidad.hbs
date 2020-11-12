@@ -9,24 +9,21 @@
                 <label>Razon social</label><input name="razonSocial" class="form-control" type="text" maxlength="64">
             </div>
             <div class="form-group">
-                <label for="categorias">Categorias</label>
-                <select id="categorias" name="categorias" size="4" multiple>
+                <label>Categorias asignadas</label>
+                <select id="categorias" name="categorias" class="custom-select" multiple>
+                    <option selected></option>
                     {{#each categorias}}
                         <option value={{nombre}}>{{nombre}}</option>
                     {{/each}}
                 </select>
             </div>
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-primary active">
-                    <input type="radio" id="base" name="tipoEntidad" value="base" autocomplete="off" checked>
-                    Base
-                </label>
-                <label class="btn btn-primary">
-                    <input type="radio" id="juridica" name="tipoEntidad" value="juridica" autocomplete="off">
-                    Juridica
-                </label>
+            <div class="form-group">
+                <input type="radio" id="base" name="tipoEntidad" value="base" checked data-toggle="collapse" data-target=".collapseJuridica.in"/>
+                <label for="base">Base</label>
+                <input type="radio" id="juridica" name="tipoEntidad" value="juridica" data-toggle="collapse" data-target=".collapseJuridica:not(.in)"/>
+                <label for="juridica">Jurídica</label>
             </div>
-            <div>
+            <div class="collapseJuridica collapse">
                 <div class="form-group">
                     <label>Cuit</label><input name="cuit" class="form-control" type="text" maxlength="64">
                 </div>
@@ -46,14 +43,14 @@
                     <label>Código IGJ</label><input name="codigoIgj" class="form-control" type="text" maxlength="64">
                 </div>
                 <div class="form-group">
-                    <input type="radio" id="oss" name="tipoEntidadJuridica" value="oss">
+                    <input type="radio" id="oss" name="tipoEntidadJuridica" value="oss" checked data-toggle="collapse" data-target=".collapseEmpresa.in"/>
                     <label for="oss">Organizacion Sector Social</label>
-                    <input type="radio" id="empresa" name="tipoEntidadJuridica" value="empresa">
+                    <input type="radio" id="empresa" name="tipoEntidadJuridica" value="empresa" data-toggle="collapse" data-target=".collapseEmpresa:not(.in)"/>
                     <label for="empresa">Empresa</label>
                 </div>
-                <div class="form-group">
-                    <label for="categoriaEmpresa">Categorias de empresa</label>
-                    <select id="categoriaEmpresa" name="categoriaEmpresa" size="4">
+                <div class="collapseEmpresa collapse form-group">
+                    <select id="categoriaEmpresa" name="categoriaEmpresa" class="custom-select">
+                        <option selected>Selecciona el tipo de empresa</option>
                         <option value="micro">Micro</option>
                         <option value="pequenia">Pequeña</option>
                         <option value="medianaTramo1">Mediana tramo 1</option>

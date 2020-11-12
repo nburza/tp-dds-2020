@@ -17,4 +17,9 @@ public class EntidadBase extends Entidad {
 
     public EntidadBase() {
     }
+
+    @Override
+    public String getTipo() {
+        return "Base";
+    }
 }

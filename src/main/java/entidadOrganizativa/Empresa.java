@@ -28,6 +28,11 @@ public class Empresa extends EntidadJuridica {
     public Empresa() {
     }
 
+    @Override
+    public String getTipo() {
+        return "Empresa";
+    }
+
     public void setCategoria(CategoriaEmpresa categoria) {
         this.categoria = categoria;
     }

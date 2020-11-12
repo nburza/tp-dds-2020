@@ -20,4 +20,9 @@ public class OrganizacionSectorSocial extends EntidadJuridica {
 
     public OrganizacionSectorSocial() {
     }
+
+    @Override
+    public String getTipo() {
+        return "Sector social";
+    }
 }

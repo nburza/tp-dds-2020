@@ -67,4 +67,8 @@ public abstract class EntidadJuridica extends Entidad {
 
         this.listaEntidades.add(entidadBase);
     }
+
+    public String getCantidadDeEntidadesAsignadasComoString() {
+        return String.valueOf(this.listaEntidades.size());
+    }
 }

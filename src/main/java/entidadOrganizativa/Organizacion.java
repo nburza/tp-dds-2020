@@ -55,6 +55,8 @@ public class Organizacion extends EntidadPersistente {
         this.entidades.add(entidad);
     }
 
+    public void removerEntidad(Entidad entidad) { this.entidades.remove(entidad); }
+
     public void agregarCategoria(CategoriaEntidad categoria) {
         this.categorias.add(categoria);
     }
@@ -77,5 +79,16 @@ public class Organizacion extends EntidadPersistente {
 
     public List<Entidad> getEntidadesPorCategoria(String nombreCategoria) {
         return entidades.stream().filter(e -> e.tieneCategoria(nombreCategoria)).collect(Collectors.toList());
+    }
+
+    public List<Entidad> getEntidadesBaseSinAsignar() {
+        return this.entidades.stream().filter(e -> e.getClass().getSimpleName().equals("EntidadBase")).collect(Collectors.toList());
+    }
+
+    public void asignarEntidadesBaseAUnaJuridica(List<EntidadBase> entidadesBase, EntidadJuridica entidadJuridica) {
+        entidadesBase.forEach(eb -> {
+            this.removerEntidad(eb);
+            entidadJuridica.agregarEntidadBase(eb);
+        });
     }
 }

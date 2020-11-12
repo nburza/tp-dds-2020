@@ -3,28 +3,43 @@
     <div>
         <h2>Organizacion {{idOrganizacion}}</h2>
         <a class="btn btn-primary" href="/entidades/nueva" role="button">Agregar</a>
-        <form action="/entidades" method="GET">
-            <label for="categoriaFiltrada">Buscar por categoria</label>
-            <select id="categoriaFiltrada" name="categoriaFiltrada">
-                {{#each categorias}}
-                    <option value={{nombre}}>{{nombre}}</option>
+        <div>
+            <form action="/entidades" method="GET">
+                <label for="categoriaFiltrada">Buscar por categoria</label>
+                <select id="categoriaFiltrada" name="categoriaFiltrada">
+                    {{#each categorias}}
+                        <option value={{nombre}}>{{nombre}}</option>
+                    {{/each}}
+                </select>
+                <input type="submit" value="Buscar">
+            </form>
+        </div>
+        <table class="table table-striped" style="width:100%">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre ficticio</th>
+                    <th scope="col">Razon Social</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Cant entidades asignadas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each entidades}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{nombreFicticio}}</td>
+                    <td>{{razonSocial}}</td>
+                    <td>{{tipo}}</td>
+                    <td>
+                    {{#if this.esJuridica}}
+                        {{cantidadDeEntidadesAsignadasComoString}}
+                        <a class="btn btn-primary" href="/entidades/{{id}}/entidadesBase/asignar" role="button">Agregar</a>
+                    {{/if}}
+                    </td>
+                </tr>
                 {{/each}}
-            </select>
-            <input type="submit" value="Buscar">
-        </form>
-        <table style="width:100%">
-            <tr>
-                <th>ID</th>
-                <th>Nombre ficticio</th>
-                <th>Razon Social</th>
-            </tr>
-            {{#each entidades}}
-            <tr>
-                <td>{{id}}</td>
-                <td>{{nombreFicticio}}</td>
-                <td>{{razonSocial}}</td>
-            </tr>
-            {{/each}}
+            </tbody>
         </table>
     </div>
 

@@ -65,6 +65,12 @@ public abstract class Entidad extends EntidadPersistente {
         return razonSocial;
     }
 
+    public abstract String getTipo();
+
+    public boolean getEsJuridica() {
+        return !this.getTipo().equals("Base");
+    }
+
     public void agregarCategoria(CategoriaEntidad categoria) {
         this.categoriaEntidad.add(categoria);
     }

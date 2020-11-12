@@ -19,12 +19,14 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
 
     public ModelAndView showEntidades(Request request, Response response) {
         Map<String, Object> viewModel = new HashMap<String, Object>();
+
         if(!RepositorioDeUsuarios.estaLogueado(request, response)){
             response.redirect("/login");
         }
         else {
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Entidades");
+            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
             viewModel.put("idOrganizacion", getOrganizacion(request).getId());
             viewModel.put("categorias", getOrganizacion(request).getCategorias());
             String categoriaFiltrada = request.queryParams("categoriaFiltrada");
@@ -44,6 +46,7 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         else {
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Crear entidad");
+            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
             viewModel.put("categorias", getOrganizacion(request).getCategorias());
         }
         return new ModelAndView(viewModel, "nuevaEntidad.hbs");
@@ -76,6 +79,21 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         withTransaction(() -> organizacion.agregarEntidad(entidad));
         response.redirect("/entidades");
         return null;
+    }
+
+    public ModelAndView showAsignarEntidadesBase(Request request, Response response) {
+        Map<String, Object> viewModel = new HashMap<String, Object>();
+        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
+            response.redirect("/login");
+        }
+        else {
+            viewModel.put("anio", LocalDate.now().getYear());
+            viewModel.put("titulo", "Crear entidad");
+            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+            viewModel.put("idEntidad", "2");
+            viewModel.put("entidadesBase", getOrganizacion(request).getEntidadesBaseSinAsignar());
+        }
+        return new ModelAndView(viewModel, "asignarEntidadesBase.hbs");
     }
 
     private CategoriaEmpresa parsearCategoriaEmpresa(String categoriaEmpresa) {
