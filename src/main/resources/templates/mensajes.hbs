@@ -2,21 +2,23 @@
 
     <div>
         <h2>Mensajes</h2>
-        <table style="width:100%">
+        <table class="table table-striped" style="width:100%">
+            <thead class="thead-dark">
             <tr>
-                <th>Egreso ID</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Moneda</th>
-                <th>Importe Total</th>
+                <th scope="col">Egreso ID</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Importe Total</th>
+                <th scope="col">Moneda</th>
+                <th scope="col">Estado</th>
             </tr>
+            </thead>
             {{#each egresos}}
                 <tr>
                     <td>{{id}}</td>
                     <td>{{fecha}}</td>
-                    <td>{{estado}}</td>
-                    <td>{{moneda}}</td>
                     <td>{{importeTotal}}</td>
+                    <td>{{moneda}}</td>
+                    <td>{{estado}}</td>
                 </tr>
             {{/each}}
 
@@ -26,3 +28,4 @@
 {{/partial}}
 
 {{>layout.hbs}}
+
