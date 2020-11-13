@@ -84,7 +84,7 @@ public class Organizacion extends EntidadPersistente {
         return entidades.stream().filter(e -> e.tieneCategoria(nombreCategoria)).collect(Collectors.toList());
     }
 
-    public List<Entidad> getEntidadesBaseSinAsignar() {
+    public List<Entidad> getEntidadesBaseAsignables() {
         return this.entidades.stream().filter(e -> e.getClass().getSimpleName().equals("EntidadBase")).collect(Collectors.toList());
     }
 

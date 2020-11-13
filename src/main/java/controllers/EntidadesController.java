@@ -1,5 +1,6 @@
 package controllers;
 
+import apiMercadoLibre.exceptions.DireccionInvalidaException;
 import entidadOrganizativa.*;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
@@ -51,7 +52,10 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         return new ModelAndView(viewModel, "nuevaEntidad.hbs");
     }
 
-    public Void agregarEntidad(Request request, Response response) {
+    public ModelAndView agregarEntidad(Request request, Response response) {
+        Map<String, Object> viewModel = new HashMap<String, Object>();
+        viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+        viewModel.put("anio", LocalDate.now().getYear());
         Entidad entidad;
         String nombreFicticio = request.queryParams("nombreFicticio");
         String razonSocial = request.queryParams("razonSocial");
@@ -65,24 +69,46 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         String codigoIgj = request.queryParams("codigoIgj");
         String tipoEntidadJuridica = request.queryParams("tipoEntidadJuridica");
         String categoriaEmpresa = request.queryParams("categoriaEmpresa");
-        if(tipoEntidad.equals("base")) {
-            entidad = new EntidadBase(nombreFicticio,razonSocial,null);
-        } else {
-            DireccionPostal direccionPostal = new DireccionPostal(pais,provincia,ciudad,direccion);
-            if(tipoEntidadJuridica.equals("oss")) {
-                entidad = new OrganizacionSectorSocial(razonSocial,nombreFicticio,Integer.parseInt(cuit),direccionPostal,Integer.valueOf(codigoIgj),null);
+        try {
+            if (tipoEntidad.equals("base")) {
+                entidad = new EntidadBase(nombreFicticio, razonSocial, null);
             } else {
-                entidad = new Empresa(razonSocial,nombreFicticio,Integer.parseInt(cuit),direccionPostal,Integer.valueOf(codigoIgj),parsearCategoriaEmpresa(categoriaEmpresa),null);
+                DireccionPostal direccionPostal = new DireccionPostal(pais, provincia, ciudad, direccion);
+                if (tipoEntidadJuridica.equals("oss")) {
+                    entidad = new OrganizacionSectorSocial(razonSocial, nombreFicticio, Integer.parseInt(cuit), direccionPostal, Integer.valueOf(codigoIgj), null);
+                } else {
+                    entidad = new Empresa(razonSocial, nombreFicticio, Integer.parseInt(cuit), direccionPostal, Integer.valueOf(codigoIgj), parsearCategoriaEmpresa(categoriaEmpresa), null);
+                }
             }
+            Organizacion organizacion = getOrganizacion(request);
+            List<CategoriaEntidad> categoriasSeleccionadas = parsearCategoriasSeleccionadas(categorias, organizacion);
+            withTransaction(() -> {
+                organizacion.agregarEntidad(entidad);
+                categoriasSeleccionadas.forEach(c -> entidad.agregarCategoria(c));
+            });
         }
-        Organizacion organizacion = getOrganizacion(request);
-        List<CategoriaEntidad> categoriasSeleccionadas = parsearCategoriasSeleccionadas(categorias, organizacion);
-        withTransaction(() -> {
-            organizacion.agregarEntidad(entidad);
-            categoriasSeleccionadas.forEach(c -> entidad.agregarCategoria(c));
-        });
-        response.redirect("/entidades");
-        return null;
+        catch(DireccionInvalidaException exception) {
+            viewModel.put("titulo", "Crear entidad");
+            viewModel.put("mensaje", true);
+            viewModel.put("tipoMensaje", "danger");
+            viewModel.put("tituloMensaje", "Error!");
+            viewModel.put("textoMensaje", "La direccion ingresada es incorrecta. Ingrese nuevamente.");
+            viewModel.put("categoriasEntidad", getOrganizacion(request).getCategorias());
+            return new ModelAndView(viewModel, "nuevaEntidad.hbs");
+        }
+        viewModel.put("titulo", "Entidades");
+        viewModel.put("mensaje", true);
+        viewModel.put("tipoMensaje", "success");
+        viewModel.put("tituloMensaje", "Success!");
+        viewModel.put("textoMensaje", "La entidad fue agregada con exito.");
+        viewModel.put("idOrganizacion", getOrganizacion(request).getId());
+        viewModel.put("categorias", getOrganizacion(request).getCategorias());
+        String categoriaFiltrada = request.queryParams("categoriaFiltrada");
+        if(categoriaFiltrada == null)
+            viewModel.put("entidades", getOrganizacion(request).getEntidades());
+        else
+            viewModel.put("entidades", getOrganizacion(request).getEntidadesPorCategoria(categoriaFiltrada));
+        return new ModelAndView(viewModel, "entidades.hbs");
     }
 
     public ModelAndView showAsignarEntidadesBase(Request request, Response response) {
@@ -95,7 +121,7 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
             viewModel.put("titulo", "Asignar entidades");
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
             viewModel.put("idEntidad", "2");
-            viewModel.put("entidadesBase", getOrganizacion(request).getEntidadesBaseSinAsignar());
+            viewModel.put("entidadesBase", getOrganizacion(request).getEntidadesBaseAsignables());
         }
         return new ModelAndView(viewModel, "asignarEntidadesBase.hbs");
     }
@@ -131,7 +157,7 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
     }
 
     private List<Entidad> parsearEntidadesBaseSeleccionadas(List<String> entidadesBaseSeleccionadas, Organizacion organizacion) {
-        List<Entidad> entidadesBaseOrganizacion = organizacion.getEntidadesBaseSinAsignar();
+        List<Entidad> entidadesBaseOrganizacion = organizacion.getEntidadesBaseAsignables();
         return entidadesBaseOrganizacion
                 .stream().filter(ebo -> entidadesBaseSeleccionadas
                 .stream().anyMatch(ebs -> ebs.equals(ebo.getId().toString())))
