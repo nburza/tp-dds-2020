@@ -2,20 +2,34 @@
 
     <div>
         <form method="POST" action="/entidades">
-            <div class="form-group">
-                <label>Nombre Ficticio</label><input name="nombreFicticio" class="form-control" type="text" maxlength="64">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label>Nombre Ficticio</label>
+                </div>
+                <div class="form-group col">
+                    <input name="nombreFicticio" class="form-control" type="text" maxlength="64">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Razon social</label><input name="razonSocial" class="form-control" type="text" maxlength="64">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label>Razon social</label>
+                </div>
+                <div class="form-group col">
+                    <input name="razonSocial" class="form-control" type="text" maxlength="64">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Categorias asignadas</label>
-                <select id="categorias" name="categorias" class="custom-select" multiple>
-                    <option selected></option>
-                    {{#each categoriasEntidad}}
-                        <option value={{nombre}}>{{nombre}}</option>
-                    {{/each}}
-                </select>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label>Categorias asignadas</label>
+                </div>
+                <div class="form-group col">
+                    <select id="categorias" name="categorias" class="custom-select" multiple>
+                        <option selected></option>
+                        {{#each categoriasEntidad}}
+                            <option value={{nombre}}>{{nombre}}</option>
+                        {{/each}}
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <input type="radio" id="base" name="tipoEntidad" value="base" checked data-toggle="collapse" data-target=".collapseJuridica.in"/>
@@ -24,23 +38,53 @@
                 <label for="juridica">Jurídica</label>
             </div>
             <div class="collapseJuridica collapse">
-                <div class="form-group">
-                    <label>Cuit</label><input name="cuit" class="form-control" type="text" maxlength="64">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>Cuit</label>
+                    </div>
+                    <div class="form-group col">
+                        <input name="cuit" class="form-control" type="text" maxlength="64">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>País</label><input name="pais" class="form-control" type="text" maxlength="64">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>País</label>
+                    </div>
+                    <div class="form-group col">
+                        <input name="pais" class="form-control" type="text" maxlength="64">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Provincia</label><input name="provincia" class="form-control" type="text" maxlength="64">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>Provincia</label>
+                    </div>
+                    <div class="form-group col">
+                        <input name="provincia" class="form-control" type="text" maxlength="64">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Ciudad</label><input name="ciudad" class="form-control" type="text" maxlength="64">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>Ciudad</label>
+                    </div>
+                    <div class="form-group col">
+                        <input name="ciudad" class="form-control" type="text" maxlength="64">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Dirección</label><input name="direccion" class="form-control" type="text" maxlength="64">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>Dirección</label>
+                    </div>
+                    <div class="form-group col">
+                        <input name="direccion" class="form-control" type="text" maxlength="64">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Código IGJ</label><input name="codigoIgj" class="form-control" type="text" maxlength="64">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>Código IGJ</label>
+                    </div>
+                    <div class="form-group col">
+                        <input name="codigoIgj" class="form-control" type="text" maxlength="64">
+                    </div>
                 </div>
                 <div class="form-group">
                     <input type="radio" id="oss" name="tipoEntidadJuridica" value="oss" checked data-toggle="collapse" data-target=".collapseEmpresa.in"/>
