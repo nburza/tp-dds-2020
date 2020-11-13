@@ -99,8 +99,8 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         viewModel.put("titulo", "Entidades");
         viewModel.put("mensaje", true);
         viewModel.put("tipoMensaje", "success");
-        viewModel.put("tituloMensaje", "Success!");
-        viewModel.put("textoMensaje", "La entidad fue agregada con exito.");
+        viewModel.put("tituloMensaje", "Exito!");
+        viewModel.put("textoMensaje", "La entidad " + nombreFicticio + " fue agregada con éxito.");
         viewModel.put("idOrganizacion", getOrganizacion(request).getId());
         viewModel.put("categorias", getOrganizacion(request).getCategorias());
         String categoriaFiltrada = request.queryParams("categoriaFiltrada");

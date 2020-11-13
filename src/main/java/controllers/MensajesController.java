@@ -25,6 +25,10 @@ public class MensajesController {
             viewModel.put("titulo", "Mensajes");
             viewModel.put("nombreUsuario",usuarioLogueado.getNombreUsuario());
             viewModel.put("egresos", egresosPorUsuario(usuarioLogueado));
+            if(RepositorioDeUsuarios.getUsuarioLogueado(request).esAdmin())
+            {
+                viewModel.put("esAdmin",true);
+            }
         }
         return new ModelAndView(viewModel, "mensajes.hbs");
     }

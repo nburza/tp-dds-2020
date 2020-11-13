@@ -25,6 +25,10 @@ public class CategoriasController implements WithGlobalEntityManager, EntityMana
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
             viewModel.put("idOrganizacion", getOrganizacion(request).getId());
             viewModel.put("categorias", getOrganizacion(request).getCategorias());
+            if(RepositorioDeUsuarios.getUsuarioLogueado(request).esAdmin())
+            {
+                viewModel.put("esAdmin",true);
+            }
         }
         return new ModelAndView(viewModel, "categorias.hbs");
     }
@@ -38,6 +42,11 @@ public class CategoriasController implements WithGlobalEntityManager, EntityMana
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Crear categoria");
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+            if(RepositorioDeUsuarios.getUsuarioLogueado(request).esAdmin())
+            {
+                viewModel.put("esAdmin",true);
+            }
+            //       viewModel.put("reglas", getOrganizacion(request).getCategorias());
         }
         return new ModelAndView(viewModel, "nuevaCategoria.hbs");
     }

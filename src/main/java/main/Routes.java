@@ -1,6 +1,6 @@
 package main;
 
-import controllers.EgresosController;
+import controllers.*;
 import controllers.EntidadesController;
 import controllers.HomeController;
 import controllers.LoginController;
@@ -28,6 +28,7 @@ public class Routes {
         MensajesController mensajesController = new MensajesController();
         EgresosController egresosController = new EgresosController();
         CategoriasController categoriasController = new CategoriasController();
+        UsuarioController usuarioController = new UsuarioController();
 
         Spark.get("/", homeController::index);
 
@@ -51,5 +52,8 @@ public class Routes {
 
         Spark.get("/entidades/asignarCategoria",entidadesController::showFormularioAsignarCategoria,engine);
         Spark.post("/entidades/asignarCategoria",entidadesController::agregarCategoriaAEntidad);
+        Spark.get("/nuevoUsuario", (request, response) -> usuarioController.showAgregarUsuario(request, response), engine);
+        Spark.post("/nuevoUsuario", (request, response) -> usuarioController.agregarUsuario(request, response), engine);
+
     }
 }

@@ -13,6 +13,7 @@ import mediosDePago.*;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
 import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
+import usuario.Administrador;
 import usuario.RepositorioDeUsuarios;
 import usuario.Usuario;
 
@@ -27,10 +28,14 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
 
     public void run()
     {
-//        try
-//        {
-            //Usuario migue = new Usuario("migue","alta clave");
-            //Usuario aure = new Usuario("aure","altisima clave");
+        try
+        {
+            Usuario migue = new Usuario("migue","alta clave");
+            Usuario aure = new Usuario("aure","altisima clave");
+            Usuario nico = new Usuario("nico","altisima clave");
+            Usuario charly = new Usuario("charly","altisima clave");
+            Usuario mati = new Usuario("mati","altisima clave");
+            Administrador admin = new Administrador("admin","alta clave");
 
             CiudadDTO ciudad = new CiudadDTO("3","La Plata");
             ProvinciaDTO provincia = new ProvinciaDTO("2","Buenos Aires", Arrays.asList(ciudad));
@@ -38,20 +43,30 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
             ValidadorDeUbicacion validadorDeUbicacion = new ValidadorDeUbicacion(Arrays.asList(pais));
             ServiceLocator.getInstance().setValidadorDeUbicacion(validadorDeUbicacion);
 
-            Organizacion organizacion = new Organizacion(new ArrayList<>(), new ArrayList<>());
-            Entidad entidadBase = new EntidadBase("nombre","razon social",null);
-            organizacion.agregarEntidad(entidadBase);
+            Organizacion organizacion1 = new Organizacion(new ArrayList<>(), new ArrayList<>());
+            Organizacion organizacion2 = new Organizacion(new ArrayList<>(), new ArrayList<>());
+            Organizacion organizacion3 = new Organizacion(new ArrayList<>(), new ArrayList<>());
+            Entidad entidadBase1 = new EntidadBase("nombre1","razon social1",null);
+            Entidad entidadBase2 = new EntidadBase("nombre2","razon social2",null);
+            Entidad entidadBase3 = new EntidadBase("nombre3","razon social3",null);
+            organizacion1.agregarEntidad(entidadBase1);
+            organizacion2.agregarEntidad(entidadBase2);
+            organizacion3.agregarEntidad(entidadBase3);
 
             CategoriaEntidad categoria1 = new CategoriaEntidad("categoria1",null);
             CategoriaEntidad categoria2 = new CategoriaEntidad("categoria2",null);
             CategoriaEntidad categoria3 = new CategoriaEntidad("categoria3",null);
             CategoriaEntidad categoria4 = new CategoriaEntidad("categoria4",null);
 
-            organizacion.agregarCategoria(categoria1);
-            organizacion.agregarCategoria(categoria2);
-            organizacion.agregarCategoria(categoria3);
-            organizacion.agregarCategoria(categoria4);
-            entidadBase.agregarCategoria(categoria3);
+            organizacion1.agregarCategoria(categoria1);
+            organizacion1.agregarCategoria(categoria2);
+            organizacion2.agregarCategoria(categoria3);
+            organizacion2.agregarCategoria(categoria4);
+            organizacion3.agregarCategoria(categoria4);
+
+            entidadBase1.agregarCategoria(categoria1);
+            entidadBase2.agregarCategoria(categoria2);
+            entidadBase3.agregarCategoria(categoria3);
 
             MonedaDTO pesoArgentino = new MonedaDTO(null,null,"Dolar");
             ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(Arrays.asList(pesoArgentino));
@@ -73,13 +88,18 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
             MedioDePago medio2 = new TarjetaDebito("Mastercard Crédito","654321");
             MedioDePago medio3 = new Efectivo("Efectivo Tienda XX","000123");
 
-
             withTransaction(() ->
             {
-//                organizacion.agregarUsuario(migue);
-//                egreso.agregarRevisor(migue);
+                organizacion1.agregarUsuario(migue);
+                organizacion1.agregarUsuario(charly);
+                organizacion2.agregarUsuario(aure);
+                organizacion2.agregarUsuario(nico);
+                organizacion3.agregarUsuario(mati);
+                egreso.agregarRevisor(migue);
 
-                RepositorioDeOrganizaciones.getInstance().agregar(organizacion);
+                RepositorioDeOrganizaciones.getInstance().agregar(organizacion1);
+                RepositorioDeOrganizaciones.getInstance().agregar(organizacion2);
+                RepositorioDeOrganizaciones.getInstance().agregar(organizacion3);
 
                 RepositorioDeItems.getInstance().agregar(item1);
                 RepositorioDeItems.getInstance().agregar(item2);
@@ -90,14 +110,18 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
                 RepositorioDeMediosDePago.getInstance().agregar(medio2);
                 RepositorioDeMediosDePago.getInstance().agregar(medio3);
 
-//                RepositorioDeUsuarios.getInstance().agregar(migue);
-//               RepositorioDeUsuarios.getInstance().agregar(aure);
+                RepositorioDeUsuarios.getInstance().agregar(migue);
+                RepositorioDeUsuarios.getInstance().agregar(aure);
+                RepositorioDeUsuarios.getInstance().agregar(nico);
+                RepositorioDeUsuarios.getInstance().agregar(charly);
+                RepositorioDeUsuarios.getInstance().agregar(mati);
+                RepositorioDeUsuarios.getInstance().agregar(admin);
 
                 ValidadorDeEgresos.getInstance().validarTodos();
             });
-//        }
-//        catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

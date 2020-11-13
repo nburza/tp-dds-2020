@@ -8,6 +8,7 @@ import usuario.Usuario;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,7 +33,6 @@ public class LoginController {
         String username = req.queryParams("usuario");
         String password = req.queryParams("password");
         Optional<Usuario> usuario = RepositorioDeUsuarios.getInstance().getPorNombreDeUsuario(username);
-
         if(usuario.isPresent() && usuario.get().autenticar(username,password)) {
             req.session().attribute("idUsuario", usuario.get().getId());
             res.redirect("/home");

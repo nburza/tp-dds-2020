@@ -3,6 +3,7 @@ package controllers;
 import apiMercadoLibre.DTO.MonedaDTO;
 import apiMercadoLibre.ServicioAPIMercadoLibre;
 import egreso.*;
+import entidadOrganizativa.RepositorioDeOrganizaciones;
 import mediosDePago.MedioDePago;
 import mediosDePago.RepositorioDeMediosDePago;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
@@ -27,18 +28,32 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
     public ModelAndView showEgresos(Request req, Response res){
         Map<String, Object> viewModel = new HashMap<String, Object>();
 
-        List<String> monedas = new ArrayList<String>();
-        List<MonedaDTO> monedasValidas = servicioAPIMercadoLibre.getMonedas();
-        for (MonedaDTO moneda : monedasValidas)
+        if(!RepositorioDeUsuarios.estaLogueado(req,res))
         {
-            monedas.add(moneda.getSymbol() + " " + moneda.getId() + " (" + moneda.getDescription() + ")");
+            res.redirect("/login");
         }
-
-        viewModel.put("documentos", TipoDocComercial.values());
-        viewModel.put("usuarios", RepositorioDeUsuarios.getInstance().getAllInstances());
-        viewModel.put("items", RepositorioDeItems.getInstance().getAllInstances());
-        viewModel.put("medios", RepositorioDeMediosDePago.getInstance().getAllInstances());
-        viewModel.put("monedas", monedasValidas);
+        else
+        {
+            List<String> monedas = new ArrayList<String>();
+            List<MonedaDTO> monedasValidas = servicioAPIMercadoLibre.getMonedas();
+            for (MonedaDTO moneda : monedasValidas)
+            {
+                monedas.add(moneda.getSymbol() + " " + moneda.getId() + " (" + moneda.getDescription() + ")");
+            }
+            viewModel.put("anio", LocalDate.now().getYear());
+            viewModel.put("titulo", "Cargar Usuario");
+            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
+            viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
+            if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
+            {
+                viewModel.put("esAdmin",true);
+            }
+            viewModel.put("documentos", TipoDocComercial.values());
+            viewModel.put("usuarios", RepositorioDeUsuarios.getInstance().getAllInstances());
+            viewModel.put("items", RepositorioDeItems.getInstance().getAllInstances());
+            viewModel.put("medios", RepositorioDeMediosDePago.getInstance().getAllInstances());
+            viewModel.put("monedas", monedasValidas);
+        }
 
         return new ModelAndView(viewModel, "altaEgresos.hbs");
     }
