@@ -19,7 +19,9 @@ public class Item extends EntidadPersistente {
     private String moneda;
 
     public BigDecimal precioTotal() {
-        return getPrecioUnitario().multiply(BigDecimal.valueOf(cantidad));
+        return precioUnitario == null?
+                BigDecimal.ZERO:
+                getPrecioUnitario().multiply(BigDecimal.valueOf(cantidad));
     }
 
     public Item(Producto unProducto, int unaCantidad, String moneda, BigDecimal unPrecioUnitario) {
