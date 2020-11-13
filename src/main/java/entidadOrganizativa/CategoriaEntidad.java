@@ -3,6 +3,7 @@ package entidadOrganizativa;
 import egreso.Egreso;
 import persistencia.EntidadPersistente;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderColumn;
@@ -13,7 +14,7 @@ import java.util.List;
 public class CategoriaEntidad extends EntidadPersistente {
 
     private String nombre;
-    @ManyToMany
+    @ManyToMany(cascade= CascadeType.ALL)
     @OrderColumn(name = "orden")
     private List<Regla> reglas;
 

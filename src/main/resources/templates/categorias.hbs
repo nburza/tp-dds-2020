@@ -2,18 +2,20 @@
 
     <div>
         <h2>Organizacion {{idOrganizacion}}</h2>
-        <a class="btn btn-primary" href="/categorias/nueva" role="button">Agregar</a>
-        <table style="width:100%">
+        <a class="btn btn-primary" href="/categorias/nueva" role="button">Nueva Categoria</a>
+        <table class="table table-striped" style="width:100%">
+            <thead class="thead-dark">
             <tr>
-                <th>Id</th>
-                <th>Nombre</th>
+                <th scope="col">Id</th>
+                <th scope="col">Nombre</th>
 
             </tr>
+            </thead>
             {{#each categorias}}
-            <tr>
-                <td>{{id}} </td>
-                <td>{{nombre}}</td>
-            </tr>
+                <tr>
+                    <td>{{id}} </td>
+                    <td>{{nombre}}</td>
+                </tr>
             {{/each}}
         </table>
     </div>

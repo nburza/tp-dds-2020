@@ -1,0 +1,26 @@
+{{#partial "contenido"}}
+
+    <div>
+        <form method="POST" action="/entidades/asignarCategoria">
+            <select id="inputDocComercial" class="form-control" name="categoriaSeleccionada">
+                <option selected>categoria</option>
+                {{#each categorias}}
+                    <option value={{nombre}}> {{nombre}} </option>
+                {{/each}}
+            </select>
+
+            <select id="inputDocComercial" class="form-control" name="entidadSeleccionada">
+                <option selected>entidad</option>
+                {{#each entidades}}
+                    <option value={{nombreFicticio}}> {{nombreFicticio}} </option>
+                {{/each}}
+            </select>
+            <div class="form-group">
+                <button type="submit" class="btn btn btn-outline-primary btn-block" data-loading-text="Uniendo..."><i class="fas fa-sign-in-alt"></i>Unir</button>
+            </div>
+        </form>
+    </div>
+
+{{/partial}}
+
+{{>layout.hbs}}

@@ -41,7 +41,7 @@ public class Routes {
         Spark.get("/entidades/:id/entidadesBase/asignar", entidadesController::showAsignarEntidadesBase, engine);
         Spark.post("/entidades/:id/entidadesBase", entidadesController::asignarEntidadesBase);
         Spark.get("/mensajes",mensajesController::showMensajes, engine);
-        Spark.post("/entidades", entidadesController::agregarEntidad);
+        Spark.post("/entidades", entidadesController::agregarEntidad,engine);
         Spark.get("/altaEgresos", (request, response) -> egresosController.showEgresos(request, response), engine);
         Spark.post("/altaEgresos", (request, response) -> egresosController.altaEgresos(request, response), engine);
 
@@ -49,5 +49,7 @@ public class Routes {
         Spark.get("/categorias/nueva",categoriasController::showFormularioNuevaCategoria,engine);
         Spark.post("/categorias", categoriasController::agregarCategoria);
 
+        Spark.get("/entidades/asignarCategoria",entidadesController::showFormularioAsignarCategoria,engine);
+        Spark.post("/entidades/asignarCategoria",entidadesController::agregarCategoriaAEntidad);
     }
 }

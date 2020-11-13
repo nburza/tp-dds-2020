@@ -168,4 +168,29 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         Long idUsuario = request.session().attribute("idUsuario");
         return RepositorioDeOrganizaciones.getInstance().getOrganizacionDelUsuarioConId(idUsuario).get();
     }
+
+    public Void agregarCategoriaAEntidad(Request request, Response response) {
+        String entidad = request.queryParams("entidadSeleccionada");
+        String categoria = request.queryParams("categoriaSeleccionada");
+        Entidad laEntidad = getOrganizacion(request).getEntidades().stream().filter(entidad1->entidad1.getNombreFicticio().equals(entidad)).findFirst().get();
+        CategoriaEntidad laCategoria = getOrganizacion(request).getCategorias().stream().filter(categoriaEntidad -> categoriaEntidad.getNombre().equals(categoria)).findFirst().get();
+        withTransaction(()->laEntidad.agregarCategoria(laCategoria));
+        response.redirect("/entidades");
+        return null;
+    }
+
+    public ModelAndView showFormularioAsignarCategoria(Request request, Response response) {
+        Map<String, Object> viewModel = new HashMap<String, Object>();
+        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
+            response.redirect("/login");
+        }
+        else {
+            viewModel.put("anio", LocalDate.now().getYear());
+            viewModel.put("titulo", "Asignar categorias");
+            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+            viewModel.put("entidades", getOrganizacion(request).getEntidades());
+            viewModel.put("categorias",getOrganizacion(request).getCategorias());
+        }
+        return new ModelAndView(viewModel, "agregarCategoria.hbs");
+    }
 }
