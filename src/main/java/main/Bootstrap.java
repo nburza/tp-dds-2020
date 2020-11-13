@@ -16,6 +16,7 @@ import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
 import usuario.RepositorioDeUsuarios;
 import usuario.Usuario;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,10 +27,10 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
 
     public void run()
     {
-        try
-        {
-            Usuario migue = new Usuario("migue","alta clave");
-            Usuario aure = new Usuario("aure","altisima clave");
+//        try
+//        {
+            //Usuario migue = new Usuario("migue","alta clave");
+            //Usuario aure = new Usuario("aure","altisima clave");
 
             CiudadDTO ciudad = new CiudadDTO("3","La Plata");
             ProvinciaDTO provincia = new ProvinciaDTO("2","Buenos Aires", Arrays.asList(ciudad));
@@ -63,10 +64,10 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
             Producto producto3 = new Producto("Lapicera Bic");
             Producto producto4 = new Producto("Lapicera Maped");
 
-            Item item1 = new Item(producto1, 500, "ARS");
-            Item item2 = new Item(producto2, 450, "ARS");
-            Item item3 = new Item(producto3, 40, "ARS");
-            Item item4 = new Item(producto4, 60, "ARS");
+            Item item1 = new Item(producto1, 1, "Peso Argentino", new BigDecimal(500));
+            Item item2 = new Item(producto2, 2, "Peso Argentino", new BigDecimal(450));
+            Item item3 = new Item(producto3, 3, "Peso Argentino", new BigDecimal(40));
+            Item item4 = new Item(producto4, 4, "Peso Argentino", new BigDecimal(60));
 
             MedioDePago medio1 = new TarjetaCredito("Visa Débito","123456");
             MedioDePago medio2 = new TarjetaDebito("Mastercard Crédito","654321");
@@ -75,8 +76,8 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
 
             withTransaction(() ->
             {
-                organizacion.agregarUsuario(migue);
-                egreso.agregarRevisor(migue);
+//                organizacion.agregarUsuario(migue);
+//                egreso.agregarRevisor(migue);
 
                 RepositorioDeOrganizaciones.getInstance().agregar(organizacion);
 
@@ -89,14 +90,14 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
                 RepositorioDeMediosDePago.getInstance().agregar(medio2);
                 RepositorioDeMediosDePago.getInstance().agregar(medio3);
 
-                RepositorioDeUsuarios.getInstance().agregar(migue);
-                RepositorioDeUsuarios.getInstance().agregar(aure);
+//                RepositorioDeUsuarios.getInstance().agregar(migue);
+//               RepositorioDeUsuarios.getInstance().agregar(aure);
 
                 ValidadorDeEgresos.getInstance().validarTodos();
             });
-        }
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+//        }
+//        catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
 }

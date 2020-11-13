@@ -2,25 +2,29 @@ package controllers;
 
 import apiMercadoLibre.DTO.MonedaDTO;
 import apiMercadoLibre.ServicioAPIMercadoLibre;
-import egreso.RepositorioDeItems;
-import egreso.TipoDocComercial;
+import egreso.*;
+import mediosDePago.MedioDePago;
 import mediosDePago.RepositorioDeMediosDePago;
+import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
+import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
 import spark.ModelAndView;
+import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import usuario.RepositorioDeUsuarios;
-
+import usuario.Usuario;
+import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class EgresosController
+public class EgresosController implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps
 {
     ServicioAPIMercadoLibre servicioAPIMercadoLibre = new ServicioAPIMercadoLibre();
 
-    public ModelAndView show(Request req, Response res){
+    public ModelAndView showEgresos(Request req, Response res){
         Map<String, Object> viewModel = new HashMap<String, Object>();
 
         List<String> monedas = new ArrayList<String>();
@@ -34,13 +38,57 @@ public class EgresosController
         viewModel.put("usuarios", RepositorioDeUsuarios.getInstance().getAllInstances());
         viewModel.put("items", RepositorioDeItems.getInstance().getAllInstances());
         viewModel.put("medios", RepositorioDeMediosDePago.getInstance().getAllInstances());
-        viewModel.put("monedas", monedas);
+        viewModel.put("monedas", monedasValidas);
 
         return new ModelAndView(viewModel, "altaEgresos.hbs");
     }
 
-    public void altaEgresos(Request req, Response res)
+    public ModelAndView altaEgresos(Request req, Response res)
     {
-        return;
+        Map<String, Object> viewModel = new HashMap<String, Object>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+
+        String tipoDocumento  = req.queryParams("tipoDocumento");
+        String identificadorDoc = req.queryParams("identificadorDocumento");
+        String medioDePago = req.queryMap("medio").value();
+        String moneda = req.queryParams("moneda");
+        List<String> items = Arrays.asList(req.queryMap("items").values());
+        String fecha = req.queryParams("fecha");
+        String requierePresu = req.queryMap("requierePresu").value();
+        List<String> usuarios = Arrays.asList(req.queryMap("usuarios").values());
+        String criterio = req.queryParams("criterio");
+        List<String> etiquetas = Arrays.asList(req.queryMap("etiquetas").values());
+
+        DocComercial docComercial = new DocComercial(Integer.parseInt(identificadorDoc), TipoDocComercial.valueOf(tipoDocumento));
+        List<DocComercial> documentos = new ArrayList<DocComercial>();
+        documentos.add(docComercial);
+
+        MedioDePago medio = RepositorioDeMediosDePago.getInstance().getPorId(Long.parseLong(medioDePago)).get();
+
+        List<Item> itemsMapeados = items.stream().map(item -> RepositorioDeItems.getInstance().getPorId(Long.parseLong(item)).get()).collect(Collectors.toList());
+
+        List<Usuario> usuariosMapeados = usuarios.stream().map(usuario -> RepositorioDeUsuarios.getInstance().getPorId(Long.parseLong(usuario)).get()).collect(Collectors.toList());
+
+        List<Etiqueta> etiquetasMapeadas = etiquetas.stream().map(etiqueta -> new Etiqueta(etiqueta)).collect(Collectors.toList());
+
+        Egreso egreso = new Egreso(documentos, medio, itemsMapeados, LocalDate.parse(fecha, formatter), moneda);
+
+        if(requierePresu != null)
+            egreso.setRequierePresupuesto(false);
+        else
+            egreso.setRequierePresupuesto(true);
+
+        egreso.setRevisores(usuariosMapeados);
+
+       if(criterio == "Presupuesto de menor valor")
+           egreso.setCriterioDeSeleccion(CriterioMenorValor.getInstance());
+
+       egreso.setEtiquetas(etiquetasMapeadas);
+
+       withTransaction(() -> {
+           RepositorioDeEgresos.getInstance().agregar(egreso);
+       });
+
+        return new ModelAndView(viewModel, "altaEgresos.hbs");
     }
 }
