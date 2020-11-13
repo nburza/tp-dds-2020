@@ -131,4 +131,10 @@ public abstract class Entidad extends EntidadPersistente {
     public boolean tieneCategoria(String nombreCategoria) {
         return categoriaEntidad.stream().anyMatch(c -> c.getNombre().equals(nombreCategoria));
     }
+
+    public boolean tieneCategoriaConRegla(String tipoDeRegla) {
+        return this.categoriaEntidad.stream().anyMatch(c -> c.tieneReglaDeTipo(tipoDeRegla));
+    }
+
+    public abstract List<Entidad> getEntidadesConSubentidades();
 }

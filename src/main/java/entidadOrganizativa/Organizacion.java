@@ -85,7 +85,7 @@ public class Organizacion extends EntidadPersistente {
     }
 
     public List<Entidad> getEntidadesBaseAsignables() {
-        return this.entidades.stream().filter(e -> e.getClass().getSimpleName().equals("EntidadBase")).collect(Collectors.toList());
+        return this.entidades.stream().filter(e -> e.esAsignable()).collect(Collectors.toList());
     }
 
     public void asignarEntidadesBaseAUnaJuridica(List<Entidad> entidadesBase, EntidadJuridica entidadJuridica) {
@@ -93,5 +93,11 @@ public class Organizacion extends EntidadPersistente {
             this.removerEntidad(eb);
             entidadJuridica.agregarEntidadBase((EntidadBase) eb);
         });
+    }
+
+    public List<Entidad> getEntidadesConSubentidades() {
+        List<Entidad> todasLasEntidades = new ArrayList<>();
+        this.entidades.forEach(e -> e.getEntidadesConSubentidades().forEach(ent -> todasLasEntidades.add(ent)));
+        return todasLasEntidades;
     }
 }

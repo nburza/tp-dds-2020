@@ -59,6 +59,14 @@ public abstract class EntidadJuridica extends Entidad {
         return super.totalEgresos().add(totalEntidadesBase);
     }
 
+    @Override
+    public List<Entidad> getEntidadesConSubentidades() {
+        List<Entidad> entidadConSubentidades = new ArrayList<>();
+        entidadConSubentidades.add(this);
+        this.listaEntidades.forEach(e -> entidadConSubentidades.add(e));
+        return entidadConSubentidades;
+    }
+
     public void agregarEntidadBase(EntidadBase entidadBase) {
 
         this.getCategoriaEntidad().forEach(CategoriaEntidad::verificarSiEntidadJuridicaPuedeAgregarEntidadesBase);
