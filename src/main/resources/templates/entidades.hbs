@@ -1,8 +1,8 @@
 {{#partial "contenido"}}
 
     <div>
-        <h2>Organizacion {{idOrganizacion}}</h2>
-        <a class="btn btn-primary" href="/entidades/nueva" role="button">Agregar</a>
+        <h2>Organizacion {{idOrganizacion}}</h2><br>
+        <a class="btn btn-primary" href="/entidades/nueva" role="button">Nueva entidad</a>
         <div>
             <form action="/entidades" method="GET">
                 <label for="categoriaFiltrada">Buscar por categoria</label>
@@ -21,7 +21,8 @@
                     <th scope="col">Nombre ficticio</th>
                     <th scope="col">Razon Social</th>
                     <th scope="col">Tipo</th>
-                    <th scope="col">Cant entidades asignadas</th>
+                    <th scope="col" class="text-center">Cant entidades asignadas</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -31,10 +32,14 @@
                     <td>{{nombreFicticio}}</td>
                     <td>{{razonSocial}}</td>
                     <td>{{tipo}}</td>
-                    <td>
+                    <td class="text-center">
                     {{#if this.esJuridica}}
                         {{cantidadDeEntidadesAsignadasComoString}}
-                        <a class="btn btn-primary" href="/entidades/{{id}}/entidadesBase/asignar" role="button">Agregar</a>
+                    {{/if}}
+                    </td>
+                    <td>
+                    {{#if this.esJuridica}}
+                        <a class="btn btn-outline-primary" href="/entidades/{{id}}/entidadesBase/asignar" role="button">Asignar más</a>
                     {{/if}}
                     </td>
                 </tr>

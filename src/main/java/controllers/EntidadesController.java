@@ -11,9 +11,8 @@ import spark.Response;
 import usuario.RepositorioDeUsuarios;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EntidadesController implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
 
@@ -47,7 +46,7 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Crear entidad");
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
-            viewModel.put("categorias", getOrganizacion(request).getCategorias());
+            viewModel.put("categoriasEntidad", getOrganizacion(request).getCategorias());
         }
         return new ModelAndView(viewModel, "nuevaEntidad.hbs");
     }
@@ -56,6 +55,7 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         Entidad entidad;
         String nombreFicticio = request.queryParams("nombreFicticio");
         String razonSocial = request.queryParams("razonSocial");
+        List<String> categorias = Arrays.asList(request.queryMap("categorias").values());
         String tipoEntidad = request.queryParams("tipoEntidad");
         String cuit = request.queryParams("cuit");
         String pais = request.queryParams("pais");
@@ -76,7 +76,11 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
             }
         }
         Organizacion organizacion = getOrganizacion(request);
-        withTransaction(() -> organizacion.agregarEntidad(entidad));
+        List<CategoriaEntidad> categoriasSeleccionadas = parsearCategoriasSeleccionadas(categorias, organizacion);
+        withTransaction(() -> {
+            organizacion.agregarEntidad(entidad);
+            categoriasSeleccionadas.forEach(c -> entidad.agregarCategoria(c));
+        });
         response.redirect("/entidades");
         return null;
     }
@@ -88,12 +92,25 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         }
         else {
             viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Crear entidad");
+            viewModel.put("titulo", "Asignar entidades");
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
             viewModel.put("idEntidad", "2");
             viewModel.put("entidadesBase", getOrganizacion(request).getEntidadesBaseSinAsignar());
         }
         return new ModelAndView(viewModel, "asignarEntidadesBase.hbs");
+    }
+
+    public Void asignarEntidadesBase(Request request, Response response) {
+        List<String> entidadesBase = Arrays.asList(request.queryMap("entidadesSeleccionadas").values());
+        String idEntidadJuridica = request.params(":id");
+        Organizacion organizacion = getOrganizacion(request);
+        EntidadJuridica entidadJuridica = (EntidadJuridica) organizacion.getEntidades().stream().filter(e -> idEntidadJuridica.equals(e.getId().toString())).findFirst().get();
+        List<Entidad> entidadesBaseSeleccionadas = parsearEntidadesBaseSeleccionadas(entidadesBase, organizacion);
+        withTransaction(() -> {
+            organizacion.asignarEntidadesBaseAUnaJuridica(entidadesBaseSeleccionadas,entidadJuridica);
+        });
+        response.redirect("/entidades");
+        return null;
     }
 
     private CategoriaEmpresa parsearCategoriaEmpresa(String categoriaEmpresa) {
@@ -103,6 +120,22 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         DiccionarioDeCategorias.put("medianaTramo1", CategoriaEmpresa.MEDIANA_TRAMO_1);
         DiccionarioDeCategorias.put("medianaTramo2", CategoriaEmpresa.MEDIANA_TRAMO_2);
         return DiccionarioDeCategorias.get(categoriaEmpresa);
+    }
+
+    private List<CategoriaEntidad> parsearCategoriasSeleccionadas(List<String> categoriasSeleccionadas, Organizacion organizacion) {
+        List<CategoriaEntidad> categoriasOrganizacion = organizacion.getCategorias();
+        return categoriasOrganizacion
+                .stream().filter(co -> categoriasSeleccionadas
+                .stream().anyMatch(cs -> cs.equals(co.getNombre())))
+                .collect(Collectors.toList());
+    }
+
+    private List<Entidad> parsearEntidadesBaseSeleccionadas(List<String> entidadesBaseSeleccionadas, Organizacion organizacion) {
+        List<Entidad> entidadesBaseOrganizacion = organizacion.getEntidadesBaseSinAsignar();
+        return entidadesBaseOrganizacion
+                .stream().filter(ebo -> entidadesBaseSeleccionadas
+                .stream().anyMatch(ebs -> ebs.equals(ebo.getId().toString())))
+                .collect(Collectors.toList());
     }
 
     private Organizacion getOrganizacion(Request request) {
