@@ -1,11 +1,9 @@
 package main;
 
+import apiMercadoLibre.ServiceLocator;
+import apiMercadoLibre.ServicioAPIMercadoLibre;
+import apiMercadoLibre.ValidadorDeMoneda;
 import controllers.*;
-import controllers.EntidadesController;
-import controllers.HomeController;
-import controllers.LoginController;
-import controllers.MensajesController;
-import controllers.CategoriasController;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -19,7 +17,10 @@ public class Routes {
         Spark.port(8088);
         Spark.staticFileLocation("/public");
 
-        new Bootstrap().run();
+        ServicioAPIMercadoLibre servicioAPIMercadoLibre = new ServicioAPIMercadoLibre();
+        ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(servicioAPIMercadoLibre.getMonedas());
+        ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
+        //new Bootstrap().run();
 
         HandlebarsTemplateEngine engine = new HandlebarsTemplateEngine();
         LoginController loginController = new LoginController();

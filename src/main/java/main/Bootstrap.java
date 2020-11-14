@@ -88,6 +88,10 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
             MedioDePago medio2 = new TarjetaDebito("Mastercard Crédito","654321");
             MedioDePago medio3 = new Efectivo("Efectivo Tienda XX","000123");
 
+            Etiqueta etiqueta1 = new Etiqueta("materia prima");
+            Etiqueta etiqueta2 = new Etiqueta("maquinaria");
+            Etiqueta etiqueta3 = new Etiqueta("construcción");
+
             withTransaction(() ->
             {
                 organizacion1.agregarUsuario(migue);
@@ -116,6 +120,10 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
                 RepositorioDeUsuarios.getInstance().agregar(charly);
                 RepositorioDeUsuarios.getInstance().agregar(mati);
                 RepositorioDeUsuarios.getInstance().agregar(admin);
+
+                RepositorioDeEtiquetas.getInstance().agregar(etiqueta1);
+                RepositorioDeEtiquetas.getInstance().agregar(etiqueta2);
+                RepositorioDeEtiquetas.getInstance().agregar(etiqueta3);
 
                 ValidadorDeEgresos.getInstance().validarTodos();
             });

@@ -3,6 +3,8 @@ package controllers;
 import apiMercadoLibre.DTO.MonedaDTO;
 import apiMercadoLibre.ServicioAPIMercadoLibre;
 import egreso.*;
+import entidadOrganizativa.Entidad;
+import entidadOrganizativa.Organizacion;
 import entidadOrganizativa.RepositorioDeOrganizaciones;
 import mediosDePago.MedioDePago;
 import mediosDePago.RepositorioDeMediosDePago;
@@ -25,6 +27,11 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
 {
     ServicioAPIMercadoLibre servicioAPIMercadoLibre = new ServicioAPIMercadoLibre();
 
+    private Organizacion getOrganizacion(Request request) {
+        Long idUsuario = request.session().attribute("idUsuario");
+        return RepositorioDeOrganizaciones.getInstance().getOrganizacionDelUsuarioConId(idUsuario).get();
+    }
+
     public ModelAndView showEgresos(Request req, Response res){
         Map<String, Object> viewModel = new HashMap<String, Object>();
 
@@ -36,6 +43,7 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
         {
             List<String> monedas = new ArrayList<String>();
             List<MonedaDTO> monedasValidas = servicioAPIMercadoLibre.getMonedas();
+
             for (MonedaDTO moneda : monedasValidas)
             {
                 monedas.add(moneda.getSymbol() + " " + moneda.getId() + " (" + moneda.getDescription() + ")");
@@ -43,7 +51,6 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Cargar Usuario");
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
-            viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
             if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
             {
                 viewModel.put("esAdmin",true);
@@ -53,6 +60,9 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
             viewModel.put("items", RepositorioDeItems.getInstance().getAllInstances());
             viewModel.put("medios", RepositorioDeMediosDePago.getInstance().getAllInstances());
             viewModel.put("monedas", monedasValidas);
+            viewModel.put("etiquetas", RepositorioDeEtiquetas.getInstance().getAllInstances());
+            //viewModel.put("entidades", getOrganizacion(req).getEntidadesConSubentidades());
+            viewModel.put("entidades", getOrganizacion(req).getEntidades());
         }
 
         return new ModelAndView(viewModel, "altaEgresos.hbs");
@@ -61,11 +71,11 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
     public ModelAndView altaEgresos(Request req, Response res)
     {
         Map<String, Object> viewModel = new HashMap<String, Object>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         String tipoDocumento  = req.queryParams("tipoDocumento");
         String identificadorDoc = req.queryParams("identificadorDocumento");
-        String medioDePago = req.queryMap("medio").value();
+        String medioDePago = req.queryParams("medios");
         String moneda = req.queryParams("moneda");
         List<String> items = Arrays.asList(req.queryMap("items").values());
         String fecha = req.queryParams("fecha");
@@ -73,6 +83,7 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
         List<String> usuarios = Arrays.asList(req.queryMap("usuarios").values());
         String criterio = req.queryParams("criterio");
         List<String> etiquetas = Arrays.asList(req.queryMap("etiquetas").values());
+        String entidad = req.queryParams("entidad");
 
         DocComercial docComercial = new DocComercial(Integer.parseInt(identificadorDoc), TipoDocComercial.valueOf(tipoDocumento));
         List<DocComercial> documentos = new ArrayList<DocComercial>();
@@ -81,24 +92,29 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
         MedioDePago medio = RepositorioDeMediosDePago.getInstance().getPorId(Long.parseLong(medioDePago)).get();
 
         List<Item> itemsMapeados = items.stream().map(item -> RepositorioDeItems.getInstance().getPorId(Long.parseLong(item)).get()).collect(Collectors.toList());
-
         List<Usuario> usuariosMapeados = usuarios.stream().map(usuario -> RepositorioDeUsuarios.getInstance().getPorId(Long.parseLong(usuario)).get()).collect(Collectors.toList());
+        List<Etiqueta> etiquetasMapeadas = etiquetas.stream().map(etiqueta -> RepositorioDeEtiquetas.getInstance().getPorId(Long.parseLong(etiqueta)).get()).collect(Collectors.toList());
+        LocalDate fechaMapeada = LocalDate.parse(fecha, formatter);
 
-        List<Etiqueta> etiquetasMapeadas = etiquetas.stream().map(etiqueta -> new Etiqueta(etiqueta)).collect(Collectors.toList());
+        //Entidad entidadMapeada = getOrganizacion(req).getEntidadesConSubentidades().stream().filter(e -> e.getId().equals(Long.parseLong(entidad))).findFirst().get();
+        Entidad entidadMapeada = getOrganizacion(req).getEntidades().stream().filter(e -> e.getId().equals(Long.parseLong(entidad))).findFirst().get();
 
-        Egreso egreso = new Egreso(documentos, medio, itemsMapeados, LocalDate.parse(fecha, formatter), moneda);
+        Egreso egreso = new Egreso(documentos, medio, itemsMapeados, fechaMapeada, moneda);
 
         if(requierePresu != null)
             egreso.setRequierePresupuesto(false);
         else
             egreso.setRequierePresupuesto(true);
 
+        if(criterio == "Presupuesto de menor valor")
+            egreso.setCriterioDeSeleccion(CriterioMenorValor.getInstance());
+
         egreso.setRevisores(usuariosMapeados);
+        egreso.setEtiquetas(etiquetasMapeadas);
 
-       if(criterio == "Presupuesto de menor valor")
-           egreso.setCriterioDeSeleccion(CriterioMenorValor.getInstance());
-
-       egreso.setEtiquetas(etiquetasMapeadas);
+        List<Egreso> egresos = new ArrayList<Egreso>();
+        egresos.add(egreso);
+        entidadMapeada.setEgresos(egresos);
 
        withTransaction(() -> {
            RepositorioDeEgresos.getInstance().agregar(egreso);

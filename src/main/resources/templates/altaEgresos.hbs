@@ -7,15 +7,15 @@
             <label>Documento Comercial</label>
         </div>
         <div class="form-group col-md-4">
-            <select name="tipoDocumento" id="inputDocComercial" class="form-control" >
-                <option selected>Tipo de Documento...</option>
+            <select name="tipoDocumento" id="inputDocComercial" class="form-control">
+                <option selected></option>
                 {{#each documentos}}
                     <option>{{this}}</option>
                 {{/each}}
             </select>
         </div>
         <div class="form-group col-md-4">
-            <input type="text" name="identificadorDocumento" class="form-control" placeholder="Identificador del Documento" style="margin-left: 35px;">
+            <input type="text" name="identificadorDocumento" class="form-control" placeholder="Identificador del Documento" style="margin-left: 35px;" required>
         </div>
     </div>
 
@@ -24,10 +24,10 @@
             <label for="inputMedioDePago">Medio de Pago</label>
         </div>
         <div class="form-group col-md-4">
-            <select name="medio" id="inputDocComercial" class="form-control">
-                <option selected>Medio de Pago...</option>
+            <select name="medios" id="inputMedioDePago" class="form-control">
+                <option selected></option>
                 {{#each medios}}
-                    <option value="{{id}}">{{this}}</option>
+                    <option value="{{id}}">{{descripcion}} {{identificador}}</option>
                 {{/each}}
             </select>
         </div>
@@ -39,9 +39,9 @@
         </div>
         <div class="form-group col-md-4">
             <select name="moneda" id="inputMoneda" class="form-control">
-                <option selected>Moneda...</option>
+                <option selected></option>
                 {{#each monedas}}
-                    <option value="{{symbol}}-{{id}}-{{description}}">{{symbol}} {{id}} {{description}}</option>
+                    <option value="{{description}}">{{symbol}} {{id}} {{description}}</option>
                 {{/each}}
             </select>
         </div>
@@ -53,7 +53,7 @@
         </div>
         <div class="form-group col-md-4">
             <select name="items" id="inputItems" class="form-control" multiple>
-                <option selected>Item...</option>
+                <option selected></option>
                 {{#each items}}
                     <option value="{{id}}">{{cantidad}} {{producto.descripcion}} {{precioUnitario}}</option>
                 {{/each}}
@@ -66,7 +66,7 @@
             <label>Fecha</label>
         </div>
         <div class="form-group col-md-4">
-            <input type="date" name="fecha" class="form-control" placeholder="Cantidad">
+            <input type="date" name="fecha" class="form-control" placeholder="Cantidad" required>
         </div>
     </div>
 
@@ -88,7 +88,7 @@
         </div>
         <div class="form-group col-md-4">
             <select id="inputusuarios" name="usuarios" class="form-control" multiple>
-                <option selected>Usuarie...</option>
+                <option selected></option>
                 {{#each usuarios}}
                     <option value="{{id}}">{{nombreUsuario}}</option>
                 {{/each}}
@@ -102,9 +102,9 @@
                 </div>
                 <div class="form-group col-md-4">
                     <select id="inputCriterio" name="criterio" class="form-control">
-                        <option selected>Criterio...</option>
-                        <option>Presupuesto de menor valor</option>
-                        <option>Presupuesto de mayor valor</option>
+                        <option selected></option>
+                        <option value="Presupuesto de menor valor">Presupuesto de menor valor</option>
+                        <option value="Presupuesto de mayor valor">Presupuesto de mayor valor</option>
                     </select>
                 </div>
         </div>
@@ -115,9 +115,24 @@
         </div>
         <div class="form-group col-md-4">
             <select id="inputEtiquetas" name="etiquetas" class="form-control" multiple>
-                <option selected>Etiqueta...</option>
-                <option>Etiqueta1</option>
-                <option>Etiqueta2</option>
+                <option selected></option>
+                {{#each etiquetas}}
+                    <option value="{{id}}">{{nombre}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <label>Entidad</label>
+        </div>
+        <div class="form-group col-md-4">
+            <select id="inputEntidad" name="entidad" class="form-control">
+                <option selected></option>
+                {{#each entidades}}
+                    <option value="{{id}}">{{nombreFicticio}}</option>
+                {{/each}}
             </select>
         </div>
     </div>

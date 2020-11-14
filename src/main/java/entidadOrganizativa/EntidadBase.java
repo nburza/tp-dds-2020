@@ -22,4 +22,11 @@ public class EntidadBase extends Entidad {
     public String getTipo() {
         return "Base";
     }
+
+    @Override
+    public List<Entidad> getEntidadesConSubentidades() {
+        List<Entidad> entidad = new ArrayList<>();
+        entidad.add(this);
+        return entidad;
+    }
 }

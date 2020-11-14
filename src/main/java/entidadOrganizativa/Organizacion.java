@@ -94,4 +94,10 @@ public class Organizacion extends EntidadPersistente {
             entidadJuridica.agregarEntidadBase((EntidadBase) eb);
         });
     }
+
+    public List<Entidad> getEntidadesConSubentidades() {
+        List<Entidad> todasLasEntidades = new ArrayList<>();
+        this.entidades.forEach(e -> e.getEntidadesConSubentidades().forEach(ent -> todasLasEntidades.add(ent)));
+        return todasLasEntidades;
+    }
 }

@@ -28,4 +28,8 @@ public abstract class MedioDePago extends EntidadPersistente {
     public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
+
+    public String getDescripcion() { return descripcion; }
+
+    public String getIdentificador() {return identificador; }
 }
