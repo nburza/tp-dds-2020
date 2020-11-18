@@ -1,8 +1,7 @@
 {{#partial "contenido"}}
-
     <div>
-        <h2>Organizacion {{idOrganizacion}}</h2><br>
-        <a class="btn btn-primary" href="/entidades/nueva" role="button">Nueva entidad</a>
+        <h2>Entidades - Organizacion {{idOrganizacion}}</h2><br>
+        <a class="btn btn-primary" href="/entidades/nueva" role="button">Cargar entidad</a>
         <a class="btn btn-primary" href="/entidades/asignarCategoria" role="button">Asignar categoria</a>
 
         <div>
@@ -10,7 +9,7 @@
                 <label for="categoriaFiltrada">Buscar por categoria</label>
                 <select id="categoriaFiltrada" name="categoriaFiltrada">
                     {{#each categorias}}
-                        <option value={{nombre}}>{{nombre}}</option>
+                        <option value="{{nombre}}">{{nombre}}</option>
                     {{/each}}
                 </select>
                 <input type="submit" value="Buscar">

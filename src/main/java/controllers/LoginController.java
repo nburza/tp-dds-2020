@@ -35,13 +35,13 @@ public class LoginController {
         Optional<Usuario> usuario = RepositorioDeUsuarios.getInstance().getPorNombreDeUsuario(username);
         if(usuario.isPresent() && usuario.get().autenticar(username,password)) {
             req.session().attribute("idUsuario", usuario.get().getId());
-            res.redirect("/home");
+            res.redirect("/mensajes");
             return null;
         } else {
             viewModel.put("mensaje", true);
             viewModel.put("tipoMensaje", "danger");
             viewModel.put("tituloMensaje", "Error!");
-            viewModel.put("textoMensaje", "El usuario ingresado no existe. Ingrese nuevamente.");
+            viewModel.put("textoMensaje", "El usuario o la contraseña son incorrectos. Por favor Ingrese nuevamente.");
             viewModel.put("anio", LocalDate.now().getYear());
         }
 

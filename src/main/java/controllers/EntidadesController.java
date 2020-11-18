@@ -120,7 +120,7 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Asignar entidades");
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
-            viewModel.put("idEntidad", "2");
+            viewModel.put("idEntidad",request.params(":id"));
             viewModel.put("entidadesBase", getOrganizacion(request).getEntidadesBaseAsignables());
         }
         return new ModelAndView(viewModel, "asignarEntidadesBase.hbs");

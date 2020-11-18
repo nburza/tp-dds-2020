@@ -1,18 +1,18 @@
 {{#partial "contenido"}}
-
+    <h1 class="text-center">Asignar Entidad</h1>
 <div>
-    <form method="POST" action="/entidades/{{idEntidad}}/entidadesBase">
+    <form class="formulario" method="POST" action="/entidades/{{idEntidad}}/entidadesBase">
         <div class="form-group">
             <label>Entidades base a asignar</label>
             <select id="entidadesSeleccionadas" name="entidadesSeleccionadas" class="custom-select" multiple>
                 <option selected></option>
                 {{#each entidadesBase}}
-                    <option value={{id}}>{{nombreFicticio}}</option>
+                    <option value="{{id}}">{{nombreFicticio}}</option>
                 {{/each}}
             </select>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn btn-outline-primary btn-block" data-loading-text="Asignando..."><i class="fas fa-sign-in-alt"></i>Asignar</button>
+            <button type="submit" class="btn btn btn-primary btn-block" data-loading-text="Asignando...">Asignar</button>
         </div>
     </form>
 </div>

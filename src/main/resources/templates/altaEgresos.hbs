@@ -1,6 +1,6 @@
 {{#partial "contenido"}}
-
-<form method="post" action="/altaEgresos" style="margin: 25px">
+    <h1 class="text-center">Cargar Egreso</h1>
+<form class="formulario" method="post" action="/altaEgresos">
 
     <div class="form-row">
         <div class="form-group col-md-2">
@@ -136,7 +136,7 @@
             </select>
         </div>
     </div>
-    <button type="submit" class="btn btn btn-outline-primary btn-block" data-loading-text=""><i class="fas fa-sign-in-alt"></i> Crear </button>
+    <button type="submit" class="btn btn-primary btn-block" data-loading-text="Creando...">Crear</button>
 </form>
 
 {{/partial}}

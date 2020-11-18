@@ -1,7 +1,7 @@
 {{#partial "contenido"}}
-
+<h1 class="text-center">Cargar Entidad</h1>
     <div>
-        <form method="POST" action="/entidades">
+        <form class="formulario" method="POST" action="/entidades">
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label>Nombre Ficticio</label>
@@ -26,7 +26,7 @@
                     <select id="categorias" name="categorias" class="custom-select" multiple>
                         <option selected></option>
                         {{#each categoriasEntidad}}
-                            <option value={{nombre}}>{{nombre}}</option>
+                            <option value="{{nombre}}">{{nombre}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -103,7 +103,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn btn-outline-primary btn-block" data-loading-text="Creando..."><i class="fas fa-sign-in-alt"></i>Crear</button>
+                <button type="submit" class="btn btn btn-primary btn-block" data-loading-text="Creando...">Crear</button>
             </div>
         </form>
     </div>

@@ -120,6 +120,15 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
            RepositorioDeEgresos.getInstance().agregar(egreso);
        });
 
+        viewModel.put("anio", LocalDate.now().getYear());
+        viewModel.put("titulo", "Cargar Usuario");
+        viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
+        if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
+        {
+            viewModel.put("esAdmin",true);
+        }
+       res.redirect("/home");
+
         return new ModelAndView(viewModel, "altaEgresos.hbs");
     }
 }

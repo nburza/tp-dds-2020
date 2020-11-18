@@ -24,16 +24,17 @@ public class UsuarioController implements WithGlobalEntityManager, EntityManager
         {
             res.redirect("/login");
         }
-        else
+        else if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
         {
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Cargar Usuario");
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
             viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
-            if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
-            {
-                viewModel.put("esAdmin",true);
-            }
+            viewModel.put("esAdmin",true);
+        }
+        else
+        {
+            res.redirect("/home");
         }
         return new ModelAndView(viewModel, "nuevoUsuario.hbs");
     }
