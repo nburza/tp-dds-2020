@@ -20,8 +20,15 @@ public class CategoriasController implements WithGlobalEntityManager, EntityMana
         if(!RepositorioDeUsuarios.estaLogueado(request, response)){
             response.redirect("/login");
         }else{
+            viewModel.put("anio", LocalDate.now().getYear());
+            viewModel.put("titulo", "Categorias");
+            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
             viewModel.put("idOrganizacion", getOrganizacion(request).getId());
             viewModel.put("categorias", getOrganizacion(request).getCategorias());
+            if(RepositorioDeUsuarios.getUsuarioLogueado(request).esAdmin())
+            {
+                viewModel.put("esAdmin",true);
+            }
         }
         return new ModelAndView(viewModel, "categorias.hbs");
     }
@@ -34,6 +41,11 @@ public class CategoriasController implements WithGlobalEntityManager, EntityMana
         else {
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Crear categoria");
+            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+            if(RepositorioDeUsuarios.getUsuarioLogueado(request).esAdmin())
+            {
+                viewModel.put("esAdmin",true);
+            }
             //       viewModel.put("reglas", getOrganizacion(request).getCategorias());
         }
         return new ModelAndView(viewModel, "nuevaCategoria.hbs");
@@ -48,17 +60,17 @@ public class CategoriasController implements WithGlobalEntityManager, EntityMana
         String regla3 = request.queryParams("reglaBloqueoEgresoPorMonto");
         String montoLimite = request.queryParams("montoLimite");
         CategoriaEntidad nuevaCategoria =new CategoriaEntidad(nombre);
+        Organizacion organizacion = getOrganizacion(request);
 
-        if(regla1=="on"){
+        if(regla1!=null){
             nuevaCategoria.agregarRegla(new ReglaEntidadBaseNoIncorporable());
         }
-        if (regla2=="on"){
+        if (regla2!=null){
             nuevaCategoria.agregarRegla(new ReglaProhibidoAgregarEntidadesBase());
         }
-        if (regla3=="on"){
+        if (regla3!=null){
             nuevaCategoria.agregarRegla(new ReglaBloqueoEgresoPorMonto(new BigDecimal(montoLimite)));
         }
-        Organizacion organizacion = getOrganizacion(request);
         withTransaction(() -> organizacion.agregarCategoria(nuevaCategoria));
         response.redirect("/categorias");
         return null;

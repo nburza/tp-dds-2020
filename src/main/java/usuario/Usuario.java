@@ -112,4 +112,8 @@ public class Usuario extends EntidadPersistente {
         return this.nombreUsuario.equals(nombreUsuario) &&
                 contraseniaEsCorrecta(contrasenia);
     }
+
+    public boolean esAdmin(){
+        return false;
+    }
 }

@@ -117,8 +117,8 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         viewModel.put("titulo", "Entidades");
         viewModel.put("mensaje", true);
         viewModel.put("tipoMensaje", "success");
-        viewModel.put("tituloMensaje", "Success!");
-        viewModel.put("textoMensaje", "La entidad fue agregada con exito.");
+        viewModel.put("tituloMensaje", "Exito!");
+        viewModel.put("textoMensaje", "La entidad " + nombreFicticio + " fue agregada con éxito.");
         viewModel.put("idOrganizacion", getOrganizacion(request).getId());
         viewModel.put("categorias", getOrganizacion(request).getCategorias());
         viewModel.put("entidades", getOrganizacion(request).getEntidades());
@@ -134,7 +134,7 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Asignar entidades");
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
-            viewModel.put("idEntidad", "2");
+            viewModel.put("idEntidad",request.params(":id"));
             viewModel.put("entidadesBase", getOrganizacion(request).getEntidadesBaseAsignables());
         }
         return new ModelAndView(viewModel, "asignarEntidadesBase.hbs");
@@ -181,5 +181,30 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
     private Organizacion getOrganizacion(Request request) {
         Long idUsuario = request.session().attribute("idUsuario");
         return RepositorioDeOrganizaciones.getInstance().getOrganizacionDelUsuarioConId(idUsuario).get();
+    }
+
+    public Void agregarCategoriaAEntidad(Request request, Response response) {
+        String entidad = request.queryParams("entidadSeleccionada");
+        String categoria = request.queryParams("categoriaSeleccionada");
+        Entidad laEntidad = getOrganizacion(request).getEntidades().stream().filter(entidad1->entidad1.getNombreFicticio().equals(entidad)).findFirst().get();
+        CategoriaEntidad laCategoria = getOrganizacion(request).getCategorias().stream().filter(categoriaEntidad -> categoriaEntidad.getNombre().equals(categoria)).findFirst().get();
+        withTransaction(()->laEntidad.agregarCategoria(laCategoria));
+        response.redirect("/entidades");
+        return null;
+    }
+
+    public ModelAndView showFormularioAsignarCategoria(Request request, Response response) {
+        Map<String, Object> viewModel = new HashMap<String, Object>();
+        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
+            response.redirect("/login");
+        }
+        else {
+            viewModel.put("anio", LocalDate.now().getYear());
+            viewModel.put("titulo", "Asignar categorias");
+            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+            viewModel.put("entidades", getOrganizacion(request).getEntidades());
+            viewModel.put("categorias",getOrganizacion(request).getCategorias());
+        }
+        return new ModelAndView(viewModel, "agregarCategoria.hbs");
     }
 }

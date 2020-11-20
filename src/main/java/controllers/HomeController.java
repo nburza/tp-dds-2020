@@ -22,6 +22,10 @@ public class HomeController {
             viewModel.put("anio", LocalDate.now().getYear());
             viewModel.put("titulo", "Home");
             viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+            if(RepositorioDeUsuarios.getUsuarioLogueado(request).esAdmin())
+            {
+                viewModel.put("esAdmin",true);
+            }
         }
         return new ModelAndView(viewModel, "home.hbs");
     }

@@ -13,4 +13,8 @@ public class Administrador extends Usuario {
 
     public Administrador() {
     }
+
+    public boolean esAdmin(){
+        return true;
+    }
 }

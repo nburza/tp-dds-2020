@@ -25,7 +25,7 @@ public class Item extends EntidadPersistente {
     }
 
     public Item(Producto unProducto, int unaCantidad, String moneda, BigDecimal unPrecioUnitario) {
-        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
+//        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
         this.producto = unProducto;
         this.precioUnitario = unPrecioUnitario;
         this.cantidad = unaCantidad;
@@ -33,7 +33,7 @@ public class Item extends EntidadPersistente {
     }
 
     public Item(Producto unProducto, int unaCantidad, String moneda) {
-        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
+        //ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
         this.producto = unProducto;
         this.cantidad = unaCantidad;
         this.moneda = moneda;
@@ -60,4 +60,8 @@ public class Item extends EntidadPersistente {
     public BigDecimal getPrecioUnitario() {
         return precioUnitario;
     }
+
+    public Producto getProducto() {return producto;}
+
+    public int getCantidad() {return cantidad;}
 }

@@ -1,31 +1,31 @@
 {{#partial "contenido"}}
-
+    <h1 class="text-center">Cargar Categoría</h1>
     <div>
-        <form method="POST" action="/categorias">
+        <form class="formulario" method="POST" action="/categorias">
             <div class="form-group">
                 <label>Nombre</label><input name="nombre" class="form-control" type="text" maxlength="64">
             </div>
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1" name="reglaEntidadBaseNoIncorporable">
-                <label class="form-check-label" for="exampleCheck1"> A las entidades base pertenecientes no se le pueden agregar entidades juridicas</label>
+                <label class="form-check-label" for="exampleCheck1"> Las entidades base pertenecientes no pueden ser agregadas a entidades juridicas</label>
             </div>
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck2" name="reglaProhibidoAgregarEntidadesBase">
-                <label class="form-check-label" for="exampleCheck2"> Las entidades juridicas pertenecientes no se puden agregar a entidades base</label>
+                <label class="form-check-label" for="exampleCheck2"> A las a entidades juridicas no se le pueden agregar entidades</label>
             </div>
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck3" name="reglaBloqueoEgresoPorMonto">
                 <label class="form-check-label" for="exampleCheck3"> Las entidades tienen un monto limite</label>
                 <div class="form-group form-check">
-                <label>Monto limite</label>    <input name="monto limite" class="form-control" type="text" maxlength="64" placeholder="Ejemplo: 10.25" >
+                <label>Monto limite</label>    <input name="montoLimite" class="form-control" type="number" maxlength="64" placeholder="Ejemplo: 10.25" >
 
                 </div>
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn btn-outline-primary btn-block" data-loading-text="Creando..."><i class="fas fa-sign-in-alt"></i>Crear</button>
+                <button type="submit" class="btn btn btn-primary btn-block" data-loading-text="Creando...">Crear</button>
             </div>
         </form>
     </div>

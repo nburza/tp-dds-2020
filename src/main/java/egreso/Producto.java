@@ -22,4 +22,6 @@ public class Producto extends EntidadPersistente {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public String getDescripcion(){return descripcion;}
 }
