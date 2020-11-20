@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EntidadesController implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
+public class EntidadesController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
 
     public ModelAndView showEntidades(Request request, Response response) {
         Map<String, Object> viewModel = new HashMap<String, Object>();
@@ -36,6 +36,24 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
                 viewModel.put("entidades", getOrganizacion(request).getEntidadesPorCategoria(categoriaFiltrada));
         }
         return new ModelAndView(viewModel, "entidades.hbs");
+    }
+
+    public ModelAndView showEntidades2(Request req, Response res) {
+        return funcionConControlDeLogueo(req, res, (request, response) ->
+        {
+            Map<String, Object> viewModel = new HashMap<String, Object>();
+            viewModel.put("anio", LocalDate.now().getYear());
+            viewModel.put("titulo", "Entidades");
+            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+            viewModel.put("idOrganizacion", getOrganizacion(request).getId());
+            viewModel.put("categorias", getOrganizacion(request).getCategorias());
+            String categoriaFiltrada = request.queryParams("categoriaFiltrada");
+            if(categoriaFiltrada == null)
+                viewModel.put("entidades", getOrganizacion(request).getEntidades());
+            else
+                viewModel.put("entidades", getOrganizacion(request).getEntidadesPorCategoria(categoriaFiltrada));
+            return new ModelAndView(viewModel, "entidades.hbs");
+        });
     }
 
     public ModelAndView showFormularioNuevaEntidad(Request request, Response response) {
@@ -71,20 +89,20 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         String categoriaEmpresa = request.queryParams("categoriaEmpresa");
         try {
             if (tipoEntidad.equals("base")) {
-                entidad = new EntidadBase(nombreFicticio, razonSocial, null);
+                entidad = new EntidadBase(nombreFicticio, razonSocial, new ArrayList<>());
             } else {
                 DireccionPostal direccionPostal = new DireccionPostal(pais, provincia, ciudad, direccion);
                 if (tipoEntidadJuridica.equals("oss")) {
-                    entidad = new OrganizacionSectorSocial(razonSocial, nombreFicticio, Integer.parseInt(cuit), direccionPostal, Integer.valueOf(codigoIgj), null);
+                    entidad = new OrganizacionSectorSocial(razonSocial, nombreFicticio, Integer.parseInt(cuit), direccionPostal, Integer.valueOf(codigoIgj), new ArrayList<>());
                 } else {
-                    entidad = new Empresa(razonSocial, nombreFicticio, Integer.parseInt(cuit), direccionPostal, Integer.valueOf(codigoIgj), parsearCategoriaEmpresa(categoriaEmpresa), null);
+                    entidad = new Empresa(razonSocial, nombreFicticio, Integer.parseInt(cuit), direccionPostal, Integer.valueOf(codigoIgj), parsearCategoriaEmpresa(categoriaEmpresa), new ArrayList<>());
                 }
             }
             Organizacion organizacion = getOrganizacion(request);
             List<CategoriaEntidad> categoriasSeleccionadas = parsearCategoriasSeleccionadas(categorias, organizacion);
             withTransaction(() -> {
                 organizacion.agregarEntidad(entidad);
-                categoriasSeleccionadas.forEach(c -> entidad.agregarCategoria(c));
+                categoriasSeleccionadas.forEach(entidad::agregarCategoria);
             });
         }
         catch(DireccionInvalidaException exception) {
@@ -103,11 +121,7 @@ public class EntidadesController implements WithGlobalEntityManager, EntityManag
         viewModel.put("textoMensaje", "La entidad fue agregada con exito.");
         viewModel.put("idOrganizacion", getOrganizacion(request).getId());
         viewModel.put("categorias", getOrganizacion(request).getCategorias());
-        String categoriaFiltrada = request.queryParams("categoriaFiltrada");
-        if(categoriaFiltrada == null)
-            viewModel.put("entidades", getOrganizacion(request).getEntidades());
-        else
-            viewModel.put("entidades", getOrganizacion(request).getEntidadesPorCategoria(categoriaFiltrada));
+        viewModel.put("entidades", getOrganizacion(request).getEntidades());
         return new ModelAndView(viewModel, "entidades.hbs");
     }
 
