@@ -33,12 +33,12 @@
                     <td>{{razonSocial}}</td>
                     <td>{{tipo}}</td>
                     <td class="text-center">
-                    {{#if this.esJuridica}}
+                    {{#if this.puedeContenerEntidades}}
                         {{cantidadDeEntidadesAsignadasComoString}}
                     {{/if}}
                     </td>
                     <td>
-                    {{#if this.esJuridica}}
+                    {{#if this.puedeContenerEntidades}}
                         <a class="btn btn-outline-primary" href="/entidades/{{id}}/entidadesBase/asignar" role="button">Asignar más</a>
                     {{/if}}
                     </td>
