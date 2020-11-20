@@ -67,8 +67,16 @@ public abstract class Entidad extends EntidadPersistente {
 
     public abstract String getTipo();
 
-    public boolean getEsJuridica() {
+    public boolean esJuridica() {
         return !this.getTipo().equals("Base");
+    }
+
+    public boolean getPuedeContenerEntidades() {
+        return this.esJuridica() && !this.tieneCategoriaConRegla("ReglaProhibidoAgregarEntidadesBase");
+    }
+
+    public boolean esAsignable() {
+        return this.getTipo().equals("Base") && !this.tieneCategoriaConRegla("ReglaEntidadBaseNoIncorporable");
     }
 
     public void agregarCategoria(CategoriaEntidad categoria) {

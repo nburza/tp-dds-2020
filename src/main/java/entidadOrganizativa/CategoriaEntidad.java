@@ -74,5 +74,7 @@ public class CategoriaEntidad extends EntidadPersistente {
         reglas.forEach(Regla::verificarSiEntidadJuridicaPuedeAgregarEntidadesBase);
     }
 
-
+    public boolean tieneReglaDeTipo(String tipoDeRegla) {
+        return this.reglas.stream().anyMatch(r -> tipoDeRegla.equals(r.getClass().getSimpleName()));
+    }
 }
