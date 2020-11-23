@@ -4,56 +4,39 @@ import apiMercadoLibre.DTO.MonedaDTO;
 import apiMercadoLibre.ServicioAPIMercadoLibre;
 import egreso.*;
 import entidadOrganizativa.Entidad;
-import entidadOrganizativa.Organizacion;
-import entidadOrganizativa.RepositorioDeOrganizaciones;
 import mediosDePago.MedioDePago;
 import mediosDePago.RepositorioDeMediosDePago;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
+import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
 import spark.ModelAndView;
-import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import usuario.RepositorioDeUsuarios;
 import usuario.Usuario;
-import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
-import java.lang.reflect.Array;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EgresosController implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps
+public class EgresosController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps
 {
     ServicioAPIMercadoLibre servicioAPIMercadoLibre = new ServicioAPIMercadoLibre();
 
-    private Organizacion getOrganizacion(Request request) {
-        Long idUsuario = request.session().attribute("idUsuario");
-        return RepositorioDeOrganizaciones.getInstance().getOrganizacionDelUsuarioConId(idUsuario).get();
-    }
+    public ModelAndView showEgresos(Request request, Response response){
+        return ejecutarConControlDeLogin(request, response, (req, res) -> {
+            Map<String, Object> viewModel = new HashMap<String, Object>();
 
-    public ModelAndView showEgresos(Request req, Response res){
-        Map<String, Object> viewModel = new HashMap<String, Object>();
-
-        if(!RepositorioDeUsuarios.estaLogueado(req,res))
-        {
-            res.redirect("/login");
-        }
-        else
-        {
             List<String> monedas = new ArrayList<String>();
             List<MonedaDTO> monedasValidas = servicioAPIMercadoLibre.getMonedas();
 
-            for (MonedaDTO moneda : monedasValidas)
-            {
+            for (MonedaDTO moneda : monedasValidas) {
                 monedas.add(moneda.getSymbol() + " " + moneda.getId() + " (" + moneda.getDescription() + ")");
             }
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Cargar Usuario");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
-            if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
-            {
-                viewModel.put("esAdmin",true);
+            this.cargarDatosGeneralesA(viewModel,request,"Cargar Usuario");
+            if (this.getUsuarioLogueado(req).esAdmin()) {
+                viewModel.put("esAdmin", true);
             }
             viewModel.put("documentos", TipoDocComercial.values());
             viewModel.put("usuarios", RepositorioDeUsuarios.getInstance().getAllInstances());
@@ -63,9 +46,9 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
             viewModel.put("etiquetas", RepositorioDeEtiquetas.getInstance().getAllInstances());
             //viewModel.put("entidades", getOrganizacion(req).getEntidadesConSubentidades());
             viewModel.put("entidades", getOrganizacion(req).getEntidades());
-        }
 
-        return new ModelAndView(viewModel, "altaEgresos.hbs");
+            return new ModelAndView(viewModel, "altaEgresos.hbs");
+        });
     }
 
     public ModelAndView altaEgresos(Request req, Response res)
@@ -101,12 +84,12 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
 
         Egreso egreso = new Egreso(documentos, medio, itemsMapeados, fechaMapeada, moneda);
 
-        if(requierePresu != null)
+        if(requierePresu == null)
             egreso.setRequierePresupuesto(false);
         else
             egreso.setRequierePresupuesto(true);
 
-        if(criterio == "Presupuesto de menor valor")
+        if(criterio.equals("Presupuesto de menor valor"))
             egreso.setCriterioDeSeleccion(CriterioMenorValor.getInstance());
 
         egreso.setRevisores(usuariosMapeados);
@@ -120,14 +103,12 @@ public class EgresosController implements WithGlobalEntityManager, EntityManager
            RepositorioDeEgresos.getInstance().agregar(egreso);
        });
 
-        viewModel.put("anio", LocalDate.now().getYear());
-        viewModel.put("titulo", "Cargar Usuario");
-        viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
-        if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
+        this.cargarDatosGeneralesA(viewModel,req,"Cargar Usuario");
+        if(this.getUsuarioLogueado(req).esAdmin())
         {
             viewModel.put("esAdmin",true);
         }
-       res.redirect("/home");
+        res.redirect("/home");
 
         return new ModelAndView(viewModel, "altaEgresos.hbs");
     }

@@ -9,34 +9,27 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import usuario.ContraseniaDebilException;
+import usuario.NombreDeUsuarioRepetidoException;
 import usuario.RepositorioDeUsuarios;
 import usuario.Usuario;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UsuarioController implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
+public class UsuarioController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
     public ModelAndView showAgregarUsuario(Request req, Response res){
-        Map<String, Object> viewModel = new HashMap<String, Object>();
+        return ejecutarConControlDeLogin(req, res, (request, response) -> {
+            Map<String, Object> viewModel = new HashMap<String, Object>();
 
-        if(!RepositorioDeUsuarios.estaLogueado(req,res))
-        {
-            res.redirect("/login");
-        }
-        else if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
-        {
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Cargar Usuario");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
-            viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
-            viewModel.put("esAdmin",true);
-        }
-        else
-        {
-            res.redirect("/home");
-        }
-        return new ModelAndView(viewModel, "nuevoUsuario.hbs");
+            if (this.getUsuarioLogueado(req).esAdmin()) {
+                this.cargarDatosGeneralesA(viewModel,request,"Cargar Usuario");
+                viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
+                viewModel.put("esAdmin", true);
+            } else {
+                res.redirect("/home");
+            }
+            return new ModelAndView(viewModel, "nuevoUsuario.hbs");
+        });
     }
 
     public ModelAndView agregarUsuario(Request req, Response res){
@@ -48,56 +41,40 @@ public class UsuarioController implements WithGlobalEntityManager, EntityManager
         try {
             usuarioNuevo = new Usuario(username,password);
         } catch (ContraseniaDebilException | ClassNotFoundException e) {
-            viewModel.put("mensaje", true);
-            viewModel.put("tipoMensaje", "danger");
-            viewModel.put("tituloMensaje", "Error!");
-            viewModel.put("textoMensaje", "la contraseña ingresado no es válida. " + e.getMessage());
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Cargar Usuario");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
+            this.cargarDatosGeneralesA(viewModel,req,"Cargar Usuario");
+            this.agregarMensajeDeErrorA(viewModel,"La contraseña ingresado no es válida. " + e.getMessage());
             viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
-            if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
+            if(this.getUsuarioLogueado(req).esAdmin())
             {
                 viewModel.put("esAdmin",true);
             }
             return new ModelAndView(viewModel, "nuevoUsuario.hbs");
         }
-        Organizacion organizacion = RepositorioDeOrganizaciones.getInstance().getPorId(Long.valueOf(organizacionId)).get();
+        Organizacion organizacion = RepositorioDeOrganizaciones.getInstance().getPorId(Long.parseLong(organizacionId)).get();
 
-        if(!RepositorioDeUsuarios.getInstance().getAllInstances().stream().anyMatch(x -> x.getNombreUsuario().equals(username))) {
-            Usuario finalUsuarioNuevo = usuarioNuevo;
+        Usuario finalUsuarioNuevo = usuarioNuevo;
+        try {
             withTransaction(() ->
             {
                 RepositorioDeUsuarios.getInstance().agregar(finalUsuarioNuevo);
                 organizacion.agregarUsuario(finalUsuarioNuevo);
             });
-            viewModel.put("mensaje", true);
-            viewModel.put("tipoMensaje", "success");
-            viewModel.put("tituloMensaje", "Exito!");
-            viewModel.put("textoMensaje", "El usuario " + username + " fue ingresado con éxito.");
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Home");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
-            if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
-            {
-                viewModel.put("esAdmin",true);
-            }
-        } else {
-            viewModel.put("mensaje", true);
-            viewModel.put("tipoMensaje", "danger");
-            viewModel.put("tituloMensaje", "Error!");
-            viewModel.put("textoMensaje", "El usuario ingresado ya existe. Ingrese nuevamente un usuario.");
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Cargar Usuario");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(req).getNombreUsuario());
+        } catch (NombreDeUsuarioRepetidoException e) {
+            this.cargarDatosGeneralesA(viewModel,req,"Cargar usuario");
+            this.agregarMensajeDeErrorA(viewModel,"El usuario ingresado ya existe. Ingrese nuevamente un usuario.");
             viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
-            if(RepositorioDeUsuarios.getUsuarioLogueado(req).esAdmin())
+            if(this.getUsuarioLogueado(req).esAdmin())
             {
                 viewModel.put("esAdmin",true);
             }
             return new ModelAndView(viewModel, "nuevoUsuario.hbs");
         }
-
+        this.cargarDatosGeneralesA(viewModel,req,"Home");
+        this.agregarMensajeDeExitoA(viewModel,"El usuario " + username + " fue ingresado con éxito.");
+        if(this.getUsuarioLogueado(req).esAdmin())
+        {
+            viewModel.put("esAdmin",true);
+        }
         return new ModelAndView(viewModel, "home.hbs");
     }
 }

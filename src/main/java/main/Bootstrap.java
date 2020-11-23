@@ -1,12 +1,5 @@
 package main;
 
-import apiMercadoLibre.DTO.CiudadDTO;
-import apiMercadoLibre.DTO.MonedaDTO;
-import apiMercadoLibre.DTO.PaisDTO;
-import apiMercadoLibre.DTO.ProvinciaDTO;
-import apiMercadoLibre.ServiceLocator;
-import apiMercadoLibre.ValidadorDeMoneda;
-import apiMercadoLibre.ValidadorDeUbicacion;
 import egreso.*;
 import entidadOrganizativa.*;
 import mediosDePago.*;
@@ -20,7 +13,6 @@ import usuario.Usuario;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
 
@@ -36,12 +28,6 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
             Usuario charly = new Usuario("charly","altisima clave");
             Usuario mati = new Usuario("mati","altisima clave");
             Administrador admin = new Administrador("admin","alta clave");
-
-            CiudadDTO ciudad = new CiudadDTO("3","La Plata");
-            ProvinciaDTO provincia = new ProvinciaDTO("2","Buenos Aires", Arrays.asList(ciudad));
-            PaisDTO pais = new PaisDTO("1","Argentina", Arrays.asList(provincia));
-            ValidadorDeUbicacion validadorDeUbicacion = new ValidadorDeUbicacion(Arrays.asList(pais));
-            ServiceLocator.getInstance().setValidadorDeUbicacion(validadorDeUbicacion);
 
             Organizacion organizacion1 = new Organizacion(new ArrayList<>(), new ArrayList<>());
             Organizacion organizacion2 = new Organizacion(new ArrayList<>(), new ArrayList<>());
@@ -68,10 +54,7 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
             entidadBase2.agregarCategoria(categoria2);
             entidadBase3.agregarCategoria(categoria3);
 
-            MonedaDTO pesoArgentino = new MonedaDTO(null,null,"ARS");
-            ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(Arrays.asList(pesoArgentino));
-            ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
-            Egreso egreso =  new Egreso( null, null, new ArrayList<>(), LocalDate.now(),false,"ARS");
+            Egreso egreso =  new Egreso( null, null, new ArrayList<>(), LocalDate.now(),false,"Peso argentino");
             RepositorioDeEgresos.getInstance().agregar(egreso);
 
             Producto producto1 = new Producto("Resma Autor");

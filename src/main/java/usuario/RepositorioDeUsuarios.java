@@ -1,12 +1,7 @@
 package usuario;
 
 import persistencia.RepositorioGenerico;
-import spark.Request;
-import spark.Response;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 public class RepositorioDeUsuarios extends RepositorioGenerico<Usuario> {
@@ -36,24 +31,6 @@ public class RepositorioDeUsuarios extends RepositorioGenerico<Usuario> {
                 .stream()
                 .filter(usuario -> usuario.getNombreUsuario().equals(nombreUsuario))
                 .findFirst();
-    }
-
-    public static boolean estaLogueado(Request request, Response response) {
-        Usuario usuario = getUsuarioLogueado(request);
-
-        return usuario != null;
-    }
-
-    public static Usuario getUsuarioLogueado(Request request) {
-        Long idUsuario = request.session().attribute("idUsuario");
-
-        Usuario usuario = null;
-
-        if(idUsuario != null){
-            usuario = RepositorioDeUsuarios.getInstance().getPorId(idUsuario).get();
-        }
-
-        return usuario;
     }
 
 }

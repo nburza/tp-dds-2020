@@ -7,48 +7,36 @@ import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import usuario.RepositorioDeUsuarios;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CategoriasController implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
-    public ModelAndView showCategorias(Request request, Response response) {
-        Map<String, Object> viewModel = new HashMap<String, Object>();
-        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
-            response.redirect("/login");
-        }else{
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Categorias");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+public class CategoriasController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
+
+    public ModelAndView showCategorias(Request req, Response res) {
+        return ejecutarConControlDeLogin(req, res, (request, response) -> {
+            Map<String, Object> viewModel = new HashMap<String, Object>();
+            this.cargarDatosGeneralesA(viewModel,request,"Categorias");
             viewModel.put("idOrganizacion", getOrganizacion(request).getId());
             viewModel.put("categorias", getOrganizacion(request).getCategorias());
-            if(RepositorioDeUsuarios.getUsuarioLogueado(request).esAdmin())
-            {
-                viewModel.put("esAdmin",true);
+            if (this.getUsuarioLogueado(request).esAdmin()) {
+                viewModel.put("esAdmin", true);
             }
-        }
-        return new ModelAndView(viewModel, "categorias.hbs");
+            return new ModelAndView(viewModel, "categorias.hbs");
+        });
     }
 
-    public ModelAndView showFormularioNuevaCategoria(Request request, Response response) {
-        Map<String, Object> viewModel = new HashMap<String, Object>();
-        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
-            response.redirect("/login");
-        }
-        else {
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Crear categoria");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
-            if(RepositorioDeUsuarios.getUsuarioLogueado(request).esAdmin())
-            {
-                viewModel.put("esAdmin",true);
+    public ModelAndView showFormularioNuevaCategoria(Request req, Response res) {
+        return ejecutarConControlDeLogin(req, res, (request, response) -> {
+            Map<String, Object> viewModel = new HashMap<String, Object>();
+            this.cargarDatosGeneralesA(viewModel,request,"Crear categoria");
+            if (this.getUsuarioLogueado(request).esAdmin()) {
+                viewModel.put("esAdmin", true);
             }
             //       viewModel.put("reglas", getOrganizacion(request).getCategorias());
-        }
-        return new ModelAndView(viewModel, "nuevaCategoria.hbs");
+            return new ModelAndView(viewModel, "nuevaCategoria.hbs");
+        });
     }
     public Void agregarCategoria(Request request, Response response) {
         Map<String, Object> viewModel = new HashMap<String, Object>();
@@ -75,10 +63,4 @@ public class CategoriasController implements WithGlobalEntityManager, EntityMana
         response.redirect("/categorias");
         return null;
     }
-
-    private Organizacion getOrganizacion(Request request) {
-        Long idUsuario = request.session().attribute("idUsuario");
-        return RepositorioDeOrganizaciones.getInstance().getOrganizacionDelUsuarioConId(idUsuario).get();
-    }
-
 }

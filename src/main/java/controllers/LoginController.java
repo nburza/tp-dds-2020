@@ -8,16 +8,15 @@ import usuario.Usuario;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class LoginController {
+public class LoginController extends ControllerGenerico{
 
     public ModelAndView show(Request req, Response res){
         Map<String, Object> viewModel = new HashMap<String, Object>();
 
-        if(RepositorioDeUsuarios.estaLogueado(req,res))
+        if(this.estaLogueado(req,res))
         {
             res.redirect("/");
         }
@@ -38,10 +37,7 @@ public class LoginController {
             res.redirect("/mensajes");
             return null;
         } else {
-            viewModel.put("mensaje", true);
-            viewModel.put("tipoMensaje", "danger");
-            viewModel.put("tituloMensaje", "Error!");
-            viewModel.put("textoMensaje", "El usuario o la contraseña son incorrectos. Por favor Ingrese nuevamente.");
+            this.agregarMensajeDeErrorA(viewModel,"El usuario o la contraseña son incorrectos. Por favor Ingrese nuevamente.");
             viewModel.put("anio", LocalDate.now().getYear());
         }
 

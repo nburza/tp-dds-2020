@@ -5,11 +5,9 @@ import entidadOrganizativa.*;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
 import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
-import presupuesto.DireccionPostal;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import usuario.RepositorioDeUsuarios;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,34 +17,11 @@ import java.util.stream.Collectors;
 
 public class EntidadesController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
 
-    public ModelAndView showEntidades(Request request, Response response) {
-        Map<String, Object> viewModel = new HashMap<String, Object>();
-
-        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
-            response.redirect("/login");
-        }
-        else {
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Entidades");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
-            viewModel.put("idOrganizacion", getOrganizacion(request).getId());
-            viewModel.put("categorias", getOrganizacion(request).getCategorias());
-            String categoriaFiltrada = request.queryParams("categoriaFiltrada");
-            if(categoriaFiltrada == null)
-                viewModel.put("entidades", getOrganizacion(request).getEntidades());
-            else
-                viewModel.put("entidades", getOrganizacion(request).getEntidadesPorCategoria(categoriaFiltrada));
-        }
-        return new ModelAndView(viewModel, "entidades.hbs");
-    }
-
-    public ModelAndView showEntidades2(Request req, Response res) {
-        return funcionConControlDeLogueo(req, res, (request, response) ->
+    public ModelAndView showEntidades(Request req, Response res) {
+        return ejecutarConControlDeLogin(req, res, (request, response) ->
         {
             Map<String, Object> viewModel = new HashMap<String, Object>();
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Entidades");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+            this.cargarDatosGeneralesA(viewModel, request,"Entidades");
             viewModel.put("idOrganizacion", getOrganizacion(request).getId());
             viewModel.put("categorias", getOrganizacion(request).getCategorias());
             String categoriaFiltrada = request.queryParams("categoriaFiltrada");
@@ -58,25 +33,17 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         });
     }
 
-    public ModelAndView showFormularioNuevaEntidad(Request request, Response response) {
-        Map<String, Object> viewModel = new HashMap<String, Object>();
-        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
-            response.redirect("/login");
-        }
-        else {
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Crear entidad");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+    public ModelAndView showFormularioNuevaEntidad(Request req, Response res) {
+        return ejecutarConControlDeLogin(req, res, (request, response) -> {
+            Map<String, Object> viewModel = new HashMap<String, Object>();
+            this.cargarDatosGeneralesA(viewModel,request,"Crear entidad");
             viewModel.put("categoriasEntidad", getOrganizacion(request).getCategorias());
-        }
-        return new ModelAndView(viewModel, "nuevaEntidad.hbs");
+            return new ModelAndView(viewModel, "nuevaEntidad.hbs");
+        });
     }
 
     public ModelAndView agregarEntidad(Request request, Response response) {
         Map<String, Object> viewModel = new HashMap<String, Object>();
-        viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
-        viewModel.put("anio", LocalDate.now().getYear());
-        Entidad entidad;
         String nombreFicticio = request.queryParams("nombreFicticio");
         String razonSocial = request.queryParams("razonSocial");
         List<String> categorias = Arrays.asList(request.queryMap("categorias").values());
@@ -89,6 +56,7 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         String codigoIgj = request.queryParams("codigoIgj");
         String tipoEntidadJuridica = request.queryParams("tipoEntidadJuridica");
         String categoriaEmpresa = request.queryParams("categoriaEmpresa");
+        Organizacion organizacion = getOrganizacion(request);
         try {
             Entidad entidad = new EntidadBuilder().crearEntidadQueCorresponda(nombreFicticio,razonSocial,tipoEntidad,cuit,pais,provincia,ciudad,direccion,codigoIgj,tipoEntidadJuridica, categoriaEmpresa);
             List<CategoriaEntidad> categoriasSeleccionadas = parsearCategoriasSeleccionadas(categorias, organizacion);
@@ -98,38 +66,27 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
             });
         }
         catch(DireccionInvalidaException exception) {
-            viewModel.put("titulo", "Crear entidad");
-            viewModel.put("mensaje", true);
-            viewModel.put("tipoMensaje", "danger");
-            viewModel.put("tituloMensaje", "Error!");
-            viewModel.put("textoMensaje", "La direccion ingresada es incorrecta. Ingrese nuevamente.");
+            this.cargarDatosGeneralesA(viewModel,request,"Crear entidad");
+            this.agregarMensajeDeErrorA(viewModel,"La direccion ingresada es incorrecta. Ingrese nuevamente.");
             viewModel.put("categoriasEntidad", getOrganizacion(request).getCategorias());
             return new ModelAndView(viewModel, "nuevaEntidad.hbs");
         }
-        viewModel.put("titulo", "Entidades");
-        viewModel.put("mensaje", true);
-        viewModel.put("tipoMensaje", "success");
-        viewModel.put("tituloMensaje", "Exito!");
-        viewModel.put("textoMensaje", "La entidad " + nombreFicticio + " fue agregada con éxito.");
-        viewModel.put("idOrganizacion", getOrganizacion(request).getId());
-        viewModel.put("categorias", getOrganizacion(request).getCategorias());
-        viewModel.put("entidades", getOrganizacion(request).getEntidades());
+        this.cargarDatosGeneralesA(viewModel,request,"Entidades");
+        this.agregarMensajeDeExitoA(viewModel,"La entidad " + nombreFicticio + " fue agregada con éxito.");
+        viewModel.put("idOrganizacion", organizacion.getId());
+        viewModel.put("categorias", organizacion.getCategorias());
+        viewModel.put("entidades", organizacion.getEntidades());
         return new ModelAndView(viewModel, "entidades.hbs");
     }
 
-    public ModelAndView showAsignarEntidadesBase(Request request, Response response) {
-        Map<String, Object> viewModel = new HashMap<String, Object>();
-        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
-            response.redirect("/login");
-        }
-        else {
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Asignar entidades");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
-            viewModel.put("idEntidad",request.params(":id"));
+    public ModelAndView showAsignarEntidadesBase(Request req, Response res) {
+        return ejecutarConControlDeLogin(req, res, (request, response) -> {
+            Map<String, Object> viewModel = new HashMap<String, Object>();
+            this.cargarDatosGeneralesA(viewModel,request,"Asignar entidades");
+            viewModel.put("idEntidad", request.params(":id"));
             viewModel.put("entidadesBase", getOrganizacion(request).getEntidadesBaseAsignables());
-        }
-        return new ModelAndView(viewModel, "asignarEntidadesBase.hbs");
+            return new ModelAndView(viewModel, "asignarEntidadesBase.hbs");
+        });
     }
 
     public Void asignarEntidadesBase(Request request, Response response) {
@@ -170,11 +127,6 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
                 .collect(Collectors.toList());
     }
 
-    private Organizacion getOrganizacion(Request request) {
-        Long idUsuario = request.session().attribute("idUsuario");
-        return RepositorioDeOrganizaciones.getInstance().getOrganizacionDelUsuarioConId(idUsuario).get();
-    }
-
     public Void agregarCategoriaAEntidad(Request request, Response response) {
         String entidad = request.queryParams("entidadSeleccionada");
         String categoria = request.queryParams("categoriaSeleccionada");
@@ -185,18 +137,13 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         return null;
     }
 
-    public ModelAndView showFormularioAsignarCategoria(Request request, Response response) {
-        Map<String, Object> viewModel = new HashMap<String, Object>();
-        if(!RepositorioDeUsuarios.estaLogueado(request, response)){
-            response.redirect("/login");
-        }
-        else {
-            viewModel.put("anio", LocalDate.now().getYear());
-            viewModel.put("titulo", "Asignar categorias");
-            viewModel.put("nombreUsuario", RepositorioDeUsuarios.getUsuarioLogueado(request).getNombreUsuario());
+    public ModelAndView showFormularioAsignarCategoria(Request req, Response res) {
+        return ejecutarConControlDeLogin(req, res, (request, response) -> {
+            Map<String, Object> viewModel = new HashMap<String, Object>();
+            this.cargarDatosGeneralesA(viewModel,request,"Asignar categorias");
             viewModel.put("entidades", getOrganizacion(request).getEntidades());
-            viewModel.put("categorias",getOrganizacion(request).getCategorias());
-        }
-        return new ModelAndView(viewModel, "agregarCategoria.hbs");
+            viewModel.put("categorias", getOrganizacion(request).getCategorias());
+            return new ModelAndView(viewModel, "agregarCategoria.hbs");
+        });
     }
 }
