@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import egreso.ValidadorDeEgresos;
@@ -68,8 +69,8 @@ public class Usuario extends EntidadPersistente {
         return String.valueOf(getDiccionarioDeErrores().get(ruleResultDetail.getErrorCode()));
     }
 
-    private Hashtable<String, String> getDiccionarioDeErrores() {
-        Hashtable<String, String> DiccionarioDeErrores = new Hashtable<>();
+    private HashMap<String, String> getDiccionarioDeErrores() {
+        HashMap<String, String> DiccionarioDeErrores = new HashMap<>();
         DiccionarioDeErrores.put("ILLEGAL_WORD","La contraseña ingresada es muy facil");
         DiccionarioDeErrores.put("TOO_SHORT","La contraseña debe tener al menos 8 caracteres");
         DiccionarioDeErrores.put("TOO_LONG","La contraseña puede tener 64 caracteres como maximo");

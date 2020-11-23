@@ -140,7 +140,7 @@ public class EntidadTest extends AbstractPersistenceTest implements WithGlobalEn
     public void reporteGastoSMensual(){
         entidadJuridica.agregarEgreso(egreso1);
         entidadJuridica.agregarEgreso(egreso2);
-        Hashtable<Etiqueta,BigDecimal> totalPorEtiqueta = new Hashtable<>();
+        HashMap<Etiqueta,BigDecimal> totalPorEtiqueta = new HashMap<>();
         totalPorEtiqueta.put(etiqueta1, BigDecimal.valueOf(1200));
         totalPorEtiqueta.put(etiqueta2, BigDecimal.valueOf(600));
         Assert.assertEquals(totalPorEtiqueta,entidadJuridica.reporteMensualGastosPorEtiqueta());
@@ -151,7 +151,7 @@ public class EntidadTest extends AbstractPersistenceTest implements WithGlobalEn
         entidadJuridica.agregarEgreso(egreso1);
         entidadJuridica.agregarEgreso(egreso2);
         entidadJuridica.agregarEgreso(egreso3);
-        Hashtable<Etiqueta,BigDecimal> totalPorEtiqueta = new Hashtable<>();
+        HashMap<Etiqueta,BigDecimal> totalPorEtiqueta = new HashMap<>();
         totalPorEtiqueta.put(etiqueta1, BigDecimal.valueOf(1200));
         totalPorEtiqueta.put(etiqueta2, BigDecimal.valueOf(600));
         Assert.assertEquals(totalPorEtiqueta,entidadJuridica.reporteMensualGastosPorEtiqueta());
@@ -163,7 +163,7 @@ public class EntidadTest extends AbstractPersistenceTest implements WithGlobalEn
         entidadJuridica.agregarEgreso(egreso1);
         entidadJuridica.agregarEgreso(egreso2);
         entidadJuridica.agregarEgreso(egreso3);
-        Hashtable<Etiqueta,BigDecimal> totalPorEtiqueta = new Hashtable<>();
+        HashMap<Etiqueta,BigDecimal> totalPorEtiqueta = new HashMap<>();
         totalPorEtiqueta.put(etiqueta1, BigDecimal.valueOf(1200));
         totalPorEtiqueta.put(etiqueta2, BigDecimal.valueOf(600));
         Assert.assertEquals(totalPorEtiqueta,entidadJuridica.reporteMensualGastosPorEtiqueta());

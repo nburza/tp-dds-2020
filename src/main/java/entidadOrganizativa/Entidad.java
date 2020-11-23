@@ -2,16 +2,12 @@ package entidadOrganizativa;
 
 import egreso.Egreso;
 import egreso.Etiqueta;
-import entidadOrganizativa.exceptions.MontoSuperadoException;
 import persistencia.EntidadPersistente;
 
-import javax.lang.model.element.Name;
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,8 +102,8 @@ public abstract class Entidad extends EntidadPersistente {
         return  egresos;
     }
 
-    public Hashtable<Etiqueta,BigDecimal> reporteMensualGastosPorEtiqueta(){
-        Hashtable<Etiqueta, BigDecimal> reporte = new Hashtable<>();
+    public HashMap<Etiqueta,BigDecimal> reporteMensualGastosPorEtiqueta(){
+        HashMap<Etiqueta, BigDecimal> reporte = new HashMap<>();
         etiquetasEnUso()
                 .forEach(etiqueta -> reporte.put(etiqueta,gastosTotalPorEtiqueta(etiqueta, egresosDelUltimoMes())));
         return reporte;

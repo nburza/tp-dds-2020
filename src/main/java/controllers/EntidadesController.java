@@ -11,8 +11,10 @@ import spark.Request;
 import spark.Response;
 import usuario.RepositorioDeUsuarios;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class EntidadesController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
@@ -144,7 +146,7 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
     }
 
     private CategoriaEmpresa parsearCategoriaEmpresa(String categoriaEmpresa) {
-        Hashtable<String, CategoriaEmpresa> DiccionarioDeCategorias = new Hashtable<>();
+        HashMap<String, CategoriaEmpresa> DiccionarioDeCategorias = new HashMap<>();
         DiccionarioDeCategorias.put("micro", CategoriaEmpresa.MICRO);
         DiccionarioDeCategorias.put("pequenia",CategoriaEmpresa.PEQUENIA);
         DiccionarioDeCategorias.put("medianaTramo1", CategoriaEmpresa.MEDIANA_TRAMO_1);
