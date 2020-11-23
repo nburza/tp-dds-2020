@@ -88,17 +88,7 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         String tipoEntidadJuridica = request.queryParams("tipoEntidadJuridica");
         String categoriaEmpresa = request.queryParams("categoriaEmpresa");
         try {
-            if (tipoEntidad.equals("base")) {
-                entidad = new EntidadBase(nombreFicticio, razonSocial, new ArrayList<>());
-            } else {
-                DireccionPostal direccionPostal = new DireccionPostal(pais, provincia, ciudad, direccion);
-                if (tipoEntidadJuridica.equals("oss")) {
-                    entidad = new OrganizacionSectorSocial(razonSocial, nombreFicticio, Integer.parseInt(cuit), direccionPostal, Integer.valueOf(codigoIgj), new ArrayList<>());
-                } else {
-                    entidad = new Empresa(razonSocial, nombreFicticio, Integer.parseInt(cuit), direccionPostal, Integer.valueOf(codigoIgj), parsearCategoriaEmpresa(categoriaEmpresa), new ArrayList<>());
-                }
-            }
-            Organizacion organizacion = getOrganizacion(request);
+            Entidad entidad = new EntidadBuilder().crearEntidadQueCorresponda(nombreFicticio,razonSocial,tipoEntidad,cuit,pais,provincia,ciudad,direccion,codigoIgj,tipoEntidadJuridica, categoriaEmpresa);
             List<CategoriaEntidad> categoriasSeleccionadas = parsearCategoriasSeleccionadas(categorias, organizacion);
             withTransaction(() -> {
                 organizacion.agregarEntidad(entidad);
