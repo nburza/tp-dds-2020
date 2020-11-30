@@ -48,21 +48,21 @@ public class Routes {
 
         Spark.get("/entidades", entidadesController::showEntidades, engine);
         Spark.get("/entidades/nueva", entidadesController::showFormularioNuevaEntidad, engine);
-        Spark.get("/entidades/:id/entidadesBase/asignar", entidadesController::showAsignarEntidadesBase, engine);
+        Spark.get("/entidades/:id/entidadesBase/asignado", entidadesController::showAsignarEntidadesBase, engine);
         Spark.post("/entidades/:id/entidadesBase", entidadesController::asignarEntidadesBase);
         Spark.get("/mensajes",mensajesController::showMensajes, engine);
         Spark.post("/entidades", entidadesController::agregarEntidad,engine);
-        Spark.get("/altaEgresos", egresosController::showEgresos, engine);
-        Spark.post("/altaEgresos", egresosController::altaEgresos, engine);
+        Spark.get("/egresos/nuevo", egresosController::showEgresos, engine);
+        Spark.post("/egresos", egresosController::altaEgresos, engine);
 
         Spark.get("/categorias",categoriasController::showCategorias,engine);
         Spark.get("/categorias/nueva",categoriasController::showFormularioNuevaCategoria,engine);
         Spark.post("/categorias", categoriasController::agregarCategoria);
 
-        Spark.get("/entidades/asignarCategoria",entidadesController::showFormularioAsignarCategoria,engine);
-        Spark.post("/entidades/asignarCategoria",entidadesController::agregarCategoriaAEntidad);
-        Spark.get("/nuevoUsuario", usuarioController::showAgregarUsuario, engine);
-        Spark.post("/nuevoUsuario", usuarioController::agregarUsuario, engine);
+        Spark.get("/entidades/:id/categorias/asignado",entidadesController::showFormularioAsignarCategoria,engine);
+        Spark.post("/entidades/:id/categorias",entidadesController::agregarCategoriaAEntidad);
+        Spark.get("/usuarios/nuevo", usuarioController::showAgregarUsuario, engine);
+        Spark.post("/usuarios", usuarioController::agregarUsuario, engine);
 
         /*Spark.after((request, response) -> {
             PerThreadEntityManagers.getEntityManager().flush();
