@@ -1,8 +1,8 @@
 {{#partial "contenido"}}
     <div>
         <h2>Entidades - Organizacion {{idOrganizacion}}</h2><br>
-        <a class="btn btn-primary" href="/entidades/nueva" role="button">Cargar entidad</a>
-        <a class="btn btn-primary" href="/entidades/asignarCategoria" role="button">Asignar categoria</a>
+        <a class="btn btn-primary btnEntidades" href="/entidades/nueva" role="button">Cargar entidad</a>
+        <a class="btn btn-primary btnEntidades" href="/entidades/asignarCategoria" role="button">Asignar categoria</a>
 
         <div>
             <form action="/entidades" method="GET">
@@ -23,7 +23,7 @@
                     <th scope="col">Razon Social</th>
                     <th scope="col">Tipo</th>
                     <th scope="col" class="text-center">Cant Entidades Asignadas</th>
-                    <th scope="col"></th>
+                    <th scope="col">Acciónes</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +40,9 @@
                     </td>
                     <td>
                     {{#if this.puedeContenerEntidades}}
-                        <a class="btn btn-outline-primary" href="/entidades/{{id}}/entidadesBase/asignar" role="button">Asignar más</a>
+                        <a class="btn btn-outline-primary" href="/entidades/{{id}}/entidadesBase/asignar" role="button">
+                            <strong>+ </strong><i class="fas fa-address-book"></i>
+                        </a>
                     {{/if}}
                     </td>
                 </tr>
