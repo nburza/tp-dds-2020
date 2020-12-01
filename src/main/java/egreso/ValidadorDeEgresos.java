@@ -1,6 +1,8 @@
 package egreso;
 
 import usuario.Usuario;
+
+import java.util.HashMap;
 import java.util.Hashtable;
 
 public class ValidadorDeEgresos {
@@ -20,9 +22,9 @@ public class ValidadorDeEgresos {
 
     }
 
-    public Hashtable<Egreso, String> getAll(Usuario unUsuario)
+    public HashMap<Egreso, String> getAll(Usuario unUsuario)
     {
-        Hashtable<Egreso, String> diccionarioDeValidaciones = new Hashtable<>();
+        HashMap<Egreso, String> diccionarioDeValidaciones = new HashMap<>();
 
         for(Egreso egreso : RepositorioDeEgresos.getInstance().getAllInstances())
         {

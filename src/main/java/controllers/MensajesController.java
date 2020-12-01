@@ -16,22 +16,18 @@ public class MensajesController extends ControllerGenerico {
             Map<String, Object> viewModel = new HashMap<String, Object>();
 
             Usuario usuarioLogueado = this.getUsuarioLogueado(request);
+            List<Egreso> egresosPorUsuario = egresosPorUsuario(usuarioLogueado);
             this.cargarDatosGeneralesA(viewModel,request,"Mensajes");
-            viewModel.put("egresos", egresosPorUsuario(usuarioLogueado));
             if (this.getUsuarioLogueado(request).esAdmin()) {
                 viewModel.put("esAdmin", true);
             }
-
+            viewModel.put("egresos", ordenarPorID(egresosPorUsuario));
             return new ModelAndView(viewModel, "mensajes.hbs");
         });
     }
 
     public List<Egreso> egresosPorUsuario(Usuario usuario){
-        List<Egreso> egresosList = new ArrayList<>();
-        for (Enumeration<Egreso> egresos = usuario.consultarBandeja().keys();egresos.hasMoreElements();){
-            egresosList.add(egresos.nextElement());
-        }
-        return ordenarPorID(egresosList);
+        return new ArrayList<>(usuario.consultarBandeja().keySet());
     }
 
     public List<Egreso> ordenarPorID(List<Egreso> egresos){

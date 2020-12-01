@@ -46,7 +46,7 @@ public class Usuario extends EntidadPersistente {
         this.contraseniaHasheada = contraseniaHasheada;
     }
 
-    public Hashtable<Egreso, String> consultarBandeja()
+    public HashMap<Egreso, String> consultarBandeja()
     {
         return ValidadorDeEgresos.getInstance().getAll(this);
     }
