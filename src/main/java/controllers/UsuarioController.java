@@ -44,6 +44,7 @@ public class UsuarioController extends ControllerGenerico implements WithGlobalE
             this.cargarDatosGeneralesA(viewModel,req,"Cargar Usuario");
             this.agregarMensajeDeErrorA(viewModel,"La contraseña ingresado no es válida. " + e.getMessage());
             viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
+            viewModel.put("nombreValue", username);
             if(this.getUsuarioLogueado(req).esAdmin())
             {
                 viewModel.put("esAdmin",true);

@@ -9,10 +9,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EntidadesController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
@@ -22,13 +19,19 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         {
             Map<String, Object> viewModel = new HashMap<String, Object>();
             this.cargarDatosGeneralesA(viewModel, request,"Entidades");
-            viewModel.put("idOrganizacion", getOrganizacion(request).getId());
-            viewModel.put("categorias", getOrganizacion(request).getCategorias());
+            Organizacion organizacion = getOrganizacion(request);
+            List<CategoriaEntidad> categorias = organizacion.getCategorias();
             String categoriaFiltrada = request.queryParams("categoriaFiltrada");
+            viewModel.put("idOrganizacion", organizacion.getId());
+
             if(categoriaFiltrada == null)
-                viewModel.put("entidades", getOrganizacion(request).getEntidades());
-            else
-                viewModel.put("entidades", getOrganizacion(request).getEntidadesPorCategoria(categoriaFiltrada));
+            {
+                viewModel.put("entidades", organizacion.getEntidades());
+            }else{
+                viewModel.put("entidades", organizacion.getEntidadesPorCategoria(categoriaFiltrada));
+                Collections.swap(categorias, 0 , categorias.indexOf(organizacion.getLaCategoria(categoriaFiltrada)));
+            }
+            viewModel.put("categorias", categorias);
             return new ModelAndView(viewModel, "entidades.hbs");
         });
     }

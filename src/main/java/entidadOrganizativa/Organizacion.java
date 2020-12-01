@@ -51,6 +51,10 @@ public class Organizacion extends EntidadPersistente {
         return categorias;
     }
 
+    public CategoriaEntidad getLaCategoria(String nombre){
+        return this.categorias.stream().filter(x -> x.getNombre().equals(nombre)).findFirst().get();
+    }
+
     public void agregarEntidad(Entidad entidad) {
         this.entidades.add(entidad);
     }
