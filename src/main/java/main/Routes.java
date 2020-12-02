@@ -8,6 +8,7 @@ import apiMercadoLibre.ServicioAPIMercadoLibre;
 import apiMercadoLibre.ValidadorDeMoneda;
 import apiMercadoLibre.ValidadorDeUbicacion;
 import controllers.*;
+import org.uqbarproject.jpa.java8.extras.PerThreadEntityManagers;
 import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
@@ -64,10 +65,16 @@ public class Routes {
         Spark.get("/usuarios/nuevo", usuarioController::showAgregarUsuario, engine);
         Spark.post("/usuarios", usuarioController::agregarUsuario, engine);
 
-        /*Spark.after((request, response) -> {
-            PerThreadEntityManagers.getEntityManager().flush();
+        Spark.after((request, response) -> {
+            if(PerThreadEntityManagers.getEntityManager().getTransaction().isActive()) {
+                PerThreadEntityManagers.getEntityManager().flush();
+            }
             PerThreadEntityManagers.closeEntityManager();
-        });*/
+        });
 
+        /*Spark.before((request, response) -> {
+            if (!PerThreadEntityManagers.getEntityManager().isJoinedToTransaction())
+                PerThreadEntityManagers.getEntityManager().getTransaction().begin();
+        });*/
     }
 }
