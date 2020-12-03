@@ -35,9 +35,6 @@ public class EgresosController extends ControllerGenerico implements WithGlobalE
                 monedas.add(moneda.getSymbol() + " " + moneda.getId() + " (" + moneda.getDescription() + ")");
             }
             this.cargarDatosGeneralesA(viewModel,request,"Cargar Usuario");
-            if (this.getUsuarioLogueado(req).esAdmin()) {
-                viewModel.put("esAdmin", true);
-            }
             viewModel.put("documentos", TipoDocComercial.values());
             viewModel.put("usuarios", RepositorioDeUsuarios.getInstance().getAllInstances());
             viewModel.put("items", RepositorioDeItems.getInstance().getAllInstances());
@@ -104,11 +101,7 @@ public class EgresosController extends ControllerGenerico implements WithGlobalE
        });
 
         this.cargarDatosGeneralesA(viewModel,req,"Cargar Usuario");
-        if(this.getUsuarioLogueado(req).esAdmin())
-        {
-            viewModel.put("esAdmin",true);
-        }
-        res.redirect("/home");
+        this.agregarMensajeDeExitoA(viewModel, "El egreso fue ingresado con éxito.");
 
         return new ModelAndView(viewModel, "altaEgresos.hbs");
     }

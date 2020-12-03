@@ -29,9 +29,9 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
             Usuario mati = new Usuario("mati","altisima clave");
             Administrador admin = new Administrador("admin","alta clave");
 
-            Organizacion organizacion1 = new Organizacion(new ArrayList<>(), new ArrayList<>());
-            Organizacion organizacion2 = new Organizacion(new ArrayList<>(), new ArrayList<>());
-            Organizacion organizacion3 = new Organizacion(new ArrayList<>(), new ArrayList<>());
+            Organizacion organizacion1 = new Organizacion("pepito S.A", new ArrayList<>(), new ArrayList<>());
+            Organizacion organizacion2 = new Organizacion("jose S.A", new ArrayList<>(), new ArrayList<>());
+            Organizacion organizacion3 = new Organizacion("ricardo S.A", new ArrayList<>(), new ArrayList<>());
             Entidad entidadBase1 = new EntidadBase("nombre1","razon social1",null);
             Entidad entidadBase2 = new EntidadBase("nombre2","razon social2",null);
             Entidad entidadBase3 = new EntidadBase("nombre3","razon social3",null);

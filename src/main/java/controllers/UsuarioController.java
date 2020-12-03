@@ -24,7 +24,6 @@ public class UsuarioController extends ControllerGenerico implements WithGlobalE
             if (this.getUsuarioLogueado(req).esAdmin()) {
                 this.cargarDatosGeneralesA(viewModel,request,"Cargar Usuario");
                 viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
-                viewModel.put("esAdmin", true);
             } else {
                 res.redirect("/home");
             }
@@ -45,10 +44,6 @@ public class UsuarioController extends ControllerGenerico implements WithGlobalE
             this.agregarMensajeDeErrorA(viewModel,"La contraseña ingresado no es válida. " + e.getMessage());
             viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
             viewModel.put("nombreValue", username);
-            if(this.getUsuarioLogueado(req).esAdmin())
-            {
-                viewModel.put("esAdmin",true);
-            }
             return new ModelAndView(viewModel, "nuevoUsuario.hbs");
         }
         Organizacion organizacion = RepositorioDeOrganizaciones.getInstance().getPorId(Long.parseLong(organizacionId)).get();
@@ -64,18 +59,10 @@ public class UsuarioController extends ControllerGenerico implements WithGlobalE
             this.cargarDatosGeneralesA(viewModel,req,"Cargar usuario");
             this.agregarMensajeDeErrorA(viewModel,"El usuario ingresado ya existe. Ingrese nuevamente un usuario.");
             viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
-            if(this.getUsuarioLogueado(req).esAdmin())
-            {
-                viewModel.put("esAdmin",true);
-            }
             return new ModelAndView(viewModel, "nuevoUsuario.hbs");
         }
         this.cargarDatosGeneralesA(viewModel,req,"Home");
         this.agregarMensajeDeExitoA(viewModel,"El usuario " + username + " fue ingresado con éxito.");
-        if(this.getUsuarioLogueado(req).esAdmin())
-        {
-            viewModel.put("esAdmin",true);
-        }
         return new ModelAndView(viewModel, "home.hbs");
     }
 }

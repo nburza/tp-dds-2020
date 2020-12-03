@@ -15,12 +15,12 @@ public class Empresa extends EntidadJuridica {
     @Enumerated(EnumType.STRING)
     private CategoriaEmpresa categoria;
 
-    public Empresa(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, CategoriaEmpresa categoria, List<Egreso> egresos) {
+    public Empresa(String razonSocial, String nombreFicticio, Long cuit, DireccionPostal direccionPostal, CategoriaEmpresa categoria, List<Egreso> egresos) {
         super(razonSocial, nombreFicticio, cuit, direccionPostal, egresos);
         this.categoria=categoria;
     }
 
-    public Empresa(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, Integer codigoIncripcionIGJ, CategoriaEmpresa categoria, List<Egreso> egresos) {
+    public Empresa(String razonSocial, String nombreFicticio, Long cuit, DireccionPostal direccionPostal, Integer codigoIncripcionIGJ, CategoriaEmpresa categoria, List<Egreso> egresos) {
         super(razonSocial, nombreFicticio, cuit, direccionPostal, codigoIncripcionIGJ, egresos);
         this.categoria=categoria;
     }

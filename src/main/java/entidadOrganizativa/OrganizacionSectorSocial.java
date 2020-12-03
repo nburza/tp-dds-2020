@@ -10,11 +10,11 @@ import javax.persistence.Entity;
 @DiscriminatorValue("OSS")
 public class OrganizacionSectorSocial extends EntidadJuridica {
 
-    public OrganizacionSectorSocial(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, List<Egreso> egreso) {
+    public OrganizacionSectorSocial(String razonSocial, String nombreFicticio, Long cuit, DireccionPostal direccionPostal, List<Egreso> egreso) {
         super(razonSocial, nombreFicticio, cuit, direccionPostal, egreso);
     }
 
-    public OrganizacionSectorSocial(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
+    public OrganizacionSectorSocial(String razonSocial, String nombreFicticio, Long cuit, DireccionPostal direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
         super(razonSocial, nombreFicticio, cuit, direccionPostal, codigoIncripcionIGJ, egresos);
     }
 

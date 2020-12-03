@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Entity
 public class Organizacion extends EntidadPersistente {
 
+    private String nombre;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "organizacion_id")
     private List<Entidad> entidades;
@@ -23,12 +24,17 @@ public class Organizacion extends EntidadPersistente {
     @OneToMany
     private List<Usuario> usuarios = new ArrayList<>();
 
-    public Organizacion(List<Entidad> entidades, List<CategoriaEntidad> categorias) {
+    public Organizacion(String nombre, List<Entidad> entidades, List<CategoriaEntidad> categorias) {
+        this.nombre = nombre;
         this.entidades = entidades;
         this.categorias = categorias;
     }
 
     public Organizacion() {
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public void setEntidades(List<Entidad> entidades) {
@@ -45,6 +51,14 @@ public class Organizacion extends EntidadPersistente {
 
     public List<Entidad> getEntidades() {
         return entidades;
+    }
+
+    public Entidad getEntidadPorId(long id){
+        return entidades.stream().filter(entidad1->entidad1.getId().equals(id)).findFirst().get();
+    }
+
+    public String getNombre(){
+        return this.nombre;
     }
 
     public List<CategoriaEntidad> getCategorias() {

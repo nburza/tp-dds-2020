@@ -46,9 +46,16 @@ public abstract class ControllerGenerico {
     }
 
     public void cargarDatosGeneralesA(Map<String, Object> viewModel, Request request, String titulo) {
+        Usuario usuario = this.getUsuarioLogueado(request);
         viewModel.put("titulo", titulo);
-        viewModel.put("nombreUsuario", this.getUsuarioLogueado(request).getNombreUsuario());
+        viewModel.put("nombreUsuario", usuario.getNombreUsuario());
         viewModel.put("anio", LocalDate.now().getYear());
+        if(usuario.esAdmin()){
+            viewModel.put("esAdmin", true);
+        }
+        else{
+            viewModel.put("nombreOrganizacion", "(" + getOrganizacion(request).getNombre() + ")");
+        }
     }
 
     public void agregarMensajeA(Map<String, Object> viewModel, String tipo, String titulo, String texto) {
@@ -68,7 +75,7 @@ public abstract class ControllerGenerico {
     public void agregarMensajeDeExitoA(Map<String, Object> viewModel, String textoMensaje) {
         viewModel.put("mensaje", true);
         viewModel.put("tipoMensaje", "success");
-        viewModel.put("tituloMensaje", "Exito!");
+        viewModel.put("tituloMensaje", "Perfecto!");
         viewModel.put("textoMensaje", textoMensaje);
     }
 

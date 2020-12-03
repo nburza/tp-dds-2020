@@ -43,8 +43,8 @@ public class EntidadTest extends AbstractPersistenceTest implements WithGlobalEn
         MonedaDTO pesoArgentino = new MonedaDTO(null,null,"Peso argentino");
         ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(Arrays.asList(pesoArgentino));
         ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
-        organizacion = new Organizacion(new ArrayList<>(),new ArrayList<>());
-        entidadJuridica = new OrganizacionSectorSocial(null,null,156,null,new ArrayList<>());
+        organizacion = new Organizacion("pepito S.A", new ArrayList<>(),new ArrayList<>());
+        entidadJuridica = new OrganizacionSectorSocial(null,null, 156L,null,new ArrayList<>());
         entidadBase = new EntidadBase(null,null,new ArrayList<>());
         egreso1 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
         egreso2 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");

@@ -13,9 +13,6 @@ public class HomeController extends ControllerGenerico{
         return ejecutarConControlDeLogin(req, res, (request, response) -> {
             Map<String, Object> viewModel = new HashMap<String, Object>();
             this.cargarDatosGeneralesA(viewModel,request,"Home");
-            if (this.getUsuarioLogueado(request).esAdmin()) {
-                viewModel.put("esAdmin", true);
-            }
 
             return new ModelAndView(viewModel, "home.hbs");
         });

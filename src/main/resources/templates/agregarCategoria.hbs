@@ -1,7 +1,7 @@
 {{#partial "contenido"}}
-    <h1 class="text-center">Cargar Categoría</h1>
+    <h1 class="text-center">Asignar Categoría para {{nombreEntidad}}</h1>
     <div>
-        <form class="formulario" method="POST" action="/entidades/asignarCategoria">
+        <form class="formulario" method="POST" action="/entidades/{{idEntidad}}/categorias">
             <select id="inputDocComercial" class="form-control" name="categoriaSeleccionada">
                 <option selected>categoria</option>
                 {{#each categorias}}
@@ -9,14 +9,9 @@
                 {{/each}}
             </select>
 
-            <select id="inputDocComercial" class="form-control" name="entidadSeleccionada">
-                <option selected>entidad</option>
-                {{#each entidades}}
-                    <option value="{{nombreFicticio}}"> {{nombreFicticio}} </option>
-                {{/each}}
-            </select>
+
             <div class="form-group">
-                <button type="submit" class="btn btn btn-primary btn-block" data-loading-text="Uniendo..."></i>Unir</button>
+                <button type="submit" class="btn btn btn-primary btn-block" data-loading-text="Asignando..."></i>Asignar</button>
             </div>
         </form>
     </div>

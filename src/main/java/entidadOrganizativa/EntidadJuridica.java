@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 public abstract class EntidadJuridica extends Entidad {
-    private int cuit;
+    private Long cuit;
     @Embedded
     private DireccionPostal direccionPostal;
     private Integer codigoIncripcionIGJ;
@@ -18,14 +18,14 @@ public abstract class EntidadJuridica extends Entidad {
     @JoinColumn(name = "entidad_juridica_id")
     private List<EntidadBase> listaEntidades = new ArrayList<>();
 
-    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, List<Egreso> egresos) {
+    public EntidadJuridica(String razonSocial, String nombreFicticio, Long cuit, DireccionPostal direccionPostal, List<Egreso> egresos) {
         super(nombreFicticio, razonSocial, egresos);
         this.cuit = cuit;
         this.direccionPostal = direccionPostal;
         this.codigoIncripcionIGJ = null;
     }
 
-    public EntidadJuridica(String razonSocial, String nombreFicticio, int cuit, DireccionPostal direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
+    public EntidadJuridica(String razonSocial, String nombreFicticio, Long cuit, DireccionPostal direccionPostal, Integer codigoIncripcionIGJ, List<Egreso> egresos) {
         super(nombreFicticio, razonSocial, egresos);
         this.cuit = cuit;
         this.direccionPostal = direccionPostal;
@@ -35,7 +35,7 @@ public abstract class EntidadJuridica extends Entidad {
     public EntidadJuridica() {
     }
 
-    public void setCuit(int cuit) {
+    public void setCuit(Long cuit) {
         this.cuit = cuit;
     }
 

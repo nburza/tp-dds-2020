@@ -57,7 +57,7 @@ public class ProveedorTest extends AbstractPersistenceTest implements WithGlobal
 
     @Test
     public void recuperoProveedorConDireccionPostalValidaDeLaBase() throws Exception {
-        Organizacion organizacion = new Organizacion(new ArrayList<>(), null);
+        Organizacion organizacion = new Organizacion("pepito S.A", new ArrayList<>(), null);
         EntidadBase entidadBase = new EntidadBase(null,null,new ArrayList<>());
         Egreso egreso = new Egreso(null, null,null,null,"Peso argentino");
         Proveedor proveedor = new Proveedor(null,null,new DireccionPostal("Argentina","Buenos Aires","La Plata",null));

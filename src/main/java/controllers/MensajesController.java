@@ -18,10 +18,11 @@ public class MensajesController extends ControllerGenerico {
             Usuario usuarioLogueado = this.getUsuarioLogueado(request);
             List<Egreso> egresosPorUsuario = egresosPorUsuario(usuarioLogueado);
             this.cargarDatosGeneralesA(viewModel,request,"Mensajes");
-            if (this.getUsuarioLogueado(request).esAdmin()) {
-                viewModel.put("esAdmin", true);
-            }
             viewModel.put("egresos", ordenarPorID(egresosPorUsuario));
+            if(!egresosPorUsuario.isEmpty())
+            {
+                viewModel.put("hayResultados", true);
+            }
             return new ModelAndView(viewModel, "mensajes.hbs");
         });
     }

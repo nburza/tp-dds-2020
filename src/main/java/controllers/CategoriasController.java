@@ -10,6 +10,7 @@ import spark.Response;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CategoriasController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
@@ -17,11 +18,14 @@ public class CategoriasController extends ControllerGenerico implements WithGlob
     public ModelAndView showCategorias(Request req, Response res) {
         return ejecutarConControlDeLogin(req, res, (request, response) -> {
             Map<String, Object> viewModel = new HashMap<String, Object>();
+            Organizacion organizacion = getOrganizacion(request);
+            List<CategoriaEntidad> categorias = organizacion.getCategorias();
             this.cargarDatosGeneralesA(viewModel,request,"Categorias");
-            viewModel.put("idOrganizacion", getOrganizacion(request).getId());
-            viewModel.put("categorias", getOrganizacion(request).getCategorias());
-            if (this.getUsuarioLogueado(request).esAdmin()) {
-                viewModel.put("esAdmin", true);
+            viewModel.put("nombreOrganizacion", organizacion.getNombre());
+            viewModel.put("categorias", categorias);
+            if(!categorias.isEmpty())
+            {
+                viewModel.put("hayResultados", true);
             }
             return new ModelAndView(viewModel, "categorias.hbs");
         });
@@ -31,14 +35,11 @@ public class CategoriasController extends ControllerGenerico implements WithGlob
         return ejecutarConControlDeLogin(req, res, (request, response) -> {
             Map<String, Object> viewModel = new HashMap<String, Object>();
             this.cargarDatosGeneralesA(viewModel,request,"Crear categoria");
-            if (this.getUsuarioLogueado(request).esAdmin()) {
-                viewModel.put("esAdmin", true);
-            }
             //       viewModel.put("reglas", getOrganizacion(request).getCategorias());
             return new ModelAndView(viewModel, "nuevaCategoria.hbs");
         });
     }
-    public Void agregarCategoria(Request request, Response response) {
+    public ModelAndView agregarCategoria(Request request, Response response) {
         Map<String, Object> viewModel = new HashMap<String, Object>();
 
         Entidad entidad;
@@ -60,7 +61,11 @@ public class CategoriasController extends ControllerGenerico implements WithGlob
             nuevaCategoria.agregarRegla(new ReglaBloqueoEgresoPorMonto(new BigDecimal(montoLimite)));
         }
         withTransaction(() -> organizacion.agregarCategoria(nuevaCategoria));
-        response.redirect("/categorias");
-        return null;
+
+        this.cargarDatosGeneralesA(viewModel,request,"Categorias");
+        viewModel.put("nombreOrganizacion", organizacion.getNombre());
+        viewModel.put("categorias", organizacion.getCategorias());
+        this.agregarMensajeDeExitoA(viewModel, "la categoria " + nombre + " fue ingresado con éxito.");
+        return new ModelAndView(viewModel, "nuevaCategoria.hbs");
     }
 }
