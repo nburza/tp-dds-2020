@@ -51,7 +51,7 @@ public class Routes {
         Spark.get("/entidades/nueva", entidadesController::showFormularioNuevaEntidad, engine);
         Spark.get("/entidades/:id/entidadesBase/asignado", entidadesController::showAsignarEntidadesBase, engine);
         Spark.post("/entidades/:id/entidadesBase", entidadesController::asignarEntidadesBase, engine);
-        Spark.get("/mensajes",mensajesController::showMensajes, engine);
+        Spark.get("/mensajes/pag/:numPag",mensajesController::showMensajes, engine);
         Spark.post("/entidades", entidadesController::agregarEntidad,engine);
         Spark.get("/egresos/nuevo", egresosController::showEgresos, engine);
         Spark.post("/egresos", egresosController::altaEgresos, engine);

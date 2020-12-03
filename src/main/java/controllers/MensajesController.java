@@ -16,11 +16,16 @@ public class MensajesController extends ControllerGenerico {
             Map<String, Object> viewModel = new HashMap<String, Object>();
 
             Usuario usuarioLogueado = this.getUsuarioLogueado(request);
-            List<Egreso> egresosPorUsuario = egresosPorUsuario(usuarioLogueado);
+            List<Egreso> egresosPorUsuario = ordenarPorID(egresosPorUsuario(usuarioLogueado));
             this.cargarDatosGeneralesA(viewModel,request,"Mensajes");
-            viewModel.put("egresos", ordenarPorID(egresosPorUsuario));
-            if(!egresosPorUsuario.isEmpty())
+            int numPagina = Integer.parseInt(request.params(":numPag"));
+            Paginador paginador = new Paginador(numPagina);
+            List<Egreso> egresosPorPagina = paginador.paginar(egresosPorUsuario);
+            viewModel.put("pagSig", paginador.getPagSig());
+            viewModel.put("pagAnterior", paginador.getPagAnterior());
+            if(!egresosPorPagina.isEmpty())
             {
+                viewModel.put("egresos", egresosPorPagina);
                 viewModel.put("hayResultados", true);
             }
             return new ModelAndView(viewModel, "mensajes.hbs");
