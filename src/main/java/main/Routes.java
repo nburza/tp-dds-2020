@@ -70,7 +70,12 @@ public class Routes {
                 PerThreadEntityManagers.getEntityManager().flush();
             }
             PerThreadEntityManagers.closeEntityManager();
+            /*
+            PerThreadEntityManagers.getEntityManager().clear();
+            PerThreadEntityManagers.closeEntityManager();*/
+
         });
+
 
         /*Spark.before((request, response) -> {
             if (!PerThreadEntityManagers.getEntityManager().isJoinedToTransaction())

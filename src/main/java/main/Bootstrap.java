@@ -1,5 +1,8 @@
 package main;
 
+import apiMercadoLibre.ServiceLocator;
+import apiMercadoLibre.ServicioAPIMercadoLibre;
+import apiMercadoLibre.ValidadorDeMoneda;
 import egreso.*;
 import entidadOrganizativa.*;
 import mediosDePago.*;
@@ -20,6 +23,10 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
 
     public void run()
     {
+        ServicioAPIMercadoLibre servicioAPIMercadoLibre = new ServicioAPIMercadoLibre();
+        ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(servicioAPIMercadoLibre.getMonedas());
+        ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
+
         try
         {
             Usuario migue = new Usuario("migue","alta clave");
@@ -77,6 +84,13 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
 
             withTransaction(() ->
             {
+                RepositorioDeUsuarios.getInstance().agregar(migue);
+                RepositorioDeUsuarios.getInstance().agregar(aure);
+                RepositorioDeUsuarios.getInstance().agregar(nico);
+                RepositorioDeUsuarios.getInstance().agregar(charly);
+                RepositorioDeUsuarios.getInstance().agregar(mati);
+                RepositorioDeUsuarios.getInstance().agregar(admin);
+
                 organizacion1.agregarUsuario(migue);
                 organizacion1.agregarUsuario(charly);
                 organizacion2.agregarUsuario(aure);
@@ -97,12 +111,7 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
                 RepositorioDeMediosDePago.getInstance().agregar(medio2);
                 RepositorioDeMediosDePago.getInstance().agregar(medio3);
 
-                RepositorioDeUsuarios.getInstance().agregar(migue);
-                RepositorioDeUsuarios.getInstance().agregar(aure);
-                RepositorioDeUsuarios.getInstance().agregar(nico);
-                RepositorioDeUsuarios.getInstance().agregar(charly);
-                RepositorioDeUsuarios.getInstance().agregar(mati);
-                RepositorioDeUsuarios.getInstance().agregar(admin);
+
 
                 RepositorioDeEtiquetas.getInstance().agregar(etiqueta1);
                 RepositorioDeEtiquetas.getInstance().agregar(etiqueta2);

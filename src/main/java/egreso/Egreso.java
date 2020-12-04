@@ -53,7 +53,7 @@ public class Egreso extends EntidadPersistente
 
     public Egreso(List<DocComercial> unosDC, MedioDePago unMedioDePago, List<Item> unosItems, LocalDate unaFecha, boolean requierePresupuesto, String moneda)
     {
-//        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
+        ServiceLocator.getInstance().getValidadorDeMoneda().validarMoneda(moneda);
         this.documentosComerciales = unosDC;
         this.medioDePago = unMedioDePago;
         this.items = unosItems;
