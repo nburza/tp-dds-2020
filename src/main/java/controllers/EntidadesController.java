@@ -23,7 +23,6 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
             List<Entidad> entidades;
             List<CategoriaEntidad> categorias = organizacion.getCategorias();
             String categoriaFiltrada = request.queryParams("categoriaFiltrada");
-            viewModel.put("nombreOrganizacion", organizacion.getNombre());
 
             if(categoriaFiltrada == null)
             {
@@ -67,7 +66,7 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         String categoriaEmpresa = request.queryParams("categoriaEmpresa");
         Organizacion organizacion = getOrganizacion(request);
         try {
-            Entidad entidad = new EntidadBuilder().crearEntidadQueCorresponda(nombreFicticio,razonSocial,tipoEntidad,Long.parseLong(cuit),pais,provincia,ciudad,direccion,codigoIgj,tipoEntidadJuridica, categoriaEmpresa);
+            Entidad entidad = new EntidadBuilder().crearEntidadQueCorresponda(nombreFicticio,razonSocial,tipoEntidad,cuit,pais,provincia,ciudad,direccion,codigoIgj,tipoEntidadJuridica, categoriaEmpresa);
             List<CategoriaEntidad> categoriasSeleccionadas = parsearCategoriasSeleccionadas(categorias, organizacion);
             withTransaction(() -> {
                 organizacion.agregarEntidad(entidad);
@@ -91,7 +90,6 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         }
         this.cargarDatosGeneralesA(viewModel,request,"Entidades");
         this.agregarMensajeDeExitoA(viewModel,"La entidad " + nombreFicticio + " fue agregada con éxito.");
-        viewModel.put("nombreOrganizacion", organizacion.getNombre());
         viewModel.put("categorias", organizacion.getCategorias());
         viewModel.put("entidades", organizacion.getEntidades());
         return new ModelAndView(viewModel, "entidades.hbs");
@@ -122,7 +120,6 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         });
         this.cargarDatosGeneralesA(viewModel,request,"Entidades");
         this.agregarMensajeDeExitoA(viewModel,"La asignación fue realizada con éxito.");
-        viewModel.put("nombreOrganizacion", organizacion.getNombre());
         viewModel.put("categorias", organizacion.getCategorias());
         viewModel.put("entidades", organizacion.getEntidades());
         return new ModelAndView(viewModel, "entidades.hbs");
@@ -164,7 +161,6 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
 
         this.cargarDatosGeneralesA(viewModel,request,"Entidades");
         this.agregarMensajeDeExitoA(viewModel,"La categoria " + categoria + " fue asignada a la entidad " + laEntidad.getNombreFicticio() + " con éxito.");
-        viewModel.put("nombreOrganizacion", organizacion.getNombre());
         viewModel.put("categorias", organizacion.getCategorias());
         viewModel.put("entidades", organizacion.getEntidades());
 

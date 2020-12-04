@@ -10,16 +10,16 @@ public class EntidadBuilder {
     public EntidadBuilder() {
     }
 
-    public Entidad crearEntidadQueCorresponda(String nombreFicticio, String razonSocial, String tipoEntidad, Long cuit, String pais, String provincia, String ciudad, String direccion, String codigoIgj, String tipoEntidadJuridica, String categoriaEmpresa) {
+    public Entidad crearEntidadQueCorresponda(String nombreFicticio, String razonSocial, String tipoEntidad, String cuit, String pais, String provincia, String ciudad, String direccion, String codigoIgj, String tipoEntidadJuridica, String categoriaEmpresa) {
         Entidad entidad;
         if (tipoEntidad.equals("base")) {
             entidad = new EntidadBase(nombreFicticio, razonSocial, new ArrayList<>());
         } else {
             DireccionPostal direccionPostal = new DireccionPostal(pais, provincia, ciudad, direccion);
             if (tipoEntidadJuridica.equals("oss")) {
-                entidad = new OrganizacionSectorSocial(razonSocial, nombreFicticio, cuit, direccionPostal, Integer.valueOf(codigoIgj), new ArrayList<>());
+                entidad = new OrganizacionSectorSocial(razonSocial, nombreFicticio, Long.parseLong(cuit), direccionPostal, Integer.valueOf(codigoIgj), new ArrayList<>());
             } else {
-                entidad = new Empresa(razonSocial, nombreFicticio, cuit, direccionPostal, Integer.valueOf(codigoIgj), parsearCategoriaEmpresa(categoriaEmpresa), new ArrayList<>());
+                entidad = new Empresa(razonSocial, nombreFicticio, Long.parseLong(cuit), direccionPostal, Integer.valueOf(codigoIgj), parsearCategoriaEmpresa(categoriaEmpresa), new ArrayList<>());
             }
         }
         return entidad;

@@ -21,7 +21,6 @@ public class CategoriasController extends ControllerGenerico implements WithGlob
             Organizacion organizacion = getOrganizacion(request);
             List<CategoriaEntidad> categorias = organizacion.getCategorias();
             this.cargarDatosGeneralesA(viewModel,request,"Categorias");
-            viewModel.put("nombreOrganizacion", organizacion.getNombre());
             viewModel.put("categorias", categorias);
             if(!categorias.isEmpty())
             {
@@ -42,14 +41,13 @@ public class CategoriasController extends ControllerGenerico implements WithGlob
     public ModelAndView agregarCategoria(Request request, Response response) {
         Map<String, Object> viewModel = new HashMap<String, Object>();
 
-        Entidad entidad;
         String nombre = request.queryParams("nombre");
         String regla1 = request.queryParams("reglaEntidadBaseNoIncorporable");
         String regla2 = request.queryParams("reglaProhibidoAgregarEntidadesBase");
         String regla3 = request.queryParams("reglaBloqueoEgresoPorMonto");
         String montoLimite = request.queryParams("montoLimite");
         CategoriaEntidad nuevaCategoria =new CategoriaEntidad(nombre);
-        Organizacion organizacion = getOrganizacion(request);
+
 
         if(regla1!=null){
             nuevaCategoria.agregarRegla(new ReglaEntidadBaseNoIncorporable());
@@ -60,12 +58,14 @@ public class CategoriasController extends ControllerGenerico implements WithGlob
         if (regla3!=null){
             nuevaCategoria.agregarRegla(new ReglaBloqueoEgresoPorMonto(new BigDecimal(montoLimite)));
         }
-        withTransaction(() -> organizacion.agregarCategoria(nuevaCategoria));
+        withTransaction(() -> {
+            Organizacion organizacion = getOrganizacion(request);
+            organizacion.agregarCategoria(nuevaCategoria);
+            viewModel.put("categorias", organizacion.getCategorias());
+        });
 
         this.cargarDatosGeneralesA(viewModel,request,"Categorias");
-        viewModel.put("nombreOrganizacion", organizacion.getNombre());
-        viewModel.put("categorias", organizacion.getCategorias());
         this.agregarMensajeDeExitoA(viewModel, "la categoria " + nombre + " fue ingresado con éxito.");
-        return new ModelAndView(viewModel, "nuevaCategoria.hbs");
+        return new ModelAndView(viewModel, "categorias.hbs");
     }
 }
