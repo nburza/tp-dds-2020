@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 public class Routes {
     public static void main(String[] args) {
-        Spark.port(8088);
+        Spark.port(getHerokuAssignedPort());
         Spark.staticFileLocation("/public");
 
         CiudadDTO ciudad = new CiudadDTO("3","La Plata");
@@ -76,5 +76,12 @@ public class Routes {
             if (!PerThreadEntityManagers.getEntityManager().isJoinedToTransaction())
                 PerThreadEntityManagers.getEntityManager().getTransaction().begin();
         });*/
+    }
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 8088;
     }
 }
