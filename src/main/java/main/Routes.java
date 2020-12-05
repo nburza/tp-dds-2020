@@ -65,7 +65,7 @@ public class Routes {
         Spark.get("/usuarios/nuevo", usuarioController::showAgregarUsuario, engine);
         Spark.post("/usuarios", usuarioController::agregarUsuario, engine);
 
-        Spark.after((request, response) -> {
+        Spark.before((request, response) -> {
             if(PerThreadEntityManagers.getEntityManager().getTransaction().isActive()) {
                 PerThreadEntityManagers.getEntityManager().flush();
             }

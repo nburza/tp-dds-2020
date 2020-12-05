@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import mediosDePago.MedioDePago;
+import org.uqbarproject.jpa.java8.extras.convert.LocalDateConverter;
 import persistencia.EntidadPersistente;
 import presupuesto.Presupuesto;
 import apiMercadoLibre.ServiceLocator;
@@ -24,6 +25,7 @@ public class Egreso extends EntidadPersistente
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "egreso_id")
     private List<Item> items = new ArrayList<>();
+    @Convert(converter = LocalDateConverter.class)
     private LocalDate fecha;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "egreso_id")
