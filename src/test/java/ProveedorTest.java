@@ -21,6 +21,7 @@ import presupuesto.Proveedor;
 import apiMercadoLibre.ServiceLocator;
 import apiMercadoLibre.ValidadorDeUbicacion;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -59,7 +60,7 @@ public class ProveedorTest extends AbstractPersistenceTest implements WithGlobal
     public void recuperoProveedorConDireccionPostalValidaDeLaBase() throws Exception {
         Organizacion organizacion = new Organizacion("pepito S.A", new ArrayList<>(), null);
         EntidadBase entidadBase = new EntidadBase(null,null,new ArrayList<>());
-        Egreso egreso = new Egreso(null, null,null,null,"Peso argentino");
+        Egreso egreso = new Egreso(null, null,null, LocalDate.now(),"Peso argentino");
         Proveedor proveedor = new Proveedor(null,null,new DireccionPostal("Argentina","Buenos Aires","La Plata",null));
         Presupuesto presupuesto = new Presupuesto(null,null,egreso,"Peso argentino",proveedor);
         organizacion.agregarEntidad(entidadBase);

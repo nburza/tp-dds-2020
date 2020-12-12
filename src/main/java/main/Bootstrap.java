@@ -39,17 +39,17 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
             Organizacion organizacion1 = new Organizacion("pepito S.A", new ArrayList<>(), new ArrayList<>());
             Organizacion organizacion2 = new Organizacion("jose S.A", new ArrayList<>(), new ArrayList<>());
             Organizacion organizacion3 = new Organizacion("ricardo S.A", new ArrayList<>(), new ArrayList<>());
-            Entidad entidadBase1 = new EntidadBase("nombre1","razon social1",null);
-            Entidad entidadBase2 = new EntidadBase("nombre2","razon social2",null);
-            Entidad entidadBase3 = new EntidadBase("nombre3","razon social3",null);
+            Entidad entidadBase1 = new EntidadBase("nombre1","razon social1",new ArrayList<>());
+            Entidad entidadBase2 = new EntidadBase("nombre2","razon social2",new ArrayList<>());
+            Entidad entidadBase3 = new EntidadBase("nombre3","razon social3",new ArrayList<>());
             organizacion1.agregarEntidad(entidadBase1);
             organizacion2.agregarEntidad(entidadBase2);
             organizacion3.agregarEntidad(entidadBase3);
 
-            CategoriaEntidad categoria1 = new CategoriaEntidad("categoria1",null);
-            CategoriaEntidad categoria2 = new CategoriaEntidad("categoria2",null);
-            CategoriaEntidad categoria3 = new CategoriaEntidad("categoria3",null);
-            CategoriaEntidad categoria4 = new CategoriaEntidad("categoria4",null);
+            CategoriaEntidad categoria1 = new CategoriaEntidad("categoria1");
+            CategoriaEntidad categoria2 = new CategoriaEntidad("categoria2");
+            CategoriaEntidad categoria3 = new CategoriaEntidad("categoria3");
+            CategoriaEntidad categoria4 = new CategoriaEntidad("categoria4");
 
             organizacion1.agregarCategoria(categoria1);
             organizacion1.agregarCategoria(categoria2);
@@ -96,6 +96,7 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
                 organizacion2.agregarUsuario(aure);
                 organizacion2.agregarUsuario(nico);
                 organizacion3.agregarUsuario(mati);
+                entidadBase1.agregarEgreso(egreso);
                 egreso.agregarRevisor(migue);
 
                 RepositorioDeOrganizaciones.getInstance().agregar(organizacion1);

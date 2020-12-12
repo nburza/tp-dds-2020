@@ -32,7 +32,6 @@
         <class>mediosDePago.TarjetaCredito</class>
         <class>egreso.DocComercial</class>
         <class>egreso.CriterioCompra</class>
-        <class>egreso.CriterioMenorValor</class>
         <class>egreso.Egreso</class>
         <class>egreso.EstadoValidacion</class>
         <class>egreso.Etiqueta</class>
@@ -60,11 +59,12 @@
             <property name="hibernate.connection.password" value="k9gcfdhmwkzsg1to"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/> -->
 
-            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://cqmltppo7qh6vw1k:k9gcfdhmwkzsg1to@w1h4cr5sb73o944p.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/r6xdjp0sja0qtojc"/>
-            <property name="hibernate.connection.username" value="cqmltppo7qh6vw1k"/>
-            <property name="hibernate.connection.password" value="k9gcfdhmwkzsg1to"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
+            <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:app-db"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.connection.password" value=""/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+
 
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>

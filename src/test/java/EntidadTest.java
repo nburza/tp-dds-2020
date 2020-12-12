@@ -46,8 +46,8 @@ public class EntidadTest extends AbstractPersistenceTest implements WithGlobalEn
         organizacion = new Organizacion("pepito S.A", new ArrayList<>(),new ArrayList<>());
         entidadJuridica = new OrganizacionSectorSocial(null,null, 156L,null,new ArrayList<>());
         entidadBase = new EntidadBase(null,null,new ArrayList<>());
-        egreso1 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
-        egreso2 = new Egreso(null, null, new ArrayList<>(),null,"Peso argentino");
+        egreso1 = new Egreso(null, null, new ArrayList<>(),LocalDate.now(),"Peso argentino");
+        egreso2 = new Egreso(null, null, new ArrayList<>(),LocalDate.now(),"Peso argentino");
         egreso3 = new Egreso(null, null, new ArrayList<>(),LocalDate.now().minusDays(60),"Peso argentino");
         producto1 = new Producto(null);
         producto2 = new Producto(null);
