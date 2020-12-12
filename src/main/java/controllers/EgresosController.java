@@ -86,8 +86,8 @@ public class EgresosController extends ControllerGenerico implements WithGlobalE
         else
             egreso.setRequierePresupuesto(true);
 
-        if(criterio.equals("Presupuesto de menor valor"))
-            egreso.setCriterioDeSeleccion(CriterioMenorValor.getInstance());
+        if(criterio != null)
+            egreso.setCriterioDeSeleccion(CriterioCompra.CRITERIO_MENOR_VALOR);
 
         egreso.setRevisores(usuariosMapeados);
         egreso.setEtiquetas(etiquetasMapeadas);

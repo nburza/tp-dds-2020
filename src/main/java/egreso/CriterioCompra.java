@@ -8,15 +8,22 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo", length = 4)
-public abstract class CriterioCompra extends EntidadPersistente {
+public enum CriterioCompra {
 
-    public List<Presupuesto> presupuestosQueCumplen(List<Presupuesto> presupuestos)
-    {
-        return presupuestos;
-    }
+    SIN_CRITERIO {
+        public List<Presupuesto> presupuestosQueCumplen(List<Presupuesto> presupuestos) {
+            return presupuestos;
+        }
+    },
+    CRITERIO_MENOR_VALOR {
+        public List<Presupuesto> presupuestosQueCumplen(List<Presupuesto> presupuestos) {
+            return presupuestos.stream()
+                    .filter(x -> x.esElMenor(presupuestos))
+                    .collect(Collectors.toList());
+        }
+    };
+    public abstract List<Presupuesto> presupuestosQueCumplen(List<Presupuesto> presupuestos);
 
 }
