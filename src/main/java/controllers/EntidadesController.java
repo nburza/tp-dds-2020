@@ -52,6 +52,7 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
 
     public ModelAndView agregarEntidad(Request request, Response response) {
         Map<String, Object> viewModel = new HashMap<String, Object>();
+
         String nombreFicticio = request.queryParams("nombreFicticio");
         String razonSocial = request.queryParams("razonSocial");
         List<String> categorias = Arrays.asList(request.queryMap("categorias").values());
@@ -64,9 +65,24 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         String codigoIgj = request.queryParams("codigoIgj");
         String tipoEntidadJuridica = request.queryParams("tipoEntidadJuridica");
         String categoriaEmpresa = request.queryParams("categoriaEmpresa");
+
         Organizacion organizacion = getOrganizacion(request);
+
+        EntidadBuilder entidadBuilder = new EntidadBuilder();
+        entidadBuilder.setNombreFicticio(nombreFicticio);
+        entidadBuilder.setRazonSocial(razonSocial);
+        entidadBuilder.setTipoEntidad(tipoEntidad);
+        entidadBuilder.setCuit(cuit);
+        entidadBuilder.setPais(pais);
+        entidadBuilder.setProvincia(provincia);
+        entidadBuilder.setCiudad(ciudad);
+        entidadBuilder.setDireccion(direccion);
+        entidadBuilder.setCodigoIgj(codigoIgj);
+        entidadBuilder.setTipoEntidadJuridica(tipoEntidadJuridica);
+        entidadBuilder.setCategoriaEmpresa(categoriaEmpresa);
+
         try {
-            Entidad entidad = new EntidadBuilder().crearEntidadQueCorresponda(nombreFicticio,razonSocial,tipoEntidad,cuit,pais,provincia,ciudad,direccion,codigoIgj,tipoEntidadJuridica, categoriaEmpresa);
+            Entidad entidad = new EntidadBuilder().crear();
             List<CategoriaEntidad> categoriasSeleccionadas = parsearCategoriasSeleccionadas(categorias, organizacion);
             withTransaction(() -> {
                 organizacion.agregarEntidad(entidad);
