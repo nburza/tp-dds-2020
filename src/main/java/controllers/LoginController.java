@@ -34,7 +34,7 @@ public class LoginController extends ControllerGenerico{
         Optional<Usuario> usuario = RepositorioDeUsuarios.getInstance().getPorNombreDeUsuario(username);
         if(usuario.isPresent() && usuario.get().autenticar(username,password)) {
             req.session().attribute("idUsuario", usuario.get().getId());
-            res.redirect("/entidades");
+            res.redirect("/mensajes/pag/1");
             return null;
         } else {
             this.agregarMensajeDeErrorA(viewModel,"El usuario o la contraseña son incorrectos. Por favor Ingrese nuevamente.");

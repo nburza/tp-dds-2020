@@ -5,7 +5,7 @@
         <div class="form-group">
             <label>Entidades base a asignar</label>
             <select id="entidadesSeleccionadas" name="entidadesSeleccionadas" class="custom-select" multiple>
-                <option selected></option>
+                <option hidden selected></option>
                 {{#each entidadesBase}}
                     <option value="{{id}}">{{nombreFicticio}}</option>
                 {{/each}}
