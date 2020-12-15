@@ -1,5 +1,7 @@
 package controllers;
 
+import diccionarioDeInputs.DatosFaltantesException;
+import diccionarioDeInputs.DiccionarioDeInputs;
 import entidadOrganizativa.*;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
@@ -9,63 +11,74 @@ import spark.Request;
 import spark.Response;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CategoriasController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
 
+    private Utils utils = new Utils();
+
     public ModelAndView showCategorias(Request req, Response res) {
         return ejecutarConControlDeLogin(req, res, (request, response) -> {
-            Map<String, Object> viewModel = new HashMap<String, Object>();
-            Organizacion organizacion = getOrganizacion(request);
+            ViewModelTuneado viewModel = new ViewModelTuneado();
+            Organizacion organizacion = utils.getOrganizacion(request);
             List<CategoriaEntidad> categorias = organizacion.getCategorias();
-            this.cargarDatosGeneralesA(viewModel,request,"Categorias");
+            viewModel.cargarDatosGenerales(request,"Categorias");
             viewModel.put("categorias", categorias);
             if(!categorias.isEmpty())
             {
                 viewModel.put("hayResultados", true);
             }
-            return new ModelAndView(viewModel, "categorias.hbs");
+            return new ModelAndView(viewModel.getViewModel(), "categorias.hbs");
         });
     }
 
     public ModelAndView showFormularioNuevaCategoria(Request req, Response res) {
         return ejecutarConControlDeLogin(req, res, (request, response) -> {
-            Map<String, Object> viewModel = new HashMap<String, Object>();
-            this.cargarDatosGeneralesA(viewModel,request,"Crear categoria");
+            ViewModelTuneado viewModel = new ViewModelTuneado();
+            viewModel.cargarDatosGenerales(request,"Crear categoria");
             //       viewModel.put("reglas", getOrganizacion(request).getCategorias());
-            return new ModelAndView(viewModel, "nuevaCategoria.hbs");
+            return new ModelAndView(viewModel.getViewModel(), "nuevaCategoria.hbs");
         });
     }
     public ModelAndView agregarCategoria(Request request, Response response) {
-        Map<String, Object> viewModel = new HashMap<String, Object>();
+        ViewModelTuneado viewModel = new ViewModelTuneado();
 
-        String nombre = request.queryParams("nombre");
-        String regla1 = request.queryParams("reglaEntidadBaseNoIncorporable");
-        String regla2 = request.queryParams("reglaProhibidoAgregarEntidadesBase");
-        String regla3 = request.queryParams("reglaBloqueoEgresoPorMonto");
-        String montoLimite = request.queryParams("montoLimite");
-        CategoriaEntidad nuevaCategoria =new CategoriaEntidad(nombre);
+        DiccionarioDeInputs inputs = new DiccionarioDeInputs();
+        inputs.put("nombre", request.queryParams("nombre"));
+        inputs.put("regla1", request.queryParams("reglaEntidadBaseNoIncorporable"));
+        inputs.put("regla2", request.queryParams("reglaProhibidoAgregarEntidadesBase"));
+        inputs.put("regla3", request.queryParams("reglaBloqueoEgresoPorMonto"));
+        inputs.putObligatorioSi("montoLimite",request.queryParams("montoLimite"),inputs.get("regla3") != null);
 
+        try {
+            inputs.chequearDatosFaltantes();
+        }
+        catch(DatosFaltantesException e) {
+            viewModel.cargarDatosGenerales(request,"Crear categoria");
+            viewModel.agregarMensajeDeError(e.getMessage());
+            viewModel.rellenarDatosAnteError(inputs);
+            return new ModelAndView(viewModel.getViewModel(),"nuevaCategoria.hbs");
+        }
 
-        if(regla1!=null){
+        CategoriaEntidad nuevaCategoria = new CategoriaEntidad(inputs.get("nombre"));
+
+        if(inputs.get("regla1") != null){
             nuevaCategoria.agregarRegla(new ReglaEntidadBaseNoIncorporable());
         }
-        if (regla2!=null){
+        if(inputs.get("regla2") != null){
             nuevaCategoria.agregarRegla(new ReglaProhibidoAgregarEntidadesBase());
         }
-        if (regla3!=null){
-            nuevaCategoria.agregarRegla(new ReglaBloqueoEgresoPorMonto(new BigDecimal(montoLimite)));
+        if(inputs.get("regla3") != null){
+            nuevaCategoria.agregarRegla(new ReglaBloqueoEgresoPorMonto(new BigDecimal(inputs.get("montoLimite"))));
         }
         withTransaction(() -> {
-            Organizacion organizacion = getOrganizacion(request);
+            Organizacion organizacion = utils.getOrganizacion(request);
             organizacion.agregarCategoria(nuevaCategoria);
             viewModel.put("categorias", organizacion.getCategorias());
         });
 
-        this.cargarDatosGeneralesA(viewModel,request,"Categorias");
-        this.agregarMensajeDeExitoA(viewModel, "la categoria " + nombre + " fue ingresado con éxito.");
-        return new ModelAndView(viewModel, "categorias.hbs");
+        viewModel.cargarDatosGenerales(request,"Categorias");
+        viewModel.agregarMensajeDeExito("la categoria " + inputs.get("nombre") + " fue ingresada con éxito.");
+        return new ModelAndView(viewModel.getViewModel(), "categorias.hbs");
     }
 }

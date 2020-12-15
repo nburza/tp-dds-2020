@@ -13,10 +13,12 @@ import java.util.Optional;
 
 public class LoginController extends ControllerGenerico{
 
-    public ModelAndView show(Request req, Response res){
-        Map<String, Object> viewModel = new HashMap<String, Object>();
+    private Utils utils = new Utils();
 
-        if(this.estaLogueado(req,res))
+    public ModelAndView show(Request req, Response res){
+        ViewModelTuneado viewModel = new ViewModelTuneado();
+
+        if(utils.estaLogueado(req,res))
         {
             res.redirect("/");
         }
@@ -24,11 +26,11 @@ public class LoginController extends ControllerGenerico{
         {
             viewModel.put("anio", LocalDate.now().getYear());
         }
-        return new ModelAndView(viewModel, "login.hbs");
+        return new ModelAndView(viewModel.getViewModel(), "login.hbs");
     }
 
     public ModelAndView login(Request req, Response res) {
-        Map<String, Object> viewModel = new HashMap<String, Object>();
+        ViewModelTuneado viewModel = new ViewModelTuneado();
         String username = req.queryParams("usuario");
         String password = req.queryParams("password");
         Optional<Usuario> usuario = RepositorioDeUsuarios.getInstance().getPorNombreDeUsuario(username);
@@ -37,11 +39,11 @@ public class LoginController extends ControllerGenerico{
             res.redirect("/mensajes/pag/1");
             return null;
         } else {
-            this.agregarMensajeDeErrorA(viewModel,"El usuario o la contraseña son incorrectos. Por favor Ingrese nuevamente.");
+            viewModel.agregarMensajeDeError("El usuario o la contraseña son incorrectos. Por favor Ingrese nuevamente.");
             viewModel.put("anio", LocalDate.now().getYear());
         }
 
-        return new ModelAndView(viewModel, "login.hbs");
+        return new ModelAndView(viewModel.getViewModel(), "login.hbs");
     }
 
     public Void logout(Request req, Response res) {

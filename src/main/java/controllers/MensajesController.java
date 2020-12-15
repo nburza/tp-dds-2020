@@ -11,13 +11,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MensajesController extends ControllerGenerico {
+
+    private Utils utils = new Utils();
+
     public ModelAndView showMensajes(Request req, Response res) {
         return ejecutarConControlDeLogin(req, res, (request, response) -> {
-            Map<String, Object> viewModel = new HashMap<String, Object>();
+            ViewModelTuneado viewModel = new ViewModelTuneado();
 
-            Usuario usuarioLogueado = this.getUsuarioLogueado(request);
+            Usuario usuarioLogueado = utils.getUsuarioLogueado(request);
             List<Egreso> egresosPorUsuario = ordenarPorID(egresosPorUsuario(usuarioLogueado));
-            this.cargarDatosGeneralesA(viewModel,request,"Mensajes");
+            viewModel.cargarDatosGenerales(request,"Mensajes");
             int numPagina = Integer.parseInt(request.params(":numPag"));
             Paginador paginador = new Paginador(numPagina);
             List<Egreso> egresosPorPagina = paginador.paginar(egresosPorUsuario);
@@ -28,7 +31,7 @@ public class MensajesController extends ControllerGenerico {
                 viewModel.put("egresos", egresosPorPagina);
                 viewModel.put("hayResultados", true);
             }
-            return new ModelAndView(viewModel, "mensajes.hbs");
+            return new ModelAndView(viewModel.getViewModel(), "mensajes.hbs");
         });
     }
 

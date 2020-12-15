@@ -3,7 +3,7 @@
     <div>
         <form class="formulario" method="POST" action="/entidades/{{idEntidad}}/categorias">
             <select id="inputDocComercial" class="form-control" name="categoriaSeleccionada">
-                <option selected>categoria</option>
+                <option hidden selected value="">Seleccione una categoria</option>
                 {{#each categorias}}
                     <option value="{{nombre}}"> {{nombre}} </option>
                 {{/each}}

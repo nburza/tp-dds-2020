@@ -17,22 +17,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UsuarioController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
+
+    private Utils utils = new Utils();
+
     public ModelAndView showAgregarUsuario(Request req, Response res){
         return ejecutarConControlDeLogin(req, res, (request, response) -> {
-            Map<String, Object> viewModel = new HashMap<String, Object>();
+            ViewModelTuneado viewModel = new ViewModelTuneado();
 
-            if (this.getUsuarioLogueado(req).esAdmin()) {
-                this.cargarDatosGeneralesA(viewModel,request,"Cargar Usuario");
+            if (utils.getUsuarioLogueado(req).esAdmin()) {
+                viewModel.cargarDatosGenerales(request,"Cargar Usuario");
                 viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
             } else {
                 res.redirect("/home");
             }
-            return new ModelAndView(viewModel, "nuevoUsuario.hbs");
+            return new ModelAndView(viewModel.getViewModel(), "nuevoUsuario.hbs");
         });
     }
 
     public ModelAndView agregarUsuario(Request req, Response res){
-        Map<String, Object> viewModel = new HashMap<String, Object>();
+        ViewModelTuneado viewModel = new ViewModelTuneado();
         String username = req.queryParams("usuario");
         String password = req.queryParams("password");
         String organizacionId = req.queryParams("organizaciones");
@@ -40,11 +43,11 @@ public class UsuarioController extends ControllerGenerico implements WithGlobalE
         try {
             usuarioNuevo = new Usuario(username,password);
         } catch (ContraseniaDebilException | ClassNotFoundException e) {
-            this.cargarDatosGeneralesA(viewModel,req,"Cargar Usuario");
-            this.agregarMensajeDeErrorA(viewModel,"La contraseña ingresado no es válida. " + e.getMessage());
+            viewModel.cargarDatosGenerales(req,"Cargar Usuario");
+            viewModel.agregarMensajeDeError("La contraseña ingresado no es válida. " + e.getMessage());
             viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
             viewModel.put("nombreValue", username);
-            return new ModelAndView(viewModel, "nuevoUsuario.hbs");
+            return new ModelAndView(viewModel.getViewModel(), "nuevoUsuario.hbs");
         }
         Organizacion organizacion = RepositorioDeOrganizaciones.getInstance().getPorId(Long.parseLong(organizacionId)).get();
 
@@ -56,13 +59,13 @@ public class UsuarioController extends ControllerGenerico implements WithGlobalE
                 organizacion.agregarUsuario(finalUsuarioNuevo);
             });
         } catch (NombreDeUsuarioRepetidoException e) {
-            this.cargarDatosGeneralesA(viewModel,req,"Cargar usuario");
-            this.agregarMensajeDeErrorA(viewModel,"El usuario ingresado ya existe. Ingrese nuevamente un usuario.");
+            viewModel.cargarDatosGenerales(req,"Cargar usuario");
+            viewModel.agregarMensajeDeError("El usuario ingresado ya existe. Ingrese nuevamente un usuario.");
             viewModel.put("organizacion", RepositorioDeOrganizaciones.getInstance().getAllInstances());
-            return new ModelAndView(viewModel, "nuevoUsuario.hbs");
+            return new ModelAndView(viewModel.getViewModel(), "nuevoUsuario.hbs");
         }
-        this.cargarDatosGeneralesA(viewModel,req,"Home");
-        this.agregarMensajeDeExitoA(viewModel,"El usuario " + username + " fue ingresado con éxito.");
-        return new ModelAndView(viewModel, "home.hbs");
+        viewModel.cargarDatosGenerales(req,"Home");
+        viewModel.agregarMensajeDeExito("El usuario " + username + " fue ingresado con éxito.");
+        return new ModelAndView(viewModel.getViewModel(), "home.hbs");
     }
 }
