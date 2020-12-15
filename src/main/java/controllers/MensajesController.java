@@ -26,6 +26,9 @@ public class MensajesController extends ControllerGenerico {
             List<Egreso> egresosPorPagina = paginador.paginar(egresosPorUsuario);
             viewModel.put("pagSig", paginador.getPagSig());
             viewModel.put("pagAnterior", paginador.getPagAnterior());
+            viewModel.put("pagActual", paginador.getPagActual());
+            viewModel.put("tienePagSig",paginador.getTienePagSig());
+            viewModel.put("tienePagAnt",paginador.getTienePagAnt());
             if(!egresosPorPagina.isEmpty())
             {
                 viewModel.put("egresos", egresosPorPagina);
