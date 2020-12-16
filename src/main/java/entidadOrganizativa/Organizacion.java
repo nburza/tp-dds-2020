@@ -65,8 +65,12 @@ public class Organizacion extends EntidadPersistente {
         return categorias;
     }
 
-    public CategoriaEntidad getLaCategoria(String nombre){
-        return this.categorias.stream().filter(x -> x.getNombre().equals(nombre)).findFirst().get();
+    public CategoriaEntidad getCategoriaPorId(Long id){
+        return this.categorias.stream().filter(c -> c.getId().equals(id)).findFirst().get();
+    }
+
+    public List<CategoriaEntidad> getCategoriasPorListaDeIds(List<Long> ids) {
+        return this.categorias.stream().filter(c -> ids.stream().anyMatch(i -> i.equals(c.getId()))).collect(Collectors.toList());
     }
 
     public void agregarEntidad(Entidad entidad) {
@@ -98,8 +102,8 @@ public class Organizacion extends EntidadPersistente {
         usuarios.add(usuario);
     }
 
-    public List<Entidad> getEntidadesPorCategoria(String nombreCategoria) {
-        return entidades.stream().filter(e -> e.tieneCategoria(nombreCategoria)).collect(Collectors.toList());
+    public List<Entidad> getEntidadesPorCategoria(Long idCategoria) {
+        return entidades.stream().filter(e -> e.tieneCategoria(idCategoria)).collect(Collectors.toList());
     }
 
     public List<Entidad> getEntidadesBaseAsignables() {
@@ -117,5 +121,16 @@ public class Organizacion extends EntidadPersistente {
         List<Entidad> todasLasEntidades = new ArrayList<>();
         this.entidades.forEach(e -> e.getEntidadesConSubentidades().forEach(ent -> todasLasEntidades.add(ent)));
         return todasLasEntidades;
+    }
+
+    public EntidadJuridica getEntidadJuridica(Long id) {
+        return (EntidadJuridica) getEntidades().stream().filter(e -> e.getId().equals(id)).findFirst().get();
+    }
+
+    public List<Entidad> getEntidadesBaseSeleccionadas(List<Long> idsEntidadesBaseSeleccionadas) {
+        return this.getEntidadesBaseAsignables()
+                .stream().filter(eb -> idsEntidadesBaseSeleccionadas
+                .stream().anyMatch(ebs -> ebs.equals(eb.getId())))
+                .collect(Collectors.toList());
     }
 }

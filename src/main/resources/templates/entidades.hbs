@@ -7,8 +7,11 @@
             <form action="/entidades" method="GET">
                 <label for="categoriaFiltrada">Buscar por categoria</label>
                 <select id="categoriaFiltrada" name="categoriaFiltrada">
+                    {{#with categoriaFiltrada}}
+                        <option hidden value="{{id}}">{{nombre}}</option>
+                    {{/with}}
                     {{#each categorias}}
-                        <option value="{{nombre}}">{{nombre}}</option>
+                        <option value="{{id}}">{{nombre}}</option>
                     {{/each}}
                 </select>
                 <input class="btn btn-primary" type="submit" value="Buscar">

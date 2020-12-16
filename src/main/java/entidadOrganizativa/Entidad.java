@@ -132,8 +132,8 @@ public abstract class Entidad extends EntidadPersistente {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public boolean tieneCategoria(String nombreCategoria) {
-        return categoriaEntidad.stream().anyMatch(c -> c.getNombre().equals(nombreCategoria));
+    public boolean tieneCategoria(Long idCategoria) {
+        return categoriaEntidad.stream().anyMatch(c -> c.getId().equals(idCategoria));
     }
 
     public boolean tieneCategoriaConRegla(String tipoDeRegla) {

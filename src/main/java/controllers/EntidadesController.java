@@ -11,8 +11,8 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.List;
 
 public class EntidadesController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
 
@@ -32,8 +32,8 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
             {
                 entidades = organizacion.getEntidades();
             }else{
-                entidades = organizacion.getEntidadesPorCategoria(categoriaFiltrada);
-                Collections.swap(categorias, 0 , categorias.indexOf(organizacion.getLaCategoria(categoriaFiltrada)));
+                viewModel.put("categoriaFiltrada", organizacion.getCategoriaPorId(Long.parseLong(categoriaFiltrada)));
+                entidades = organizacion.getEntidadesPorCategoria(Long.parseLong(categoriaFiltrada));
             }
             if(!entidades.isEmpty())
             {
@@ -58,18 +58,20 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         ViewModelTuneado viewModel = new ViewModelTuneado();
 
         DiccionarioDeInputs inputs = new DiccionarioDeInputs();
-        inputs.put("nombreFicticio", request.queryParams("nombreFicticio"));
-        inputs.put("razonSocial", request.queryParams("razonSocial"));
-        inputs.put("tipoEntidad", request.queryParams("tipoEntidad"));
-        inputs.putObligatorioSi("cuit", request.queryParams("cuit"), inputs.get("tipoEntidad").equals("juridica"));
-        inputs.putObligatorioSi("pais", request.queryParams("pais"), inputs.get("tipoEntidad").equals("juridica"));
-        inputs.putObligatorioSi("provincia", request.queryParams("provincia"), inputs.get("tipoEntidad").equals("juridica"));
-        inputs.putObligatorioSi("ciudad", request.queryParams("ciudad"), inputs.get("tipoEntidad").equals("juridica"));
-        inputs.putObligatorioSi("direccion", request.queryParams("direccion"), inputs.get("tipoEntidad").equals("juridica"));
-        inputs.putObligatorioSi("codigoIgj", request.queryParams("codigoIgj"), inputs.get("tipoEntidad").equals("juridica"));
-        inputs.putObligatorioSi("tipoEntidadJuridica", request.queryParams("tipoEntidadJuridica"), inputs.get("tipoEntidad").equals("juridica"));
-        inputs.putObligatorioSi("categoriaEmpresa", request.queryParams("categoriaEmpresa"),
-                inputs.get("tipoEntidad").equals("juridica") && inputs.get("tipoEntidadJuridica").equals("empresa"));
+        inputs.putSimple("nombreFicticio", request.queryParams("nombreFicticio"));
+        inputs.putSimple("razonSocial", request.queryParams("razonSocial"));
+        inputs.putMultiple("categorias", utils.getValuesComoLista(request,"categorias"));
+        inputs.putSimple("tipoEntidad", request.queryParams("tipoEntidad"));
+        inputs.putSimpleObligatorioSi("cuit", request.queryParams("cuit"), inputs.getSimple("tipoEntidad").equals("juridica"));
+        inputs.putSimpleObligatorioSi("pais", request.queryParams("pais"), inputs.getSimple("tipoEntidad").equals("juridica"));
+        inputs.putSimpleObligatorioSi("provincia", request.queryParams("provincia"), inputs.getSimple("tipoEntidad").equals("juridica"));
+        inputs.putSimpleObligatorioSi("ciudad", request.queryParams("ciudad"), inputs.getSimple("tipoEntidad").equals("juridica"));
+        inputs.putSimpleObligatorioSi("direccion", request.queryParams("direccion"), inputs.getSimple("tipoEntidad").equals("juridica"));
+        inputs.putSimpleObligatorioSi("codigoIgj", request.queryParams("codigoIgj"), inputs.getSimple("tipoEntidad").equals("juridica"));
+        inputs.putSimpleObligatorioSi("tipoEntidadJuridica", request.queryParams("tipoEntidadJuridica"), inputs.getSimple("tipoEntidad").equals("juridica"));
+        inputs.putSimpleObligatorioSi("categoriaEmpresa", request.queryParams("categoriaEmpresa"),
+                              inputs.getSimple("tipoEntidad").equals("juridica") &&
+                                       inputs.getSimple("tipoEntidadJuridica").equals("empresa"));
 
         try {
             inputs.chequearDatosFaltantes();
@@ -82,26 +84,24 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
             return new ModelAndView(viewModel.getViewModel(),"nuevaEntidad.hbs");
         }
 
-        List<String> categorias = Arrays.asList(request.queryMap("categorias").values());
-
         Organizacion organizacion = utils.getOrganizacion(request);
 
         EntidadBuilder entidadBuilder = new EntidadBuilder();
-        entidadBuilder.setNombreFicticio(inputs.get("nombreFicticio"));
-        entidadBuilder.setRazonSocial(inputs.get("razonSocial"));
-        entidadBuilder.setTipoEntidad(inputs.get("tipoEntidad"));
-        entidadBuilder.setCuit(inputs.get("cuit"));
-        entidadBuilder.setPais(inputs.get("pais"));
-        entidadBuilder.setProvincia(inputs.get("provincia"));
-        entidadBuilder.setCiudad(inputs.get("ciudad"));
-        entidadBuilder.setDireccion(inputs.get("direccion"));
-        entidadBuilder.setCodigoIgj(inputs.get("codigoIgj"));
-        entidadBuilder.setTipoEntidadJuridica(inputs.get("tipoEntidadJuridica"));
-        entidadBuilder.setCategoriaEmpresa(inputs.get("categoriaEmpresa"));
+        entidadBuilder.setNombreFicticio(inputs.getSimple("nombreFicticio"));
+        entidadBuilder.setRazonSocial(inputs.getSimple("razonSocial"));
+        entidadBuilder.setTipoEntidad(inputs.getSimple("tipoEntidad"));
+        entidadBuilder.setCuit(inputs.getSimple("cuit"));
+        entidadBuilder.setPais(inputs.getSimple("pais"));
+        entidadBuilder.setProvincia(inputs.getSimple("provincia"));
+        entidadBuilder.setCiudad(inputs.getSimple("ciudad"));
+        entidadBuilder.setDireccion(inputs.getSimple("direccion"));
+        entidadBuilder.setCodigoIgj(inputs.getSimple("codigoIgj"));
+        entidadBuilder.setTipoEntidadJuridica(inputs.getSimple("tipoEntidadJuridica"));
+        entidadBuilder.setCategoriaEmpresa(parsearCategoriaEmpresa(inputs.getSimple("categoriaEmpresa")));
 
         try {
             Entidad entidad = entidadBuilder.crear();
-            List<CategoriaEntidad> categoriasSeleccionadas = parsearCategoriasSeleccionadas(categorias, organizacion);
+            List<CategoriaEntidad> categoriasSeleccionadas = organizacion.getCategoriasPorListaDeIds(utils.parsearIds(inputs.getMultiple("categorias")));
             withTransaction(() -> {
                 organizacion.agregarEntidad(entidad);
                 categoriasSeleccionadas.forEach(entidad::agregarCategoria);
@@ -111,14 +111,23 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
             viewModel.cargarDatosGenerales(request,"Crear entidad");
             viewModel.agregarMensajeDeError("La direccion ingresada es incorrecta. Ingrese nuevamente.");
             viewModel.rellenarDatosAnteError(inputs);
-            viewModel.put("categoriasEntidad", utils.getOrganizacion(request).getCategorias());
+            viewModel.put("categoriasEntidad", organizacion.getCategorias());
             return new ModelAndView(viewModel.getViewModel(), "nuevaEntidad.hbs");
         }
         viewModel.cargarDatosGenerales(request,"Entidades");
-        viewModel.agregarMensajeDeExito("La entidad " + inputs.get("nombreFicticio") + " fue agregada con éxito.");
+        viewModel.agregarMensajeDeExito("La entidad " + inputs.getSimple("nombreFicticio") + " fue agregada con éxito.");
         viewModel.put("categorias", organizacion.getCategorias());
         viewModel.put("entidades", organizacion.getEntidades());
         return new ModelAndView(viewModel.getViewModel(), "entidades.hbs");
+    }
+
+    private CategoriaEmpresa parsearCategoriaEmpresa(String categoriaEmpresa) {
+        HashMap<String, CategoriaEmpresa> DiccionarioDeCategorias = new HashMap<>();
+        DiccionarioDeCategorias.put("micro", CategoriaEmpresa.MICRO);
+        DiccionarioDeCategorias.put("pequenia",CategoriaEmpresa.PEQUENIA);
+        DiccionarioDeCategorias.put("medianaTramo1", CategoriaEmpresa.MEDIANA_TRAMO_1);
+        DiccionarioDeCategorias.put("medianaTramo2", CategoriaEmpresa.MEDIANA_TRAMO_2);
+        return DiccionarioDeCategorias.get(categoriaEmpresa);
     }
 
     public ModelAndView showAsignarEntidadesBase(Request req, Response res) {
@@ -136,11 +145,25 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
 
     public ModelAndView asignarEntidadesBase(Request request, Response response) {
         ViewModelTuneado viewModel = new ViewModelTuneado();
-        List<String> entidadesBase = Arrays.asList(request.queryMap("entidadesSeleccionadas").values());
-        String idEntidadJuridica = request.params(":id");
         Organizacion organizacion = utils.getOrganizacion(request);
-        EntidadJuridica entidadJuridica = (EntidadJuridica) organizacion.getEntidades().stream().filter(e -> idEntidadJuridica.equals(e.getId().toString())).findFirst().get();
-        List<Entidad> entidadesBaseSeleccionadas = parsearEntidadesBaseSeleccionadas(entidadesBase, organizacion);
+
+        DiccionarioDeInputs inputs = new DiccionarioDeInputs();
+        inputs.putMultipleObligatorio("entidadesBase", utils.getValuesComoLista(request,"entidadesSeleccionadas"));
+        String idEntidadJuridica = request.params(":id");
+        try {
+            inputs.chequearDatosFaltantes();
+        }
+        catch (DatosFaltantesException e) {
+            viewModel.cargarDatosGenerales(request,"Asignar entidades");
+            viewModel.agregarMensajeDeError("Debe seleccionar al menos una entidad a asignar");
+            viewModel.put("nombreEntidad", organizacion.getEntidadPorId(Long.parseLong(idEntidadJuridica)).getNombreFicticio());
+            viewModel.put("idEntidad", idEntidadJuridica);
+            viewModel.put("entidadesBase",organizacion.getEntidadesBaseAsignables());
+            return new ModelAndView(viewModel.getViewModel(), "asignarEntidadesBase.hbs");
+        }
+
+        EntidadJuridica entidadJuridica = organizacion.getEntidadJuridica(Long.parseLong(idEntidadJuridica));
+        List<Entidad> entidadesBaseSeleccionadas = organizacion.getEntidadesBaseSeleccionadas(utils.parsearIds(inputs.getMultiple("entidadesBase")));
         withTransaction(() -> {
             organizacion.asignarEntidadesBaseAUnaJuridica(entidadesBaseSeleccionadas,entidadJuridica);
         });
@@ -151,31 +174,6 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         return new ModelAndView(viewModel.getViewModel(), "entidades.hbs");
     }
 
-    private CategoriaEmpresa parsearCategoriaEmpresa(String categoriaEmpresa) {
-        HashMap<String, CategoriaEmpresa> DiccionarioDeCategorias = new HashMap<>();
-        DiccionarioDeCategorias.put("micro", CategoriaEmpresa.MICRO);
-        DiccionarioDeCategorias.put("pequenia",CategoriaEmpresa.PEQUENIA);
-        DiccionarioDeCategorias.put("medianaTramo1", CategoriaEmpresa.MEDIANA_TRAMO_1);
-        DiccionarioDeCategorias.put("medianaTramo2", CategoriaEmpresa.MEDIANA_TRAMO_2);
-        return DiccionarioDeCategorias.get(categoriaEmpresa);
-    }
-
-    private List<CategoriaEntidad> parsearCategoriasSeleccionadas(List<String> categoriasSeleccionadas, Organizacion organizacion) {
-        List<CategoriaEntidad> categoriasOrganizacion = organizacion.getCategorias();
-        return categoriasOrganizacion
-                .stream().filter(co -> categoriasSeleccionadas
-                .stream().anyMatch(cs -> cs.equals(co.getNombre())))
-                .collect(Collectors.toList());
-    }
-
-    private List<Entidad> parsearEntidadesBaseSeleccionadas(List<String> entidadesBaseSeleccionadas, Organizacion organizacion) {
-        List<Entidad> entidadesBaseOrganizacion = organizacion.getEntidadesBaseAsignables();
-        return entidadesBaseOrganizacion
-                .stream().filter(ebo -> entidadesBaseSeleccionadas
-                .stream().anyMatch(ebs -> ebs.equals(ebo.getId().toString())))
-                .collect(Collectors.toList());
-    }
-
     public ModelAndView agregarCategoriaAEntidad(Request request, Response response) {
         ViewModelTuneado viewModel = new ViewModelTuneado();
         Organizacion organizacion = utils.getOrganizacion(request);
@@ -183,8 +181,7 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         String idEntidad = request.params(":id");
 
         DiccionarioDeInputs inputs = new DiccionarioDeInputs();
-        inputs.putObligatorio("categoriaSeleccionada", request.queryParams("categoriaSeleccionada"));
-        //String categoria = request.queryParams("categoriaSeleccionada");
+        inputs.putSimpleObligatorio("categoriaSeleccionada", request.queryParams("categoriaSeleccionada"));
 
         try {
             inputs.chequearDatosFaltantes();
@@ -199,11 +196,11 @@ public class EntidadesController extends ControllerGenerico implements WithGloba
         }
 
         Entidad laEntidad = organizacion.getEntidadPorId(Long.parseLong(idEntidad));
-        CategoriaEntidad laCategoria = organizacion.getCategorias().stream().filter(categoriaEntidad -> categoriaEntidad.getNombre().equals(inputs.get("categoriaSeleccionada"))).findFirst().get();
+        CategoriaEntidad laCategoria = organizacion.getCategoriaPorId(Long.parseLong(inputs.getSimple("categoriaSeleccionada")));
         withTransaction(()->laEntidad.agregarCategoria(laCategoria));
 
         viewModel.cargarDatosGenerales(request,"Entidades");
-        viewModel.agregarMensajeDeExito("La categoria " + inputs.get("categoriaSeleccionada") + " fue asignada a la entidad " + laEntidad.getNombreFicticio() + " con éxito.");
+        viewModel.agregarMensajeDeExito("La categoria " + inputs.getSimple("categoriaSeleccionada") + " fue asignada a la entidad " + laEntidad.getNombreFicticio() + " con éxito.");
         viewModel.put("categorias", organizacion.getCategorias());
         viewModel.put("entidades", organizacion.getEntidades());
 

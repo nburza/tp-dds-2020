@@ -63,6 +63,6 @@ public class ViewModelTuneado {
     }
 
     public void rellenarDatosAnteError(DiccionarioDeInputs diccionarioDeInputs) {
-        diccionarioDeInputs.getInputs().forEach((key, value) -> viewModel.put(key+"Value", value.getValor()));
+        diccionarioDeInputs.getInputs().forEach((key, value) -> viewModel.put(key+"Value", value.getValorSimple()));
     }
 }

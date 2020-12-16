@@ -44,11 +44,11 @@ public class CategoriasController extends ControllerGenerico implements WithGlob
         ViewModelTuneado viewModel = new ViewModelTuneado();
 
         DiccionarioDeInputs inputs = new DiccionarioDeInputs();
-        inputs.put("nombre", request.queryParams("nombre"));
-        inputs.put("regla1", request.queryParams("reglaEntidadBaseNoIncorporable"));
-        inputs.put("regla2", request.queryParams("reglaProhibidoAgregarEntidadesBase"));
-        inputs.put("regla3", request.queryParams("reglaBloqueoEgresoPorMonto"));
-        inputs.putObligatorioSi("montoLimite",request.queryParams("montoLimite"),inputs.get("regla3") != null);
+        inputs.putSimple("nombre", request.queryParams("nombre"));
+        inputs.putSimple("regla1", request.queryParams("reglaEntidadBaseNoIncorporable"));
+        inputs.putSimple("regla2", request.queryParams("reglaProhibidoAgregarEntidadesBase"));
+        inputs.putSimple("regla3", request.queryParams("reglaBloqueoEgresoPorMonto"));
+        inputs.putSimpleObligatorioSi("montoLimite",request.queryParams("montoLimite"),inputs.getSimple("regla3") != null);
 
         try {
             inputs.chequearDatosFaltantes();
@@ -60,16 +60,16 @@ public class CategoriasController extends ControllerGenerico implements WithGlob
             return new ModelAndView(viewModel.getViewModel(),"nuevaCategoria.hbs");
         }
 
-        CategoriaEntidad nuevaCategoria = new CategoriaEntidad(inputs.get("nombre"));
+        CategoriaEntidad nuevaCategoria = new CategoriaEntidad(inputs.getSimple("nombre"));
 
-        if(inputs.get("regla1") != null){
+        if(inputs.getSimple("regla1") != null){
             nuevaCategoria.agregarRegla(new ReglaEntidadBaseNoIncorporable());
         }
-        if(inputs.get("regla2") != null){
+        if(inputs.getSimple("regla2") != null){
             nuevaCategoria.agregarRegla(new ReglaProhibidoAgregarEntidadesBase());
         }
-        if(inputs.get("regla3") != null){
-            nuevaCategoria.agregarRegla(new ReglaBloqueoEgresoPorMonto(new BigDecimal(inputs.get("montoLimite"))));
+        if(inputs.getSimple("regla3") != null){
+            nuevaCategoria.agregarRegla(new ReglaBloqueoEgresoPorMonto(new BigDecimal(inputs.getSimple("montoLimite"))));
         }
         withTransaction(() -> {
             Organizacion organizacion = utils.getOrganizacion(request);
@@ -78,7 +78,7 @@ public class CategoriasController extends ControllerGenerico implements WithGlob
         });
 
         viewModel.cargarDatosGenerales(request,"Categorias");
-        viewModel.agregarMensajeDeExito("la categoria " + inputs.get("nombre") + " fue ingresada con éxito.");
+        viewModel.agregarMensajeDeExito("la categoria " + inputs.getSimple("nombre") + " fue ingresada con éxito.");
         return new ModelAndView(viewModel.getViewModel(), "categorias.hbs");
     }
 }

@@ -3,7 +3,9 @@ package persistencia;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public abstract class RepositorioGenerico<E extends EntidadPersistente> implements WithGlobalEntityManager {
 
@@ -17,6 +19,11 @@ public abstract class RepositorioGenerico<E extends EntidadPersistente> implemen
     public Optional<E> getPorId(long id) {
 
         return Optional.ofNullable(entityManager().find(getClase(), id));
+    }
+
+    public List<E> getPorListaDeIds(List<Long> ids) {
+
+        return getAllInstances().stream().filter(e -> ids.stream().anyMatch(i -> i.equals(e.getId()))).collect(Collectors.toList());
     }
 
     public void agregar(E unElemento) {

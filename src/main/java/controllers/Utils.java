@@ -7,6 +7,11 @@ import spark.Response;
 import usuario.RepositorioDeUsuarios;
 import usuario.Usuario;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Utils {
 
     public Utils() {}
@@ -34,4 +39,13 @@ public class Utils {
         return RepositorioDeOrganizaciones.getInstance().getOrganizacionDelUsuarioConId(idUsuario).get();
     }
 
+    List<String> getValuesComoLista(Request request, String clave) {
+        List<String> lista = new ArrayList<>(Arrays.asList(request.queryMap(clave).values()));
+        lista.remove("");
+        return lista;
+    }
+
+    List<Long> parsearIds(List<String> stringsIds) {
+        return stringsIds.stream().map(Long::parseLong).collect(Collectors.toList());
+    }
 }

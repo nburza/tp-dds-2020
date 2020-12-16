@@ -21,9 +21,7 @@ import usuario.Usuario;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EgresosController extends ControllerGenerico implements WithGlobalEntityManager, EntityManagerOps, TransactionalOps
 {
@@ -34,21 +32,7 @@ public class EgresosController extends ControllerGenerico implements WithGlobalE
         return ejecutarConControlDeLogin(request, response, (req, res) -> {
             ViewModelTuneado viewModel = new ViewModelTuneado();
 
-            List<String> monedas = new ArrayList<String>();
-            List<MonedaDTO> monedasValidas = servicioAPIMercadoLibre.getMonedas();
-
-            for (MonedaDTO moneda : monedasValidas) {
-                monedas.add(moneda.getSymbol() + " " + moneda.getId() + " (" + moneda.getDescription() + ")");
-            }
-            viewModel.cargarDatosGenerales(req,"Cargar Egresos");
-            viewModel.put("documentos", TipoDocComercial.values());
-            viewModel.put("usuarios", RepositorioDeUsuarios.getInstance().getAllInstances());
-            viewModel.put("items", RepositorioDeItems.getInstance().getAllInstances());
-            viewModel.put("medios", RepositorioDeMediosDePago.getInstance().getAllInstances());
-            viewModel.put("monedas", monedasValidas);
-            viewModel.put("etiquetas", RepositorioDeEtiquetas.getInstance().getAllInstances());
-            //viewModel.put("entidades", getOrganizacion(req).getEntidadesConSubentidades());
-            viewModel.put("entidades", utils.getOrganizacion(req).getEntidades());
+            cargarPantallaDeEgresos(req, viewModel);
 
             return new ModelAndView(viewModel.getViewModel(), "altaEgresos.hbs");
         });
@@ -60,65 +44,51 @@ public class EgresosController extends ControllerGenerico implements WithGlobalE
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         DiccionarioDeInputs inputs = new DiccionarioDeInputs();
-        inputs.putObligatorio("tipoDocumento", req.queryParams("tipoDocumento"));
-        inputs.put("identificadorDocumento", req.queryParams("identificadorDocumento"));
-        inputs.putObligatorio("medioDePago", req.queryParams("medioDePago"));
-        inputs.putObligatorio("moneda", req.queryParams("moneda"));
-        inputs.put("fecha", req.queryParams("fecha"));
-        inputs.put("requierePresu", req.queryMap("requierePresu").value());
-        inputs.put("criterio", req.queryParams("criterio"));
-        inputs.putObligatorio("entidad", req.queryParams("entidad"));
-
-        List<String> items = Arrays.asList(req.queryMap("items").values());
-        List<String> usuarios = Arrays.asList(req.queryMap("usuarios").values());
-        List<String> etiquetas = Arrays.asList(req.queryMap("etiquetas").values());
+        inputs.putSimpleObligatorio("tipoDocumento", req.queryParams("tipoDocumento"));
+        inputs.putSimple("identificadorDocumento", req.queryParams("identificadorDocumento"));
+        inputs.putSimpleObligatorio("medioDePago", req.queryParams("medioDePago"));
+        inputs.putSimpleObligatorio("moneda", req.queryParams("moneda"));
+        inputs.putMultiple("items",utils.getValuesComoLista(req,"items"));
+        inputs.putSimple("fecha", req.queryParams("fecha"));
+        inputs.putSimple("requierePresu", req.queryMap("requierePresu").value());
+        inputs.putMultiple("usuarios", utils.getValuesComoLista(req, "usuarios"));
+        inputs.putSimple("criterio", req.queryParams("criterio"));
+        inputs.putMultiple("etiquetas", utils.getValuesComoLista(req, "etiquetas"));
+        inputs.putSimpleObligatorio("entidad", req.queryParams("entidad"));
 
         try {
             inputs.chequearDatosFaltantes();
         }
         catch(DatosFaltantesException e) {
-            List<String> monedas = new ArrayList<String>();
-            List<MonedaDTO> monedasValidas = servicioAPIMercadoLibre.getMonedas();
-
-            for (MonedaDTO moneda : monedasValidas) {
-                monedas.add(moneda.getSymbol() + " " + moneda.getId() + " (" + moneda.getDescription() + ")");
-            }
-            viewModel.cargarDatosGenerales(req,"Cargar Egresos");
+            cargarPantallaDeEgresos(req, viewModel);
             viewModel.agregarMensajeDeError(e.getMessage());
             viewModel.rellenarDatosAnteError(inputs);
-            viewModel.put("documentos", TipoDocComercial.values());
-            viewModel.put("usuarios", RepositorioDeUsuarios.getInstance().getAllInstances());
-            viewModel.put("items", RepositorioDeItems.getInstance().getAllInstances());
-            viewModel.put("medios", RepositorioDeMediosDePago.getInstance().getAllInstances());
-            viewModel.put("monedas", monedasValidas);
-            viewModel.put("etiquetas", RepositorioDeEtiquetas.getInstance().getAllInstances());
-            viewModel.put("entidades", utils.getOrganizacion(req).getEntidades());
             return new ModelAndView(viewModel.getViewModel(), "altaEgresos.hbs");
         }
 
-        DocComercial docComercial = new DocComercial(Integer.parseInt(inputs.get("identificadorDocumento")),
-                                                     TipoDocComercial.valueOf(inputs.get("tipoDocumento")));
+        DocComercial docComercial = new DocComercial(Integer.parseInt(inputs.getSimple("identificadorDocumento")),
+                                                     TipoDocComercial.valueOf(inputs.getSimple("tipoDocumento")));
         List<DocComercial> documentos = new ArrayList<DocComercial>();
         documentos.add(docComercial);
 
-        MedioDePago medio = RepositorioDeMediosDePago.getInstance().getPorId(Long.parseLong(inputs.get("medioDePago"))).get();
+        MedioDePago medio = RepositorioDeMediosDePago.getInstance().getPorId(Long.parseLong(inputs.getSimple("medioDePago"))).get();
 
-        List<Item> itemsMapeados = items.stream().map(item -> RepositorioDeItems.getInstance().getPorId(Long.parseLong(item)).get()).collect(Collectors.toList());
-        List<Usuario> usuariosMapeados = usuarios.stream().map(usuario -> RepositorioDeUsuarios.getInstance().getPorId(Long.parseLong(usuario)).get()).collect(Collectors.toList());
-        List<Etiqueta> etiquetasMapeadas = etiquetas.stream().map(etiqueta -> RepositorioDeEtiquetas.getInstance().getPorId(Long.parseLong(etiqueta)).get()).collect(Collectors.toList());
-        LocalDate fechaMapeada = LocalDate.parse(inputs.get("fecha"), formatter);
+        List<Item> itemsMapeados = RepositorioDeItems.getInstance().getPorListaDeIds(utils.parsearIds(inputs.getMultiple("items")));
+        List<Usuario> usuariosMapeados = RepositorioDeUsuarios.getInstance().getPorListaDeIds(utils.parsearIds(inputs.getMultiple("usuarios")));
+        List<Etiqueta> etiquetasMapeadas = RepositorioDeEtiquetas.getInstance().getPorListaDeIds(utils.parsearIds(inputs.getMultiple("etiquetas")));
 
-        //Entidad entidadMapeada = getOrganizacion(req).getEntidadesConSubentidades().stream().filter(e -> e.getId().equals(Long.parseLong(entidad))).findFirst().get();
-        Entidad entidadMapeada = utils.getOrganizacion(req).getEntidades().stream().filter(e -> e.getId().equals(Long.parseLong(inputs.get("entidad")))).findFirst().get();
+        LocalDate fechaMapeada = LocalDate.parse(inputs.getSimple("fecha"), formatter);
 
-        Egreso egreso = new Egreso(documentos, medio, itemsMapeados, fechaMapeada, inputs.get("moneda"));
+        Entidad entidadMapeada = utils.getOrganizacion(req).getEntidadPorId(Long.parseLong(inputs.getSimple("entidad")));
 
-        if(inputs.get("requierePresu") == null)
+        Egreso egreso = new Egreso(documentos, medio, itemsMapeados, fechaMapeada, inputs.getSimple("moneda"));
+
+        if(inputs.getSimple("requierePresu") == null)
             egreso.setRequierePresupuesto(false);
         else
             egreso.setRequierePresupuesto(true);
 
-        if(inputs.get("criterio") != null)
+        if(inputs.getSimple("criterio") != null)
             egreso.setCriterioDeSeleccion(CriterioCompra.CRITERIO_MENOR_VALOR);
 
         egreso.setRevisores(usuariosMapeados);
@@ -133,28 +103,32 @@ public class EgresosController extends ControllerGenerico implements WithGlobalE
             });
         }
         catch(MontoSuperadoException e) {
-            List<String> monedas = new ArrayList<String>();
-            List<MonedaDTO> monedasValidas = servicioAPIMercadoLibre.getMonedas();
-
-            for (MonedaDTO moneda : monedasValidas) {
-                monedas.add(moneda.getSymbol() + " " + moneda.getId() + " (" + moneda.getDescription() + ")");
-            }
-            viewModel.cargarDatosGenerales(req,"Cargar Egresos");
+            cargarPantallaDeEgresos(req,viewModel);
             viewModel.agregarMensajeDeError(e.getMessage());
             viewModel.rellenarDatosAnteError(inputs);
-            viewModel.put("documentos", TipoDocComercial.values());
-            viewModel.put("usuarios", RepositorioDeUsuarios.getInstance().getAllInstances());
-            viewModel.put("items", RepositorioDeItems.getInstance().getAllInstances());
-            viewModel.put("medios", RepositorioDeMediosDePago.getInstance().getAllInstances());
-            viewModel.put("monedas", monedasValidas);
-            viewModel.put("etiquetas", RepositorioDeEtiquetas.getInstance().getAllInstances());
-            viewModel.put("entidades", utils.getOrganizacion(req).getEntidades());
             return new ModelAndView(viewModel.getViewModel(), "altaEgresos.hbs");
         }
 
-        viewModel.cargarDatosGenerales(req,"Cargar Usuario");
+        cargarPantallaDeEgresos(req, viewModel);
         viewModel.agregarMensajeDeExito("El egreso fue ingresado con éxito.");
 
         return new ModelAndView(viewModel.getViewModel(), "altaEgresos.hbs");
+    }
+
+    private void cargarPantallaDeEgresos(Request req, ViewModelTuneado viewModel) {
+        List<String> monedas = new ArrayList<String>();
+        List<MonedaDTO> monedasValidas = servicioAPIMercadoLibre.getMonedas();
+
+        for (MonedaDTO moneda : monedasValidas) {
+            monedas.add(moneda.getSymbol() + " " + moneda.getId() + " (" + moneda.getDescription() + ")");
+        }
+        viewModel.cargarDatosGenerales(req,"Cargar Egresos");
+        viewModel.put("documentos", TipoDocComercial.values());
+        viewModel.put("usuarios", RepositorioDeUsuarios.getInstance().getAllInstances());
+        viewModel.put("items", RepositorioDeItems.getInstance().getAllInstances());
+        viewModel.put("medios", RepositorioDeMediosDePago.getInstance().getAllInstances());
+        viewModel.put("monedas", monedasValidas);
+        viewModel.put("etiquetas", RepositorioDeEtiquetas.getInstance().getAllInstances());
+        viewModel.put("entidades", utils.getOrganizacion(req).getEntidades());
     }
 }

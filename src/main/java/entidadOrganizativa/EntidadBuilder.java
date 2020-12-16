@@ -17,7 +17,7 @@ public class EntidadBuilder {
     private String direccion;
     private String codigoIgj;
     private String tipoEntidadJuridica;
-    private String categoriaEmpresa;
+    private CategoriaEmpresa categoriaEmpresa;
 
     public EntidadBuilder() {
     }
@@ -62,7 +62,7 @@ public class EntidadBuilder {
         this.tipoEntidadJuridica = tipoEntidadJuridica;
     }
 
-    public void setCategoriaEmpresa(String categoriaEmpresa) {
+    public void setCategoriaEmpresa(CategoriaEmpresa categoriaEmpresa) {
         this.categoriaEmpresa = categoriaEmpresa;
     }
 
@@ -75,18 +75,9 @@ public class EntidadBuilder {
             if (tipoEntidadJuridica.equals("oss")) {
                 entidad = new OrganizacionSectorSocial(razonSocial, nombreFicticio, Long.parseLong(cuit), direccionPostal, Integer.valueOf(codigoIgj), new ArrayList<>());
             } else {
-                entidad = new Empresa(razonSocial, nombreFicticio, Long.parseLong(cuit), direccionPostal, Integer.valueOf(codigoIgj), parsearCategoriaEmpresa(categoriaEmpresa), new ArrayList<>());
+                entidad = new Empresa(razonSocial, nombreFicticio, Long.parseLong(cuit), direccionPostal, Integer.valueOf(codigoIgj), categoriaEmpresa, new ArrayList<>());
             }
         }
         return entidad;
-    }
-
-    private CategoriaEmpresa parsearCategoriaEmpresa(String categoriaEmpresa) {
-        HashMap<String, CategoriaEmpresa> DiccionarioDeCategorias = new HashMap<>();
-        DiccionarioDeCategorias.put("micro", CategoriaEmpresa.MICRO);
-        DiccionarioDeCategorias.put("pequenia",CategoriaEmpresa.PEQUENIA);
-        DiccionarioDeCategorias.put("medianaTramo1", CategoriaEmpresa.MEDIANA_TRAMO_1);
-        DiccionarioDeCategorias.put("medianaTramo2", CategoriaEmpresa.MEDIANA_TRAMO_2);
-        return DiccionarioDeCategorias.get(categoriaEmpresa);
     }
 }

@@ -1,11 +1,12 @@
 package diccionarioDeInputs;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DiccionarioDeInputs {
 
-    private Map<String,Input> inputs = new HashMap<>();
+    private Map<String, Input> inputs = new HashMap<>();
 
     public DiccionarioDeInputs() {
     }
@@ -14,20 +15,36 @@ public class DiccionarioDeInputs {
         return inputs;
     }
 
-    public void put(String clave, String valor) {
-        this.inputs.put(clave,new Input(valor,false));
+    public void putSimple(String clave, String valor) {
+        this.inputs.put(clave,new InputSimple(valor,false));
     }
 
-    public void putObligatorio(String clave, String valor) {
-        this.inputs.put(clave, new Input(valor,true));
+    public void putSimpleObligatorio(String clave, String valor) {
+        this.inputs.put(clave, new InputSimple(valor,true));
     }
 
-    public void putObligatorioSi(String clave, String valor, boolean condicion) {
-        this.inputs.put(clave, new Input(valor, condicion));
+    public void putSimpleObligatorioSi(String clave, String valor, boolean condicion) {
+        this.inputs.put(clave, new InputSimple(valor, condicion));
     }
 
-    public String get(String clave) {
-        return this.inputs.get(clave).getValor();
+    public void putMultiple(String clave, List<String> valores) {
+        this.inputs.put(clave,new InputMultiple(valores,false));
+    }
+
+    public void putMultipleObligatorio(String clave, List<String> valores) {
+        this.inputs.put(clave, new InputMultiple(valores,true));
+    }
+
+    public void putMultipleObligatorioSi(String clave, List<String> valores, boolean condicion) {
+        this.inputs.put(clave, new InputMultiple(valores, condicion));
+    }
+
+    public String getSimple(String clave) {
+        return this.inputs.get(clave).getValorSimple();
+    }
+
+    public List<String> getMultiple(String clave) {
+        return this.inputs.get(clave).getValorMultiple();
     }
 
     public void chequearDatosFaltantes() {

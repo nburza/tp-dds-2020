@@ -1,20 +1,16 @@
 package diccionarioDeInputs;
 
-public class Input {
+import java.util.List;
 
-    private String valor;
-    private boolean esObligatorio;
+public abstract class Input {
 
-    public Input(String value, boolean esObligatorio) {
-        this.valor = value;
-        this.esObligatorio = esObligatorio;
+    public String getValorSimple() {
+        return null;
     }
 
-    public String getValor() {
-        return valor;
+    public List<String> getValorMultiple() {
+        return null;
     }
 
-    public boolean estaFaltante() {
-        return this.esObligatorio && (this.valor == null || this.valor.equals(""));
-    }
+    public abstract boolean estaFaltante();
 }
