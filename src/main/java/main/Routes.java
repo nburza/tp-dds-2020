@@ -19,14 +19,14 @@ public class Routes {
         Spark.port(getHerokuAssignedPort());
         Spark.staticFileLocation("/public");
 
-        CiudadDTO ciudad = new CiudadDTO("3","La Plata");
+        /*CiudadDTO ciudad = new CiudadDTO("3","La Plata");
         ProvinciaDTO provincia = new ProvinciaDTO("2","Buenos Aires", Arrays.asList(ciudad));
         PaisDTO pais = new PaisDTO("1","Argentina", Arrays.asList(provincia));
-        ValidadorDeUbicacion validadorDeUbicacion = new ValidadorDeUbicacion(Arrays.asList(pais));
+        ValidadorDeUbicacion validadorDeUbicacion = new ValidadorDeUbicacion(Arrays.asList(pais));*/
 
         ServicioAPIMercadoLibre servicioAPIMercadoLibre = new ServicioAPIMercadoLibre();
         ValidadorDeMoneda validadorDeMoneda = new ValidadorDeMoneda(servicioAPIMercadoLibre.getMonedas());
-        //ValidadorDeUbicacion validadorDeUbicacion = new ValidadorDeUbicacion(servicioAPIMercadoLibre.getUbicaciones());
+        ValidadorDeUbicacion validadorDeUbicacion = new ValidadorDeUbicacion(servicioAPIMercadoLibre.getUbicaciones());
         ServiceLocator.getInstance().setValidadorDeUbicacion(validadorDeUbicacion);
         ServiceLocator.getInstance().setValidadorDeMoneda(validadorDeMoneda);
         //new Bootstrap().run();

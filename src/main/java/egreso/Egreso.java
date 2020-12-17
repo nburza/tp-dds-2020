@@ -22,8 +22,8 @@ public class Egreso extends EntidadPersistente
     private List<DocComercial> documentosComerciales = new ArrayList<>();
     @ManyToOne
     private MedioDePago medioDePago;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "egreso_id")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "item_x_egreso")
     private List<Item> items = new ArrayList<>();
     @Convert(converter = LocalDateConverter.class)
     private LocalDate fecha;
